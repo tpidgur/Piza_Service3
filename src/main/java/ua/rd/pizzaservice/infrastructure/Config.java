@@ -1,4 +1,6 @@
 package ua.rd.pizzaservice.infrastructure;
 
-public class Config {
+public interface Config {
+
+    public Class<?> getImpl(String name);
 }

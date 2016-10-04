@@ -28,9 +28,7 @@ public class InMemoryPizzaRepository implements PizzaRepo {
         Iterator<Pizza> iter = pizzas.iterator();
         while (iter.hasNext()) {
             Pizza item = iter.next();
-
             if (item.getId().equals(id)) {
-                System.out.println(item.getId());
                 return item;
             }
         }
