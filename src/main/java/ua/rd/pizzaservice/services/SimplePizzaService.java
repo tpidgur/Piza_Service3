@@ -1,5 +1,6 @@
 package ua.rd.pizzaservice.services;
 
+import ua.rd.pizzaservice.infrastructure.BenchMark;
 import ua.rd.pizzaservice.infrastructure.InitialContext;
 import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.repository.PizzaRepo;
@@ -12,7 +13,7 @@ public class SimplePizzaService implements PizzaService {
 //        this.pizzaRepo = context.getInstance("PizzaRepo");
         this.pizzaRepo = pizzaRepo;
     }
-
+@BenchMark(false)
     public Pizza find(Long id) {
         return pizzaRepo.find(id);
     }

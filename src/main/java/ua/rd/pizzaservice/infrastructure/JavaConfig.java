@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class JavaConfig implements Config {
 
-    private Map<String, Class <?>> classes=new HashMap <>();
-    {
+    private  Map<String, Class <?>> classes=new HashMap <>();
+ {
         classes.put("pizzaRepo", InMemoryPizzaRepository.class);
         classes.put("orderService", SimpleOrderService.class);
         classes.put("orderRepo", InMemoryOrderRepository.class);

@@ -1,22 +1,53 @@
 package ua.rd.pizzaservice.domain;
 
+import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class Order {
     private Long id;
     private List<Pizza> pizzas;
     private Customer customer;
     private static long counter;
+    private Status status;
+    private final int amountOfPizzasForDicount = 4;
+    private BigDecimal discountMultiplier = new BigDecimal(0.3);
+
+    public BigDecimal calculateDiscount() {
+        if (pizzas.size() > amountOfPizzasForDicount) {
+            Optional<BigDecimal> max = pizzas.stream().map(i -> i.getPrice()).max(Comparator.naturalOrder());
+            if (max.isPresent()) {
+                BigDecimal discountAmount = max.get().multiply(discountMultiplier);
+                return discountAmount;
+            }
+        }
+        return new BigDecimal(0);
+    }
+
+    public BigDecimal calculateTotalPriceWithDiscount() {
+        return calculateTotalPrice().subtract(calculateDiscount());
+    }
+
+    public BigDecimal calculateTotalPrice() {
+        return pizzas.stream().map(j -> j.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public enum Status {
+        NEW, IN_PROGRESS, CANCELLED, DONE
+    }
 
     public Order(Customer customer, List<Pizza> pizzas) {
         this.pizzas = pizzas;
         this.customer = customer;
+        this.status = Status.NEW;
         id = counter++;
     }
 
     public Long getId() {
         return id;
     }
+
 
     public void setId(Long id) {
         this.id = id;
@@ -36,5 +67,22 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", pizzas=" + pizzas +
+                ", customer=" + customer +
+                '}';
     }
 }

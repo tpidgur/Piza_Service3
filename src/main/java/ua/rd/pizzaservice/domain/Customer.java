@@ -4,6 +4,13 @@ public class Customer {
     private Long id;
     private String name;
     private static long counter;
+    private String address;
+
+
+    public Customer(String name) {
+        this.name = name;
+        id = counter++;
+    }
 
     public Long getId() {
         return id;
@@ -21,9 +28,19 @@ public class Customer {
         this.name = name;
     }
 
-    public Customer( String name) {
+    public static long getCounter() {
+        return counter;
+    }
 
-        this.name = name;
-        id = counter++;
+    public static void setCounter(long counter) {
+        Customer.counter = counter;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

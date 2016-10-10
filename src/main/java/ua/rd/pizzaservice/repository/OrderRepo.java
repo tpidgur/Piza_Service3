@@ -8,4 +8,5 @@ import java.util.List;
 public interface OrderRepo {
     public List<Order> getOrders();
     Order save (Order order);
+    public Order getOrder(long orderId);
 }

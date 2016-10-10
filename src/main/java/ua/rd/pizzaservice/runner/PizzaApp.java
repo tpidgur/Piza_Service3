@@ -1,4 +1,4 @@
-package ua.rd.pizzaservice;
+package ua.rd.pizzaservice.runner;
 
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
@@ -7,13 +7,8 @@ import ua.rd.pizzaservice.infrastructure.Context;
 import ua.rd.pizzaservice.infrastructure.JavaConfig;
 import ua.rd.pizzaservice.repository.PizzaRepo;
 import ua.rd.pizzaservice.services.OrderService;
-import ua.rd.pizzaservice.services.PizzaService;
-import ua.rd.pizzaservice.services.SimpleOrderService;
-import ua.rd.pizzaservice.services.SimplePizzaService;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PizzaApp {
     public static void main(String[] args) throws IllegalAccessException, InstantiationException, InvocationTargetException {

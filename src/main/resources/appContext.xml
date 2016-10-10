@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+
+
+
+
+    <bean name="simpleOrderService" class="ua.rd.pizzaservice.services.SimpleOrderService"
+    >
+        <constructor-arg ref="orderRepository"/>
+        <constructor-arg ref="simplePizzaService"/>
+    </bean>
+    <bean name="simplePizzaService" class="ua.rd.pizzaservice.services.SimplePizzaService"
+    >
+        <constructor-arg ref="pizzaRepository"/>
+    </bean>
+
+<bean class="ua.rd.pizzaservice.services.UsageSomeService" init-method="init">
+    <constructor-arg >
+        <bean class="ua.rd.pizzaservice.services.Test2SomeService" />
+
+    </constructor-arg>
+</bean>
+    <!--   <bean name="T1" class="ua.rd.pizzaservice.services.Test2SomeService"/>!-->
+   <!--   <bean name="T2" class="ua.rd.pizzaservice.services.Test1SomeService"/> !-->
+</beans>

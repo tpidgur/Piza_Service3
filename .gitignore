@@ -1,0 +1,12 @@
+
+.idea/*
+.idea/.name
+.idea/compiler.xml
+.idea/copyright/
+.idea/libraries/
+.idea/misc.xml
+.idea/modules.xml
+.idea/uiDesigner.xml
+.idea/workspace.xml
+Piza_Service3.iml
+target/
