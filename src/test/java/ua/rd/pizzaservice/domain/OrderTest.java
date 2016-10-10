@@ -32,10 +32,22 @@ public class OrderTest {
 
     @Test
     public void calculateTotalPriceWithDiscountTest() {
-        BigDecimal onePizzaPriceWithDiscount = PIZZA_PRICE1.subtract(PIZZA_PRICE1.multiply(DISCOUNT_MULTIPLICAND));
-        BigDecimal total = onePizzaPriceWithDiscount.add(PIZZA_PRICE1.multiply(new BigDecimal(3))).
-                add(PIZZA_PRICE2);
         assertThat(order.calculateTotalPriceWithDiscount(),
-                is(total));
+                is(getTotalOrderPriceWithDiscount()));
     }
+
+    private BigDecimal getTotalOrderPriceWithDiscount() {
+        BigDecimal onePizzaPriceWithDiscount = PIZZA_PRICE1.subtract(PIZZA_PRICE1.multiply(DISCOUNT_MULTIPLICAND));
+        return onePizzaPriceWithDiscount.add(PIZZA_PRICE1.multiply(new BigDecimal(3))).
+                add(PIZZA_PRICE2);
+    }
+
+//    @Test
+//    public void replenishAccumulativeCardTest() {
+//        order.getCustomer().createNewCard();
+//        order.replenishAccumulativeCard();
+//        BigDecimal balance = order.getCustomer().getCard().getBalance();
+//
+//    }
+
 }

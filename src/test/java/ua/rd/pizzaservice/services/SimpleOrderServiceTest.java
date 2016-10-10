@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.is;
 
 public class SimpleOrderServiceTest {
     private SimpleOrderService simpleOrderService;
-    private long pizzaId = 1;
+    private final long PIZZA_ID = 1;
 
     @Before
     public void initializeOrder() {
@@ -38,14 +38,14 @@ public class SimpleOrderServiceTest {
 
     private Long[] generatePizzasId(int number) {
         Long[] pizzasIDs = new Long[number];
-        IntStream.range(0, pizzasIDs.length).forEach(i -> pizzasIDs[i] = pizzaId);
+        IntStream.range(0, pizzasIDs.length).forEach(i -> pizzasIDs[i] = PIZZA_ID);
         return pizzasIDs;
     }
 
     @Test
     public void changeStatusTest() {
         Order order = generateNewOrder(5);
-        simpleOrderService.changeStatus(pizzaId,Order.Status.IN_PROGRESS);
+        simpleOrderService.changeStatus(PIZZA_ID, Order.Status.IN_PROGRESS);
         Order.Status newStatus = order.getStatus();
         assertThat(newStatus, is(Order.Status.IN_PROGRESS));
     }
@@ -55,6 +55,20 @@ public class SimpleOrderServiceTest {
         Order order = generateNewOrder(5);
         BigDecimal orderPrice = simpleOrderService.getTotalOrderPrice(order.getId());
         assertThat(orderPrice, is(new BigDecimal(10)));
+    }
+
+    //    @Test
+//    public void replenishAccumulativeCardTest() {
+//        Order order =  generateNewOrder(5);
+//        order.getCustomer().createNewCard();
+//
+//    }
+    @Test
+    public void addPizzasToExistingOrderTest() {
+        Order order = generateNewOrder(5);
+        simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID);
+        int pizzasAmount = simpleOrderService.findOrderById(order.getId()).getPizzas().size();
+        assertThat(pizzasAmount, is(6));
     }
 
 }

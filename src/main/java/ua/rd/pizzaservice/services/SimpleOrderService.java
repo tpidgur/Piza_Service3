@@ -21,14 +21,14 @@ public class SimpleOrderService implements OrderService {
     }
 
     public Order placeNewOrder(Customer customer, Long... pizzasID) {
-        isPizzasAmountLessThanMaxAllowable(pizzasID);
+        isPizzasAmountLessThanMaxAllowable(pizzasID.length);
         Order order = new Order(customer, getPizzasListById(pizzasID));
         orderRepo.save(order);
         return order;
     }
 
-    private void isPizzasAmountLessThanMaxAllowable(Long[] pizzasID) {
-        if (pizzasID.length > MAX_PIZZAS_AMOUNT) {
+    private void isPizzasAmountLessThanMaxAllowable(int pizzaNumber) {
+        if (pizzaNumber > MAX_PIZZAS_AMOUNT) {
             throw new RuntimeException("The chosen amount of pizzas" +
                     " is higher than allowed");
         }
@@ -47,7 +47,7 @@ public class SimpleOrderService implements OrderService {
         return pizzaService.find(id);
     }
 
-    private Order findOrderById(Long orderId) {
+    public Order findOrderById(Long orderId) {
         return orderRepo.getOrder(orderId);
     }
 
@@ -71,5 +71,11 @@ public class SimpleOrderService implements OrderService {
 
     public BigDecimal getTotalOrderPriceWithDiscount(Long orderId) {
         return findOrderById(orderId).calculateTotalPriceWithDiscount();
+    }
+    public void addPizzasToExistingOrder(long orderId, Long... pizzasID) {
+        Order order=findOrderById(orderId);
+        isPizzasAmountLessThanMaxAllowable(order.getPizzas().size()+pizzasID.length);
+        getPizzasListById(pizzasID);
+        order.addAdditionalPizzas(getPizzasListById(pizzasID));
     }
 }

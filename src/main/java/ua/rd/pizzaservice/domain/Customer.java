@@ -5,11 +5,19 @@ public class Customer {
     private String name;
     private static long counter;
     private String address;
-
+    private CumulativeCard card;
 
     public Customer(String name) {
         this.name = name;
         id = counter++;
+    }
+
+    public boolean hasCard() {
+        return card != null;
+    }
+
+    public void createNewCard(){
+        card=new CumulativeCard();
     }
 
     public Long getId() {
@@ -42,5 +50,13 @@ public class Customer {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public CumulativeCard getCard() {
+        return card;
+    }
+
+    public void setCard(CumulativeCard card) {
+        this.card = card;
     }
 }

@@ -33,6 +33,15 @@ public class Order {
         return pizzas.stream().map(j -> j.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public void addAdditionalPizzas(List<Pizza> pizzasListById) {
+        pizzas.addAll(pizzasListById);
+    }
+
+
+//    public void replenishAccumulativeCard() {
+//
+//    }
+
     public enum Status {
         NEW, IN_PROGRESS, CANCELLED, DONE
     }
