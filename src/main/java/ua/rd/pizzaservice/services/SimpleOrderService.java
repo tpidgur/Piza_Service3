@@ -23,8 +23,27 @@ public class SimpleOrderService implements OrderService {
     public Order placeNewOrder(Customer customer, Long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
         Order order = new Order(customer, getPizzasListById(pizzasID));
+        createNewCardIfNotExist(order);
         orderRepo.save(order);
         return order;
+    }
+
+    public void closeOrder(Long orderId) {
+       Order order= findOrderById(orderId);
+        order.setStatus(Order.Status.DONE);
+        updateCummulativeCardBalance(order);
+    }
+
+    private void updateCummulativeCardBalance(Order order) {
+        BigDecimal oldBalance = order.getCustomer().getCard().getBalance();
+        BigDecimal newBalance = order.calculateTotalPriceWithDiscount();
+        order.getCustomer().getCard().setBalance(oldBalance.add(newBalance));
+    }
+
+    private void createNewCardIfNotExist(Order order) {
+        if (!order.getCustomer().hasCard()) {
+            order.getCustomer().createNewCard();
+        }
     }
 
     private void isPizzasAmountLessThanMaxAllowable(int pizzaNumber) {
@@ -72,9 +91,10 @@ public class SimpleOrderService implements OrderService {
     public BigDecimal getTotalOrderPriceWithDiscount(Long orderId) {
         return findOrderById(orderId).calculateTotalPriceWithDiscount();
     }
+
     public void addPizzasToExistingOrder(long orderId, Long... pizzasID) {
-        Order order=findOrderById(orderId);
-        isPizzasAmountLessThanMaxAllowable(order.getPizzas().size()+pizzasID.length);
+        Order order = findOrderById(orderId);
+        isPizzasAmountLessThanMaxAllowable(order.getPizzas().size() + pizzasID.length);
         getPizzasListById(pizzasID);
         order.addAdditionalPizzas(getPizzasListById(pizzasID));
     }

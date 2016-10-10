@@ -2,6 +2,7 @@ package ua.rd.pizzaservice.services;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.rd.pizzaservice.domain.CumulativeCard;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.repository.InMemoryOrderRepository;
@@ -45,7 +46,7 @@ public class SimpleOrderServiceTest {
     @Test
     public void changeStatusTest() {
         Order order = generateNewOrder(5);
-        simpleOrderService.changeStatus(PIZZA_ID, Order.Status.IN_PROGRESS);
+        simpleOrderService.changeStatus(order.getId(), Order.Status.IN_PROGRESS);
         Order.Status newStatus = order.getStatus();
         assertThat(newStatus, is(Order.Status.IN_PROGRESS));
     }
@@ -57,12 +58,17 @@ public class SimpleOrderServiceTest {
         assertThat(orderPrice, is(new BigDecimal(10)));
     }
 
-    //    @Test
-//    public void replenishAccumulativeCardTest() {
-//        Order order =  generateNewOrder(5);
-//        order.getCustomer().createNewCard();
+//    @Test
+//    public void updateCummulativeCardBalanceTest() {
+//        Order order = generateNewOrder(1);
+//         CumulativeCard card = order.getCustomer().getCard();
+//        simpleOrderService.closeOrder(order.getId());
+//        BigDecimal newBalance=card.getBalance();
+//        assertThat(newBalance, is(new BigDecimal(2)));
+//
 //
 //    }
+
     @Test
     public void addPizzasToExistingOrderTest() {
         Order order = generateNewOrder(5);

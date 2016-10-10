@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class Order {
+    public static final BigDecimal CUMMULATIVE_CARD_DISCOUNT_COEF = new BigDecimal(0.1);
+    public static final BigDecimal TOTAL_ORDER_DISCOUNT = new BigDecimal(0.3);
     private Long id;
     private List<Pizza> pizzas;
     private Customer customer;
@@ -14,7 +16,7 @@ public class Order {
     private final int amountOfPizzasForDicount = 4;
     private BigDecimal discountMultiplier = new BigDecimal(0.3);
 
-    public BigDecimal calculateDiscount() {
+    public BigDecimal calculateDiscountForFourPizzas() {
         if (pizzas.size() > amountOfPizzasForDicount) {
             Optional<BigDecimal> max = pizzas.stream().map(i -> i.getPrice()).max(Comparator.naturalOrder());
             if (max.isPresent()) {
@@ -25,8 +27,10 @@ public class Order {
         return new BigDecimal(0);
     }
 
+
     public BigDecimal calculateTotalPriceWithDiscount() {
-        return calculateTotalPrice().subtract(calculateDiscount());
+        return calculateTotalPrice().subtract(calculateDiscountForFourPizzas())
+                .subtract(calculateDiscountFromCummulativeCard());
     }
 
     public BigDecimal calculateTotalPrice() {
@@ -37,10 +41,15 @@ public class Order {
         pizzas.addAll(pizzasListById);
     }
 
+    public BigDecimal calculateDiscountFromCummulativeCard() {
+        CumulativeCard card = customer.getCard();
+        BigDecimal cummulativeCardDiscount = CUMMULATIVE_CARD_DISCOUNT_COEF.multiply(card.getBalance());
+        BigDecimal totalOrderDiscount = TOTAL_ORDER_DISCOUNT.multiply(calculateTotalPrice());
+        if (cummulativeCardDiscount.compareTo(totalOrderDiscount) == 1) {
+            return totalOrderDiscount;
+        } else return cummulativeCardDiscount;
+    }
 
-//    public void replenishAccumulativeCard() {
-//
-//    }
 
     public enum Status {
         NEW, IN_PROGRESS, CANCELLED, DONE

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class CumulativeCard {
     private long id;
-    private BigDecimal balance;
+    private BigDecimal balance=new BigDecimal(0);
     private static long counter;
 
     public CumulativeCard() {
