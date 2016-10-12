@@ -11,6 +11,7 @@ import ua.rd.pizzaservice.repository.OrderRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class SimpleOrderService implements OrderService/*, ApplicationContextAware*/ {
     private final int MAX_PIZZAS_AMOUNT = 10;
@@ -18,11 +19,11 @@ public class SimpleOrderService implements OrderService/*, ApplicationContextAwa
     private final PizzaService pizzaService;
 //private ApplicationContext context;
 
-//    public SimpleOrderService( PizzaService pizzaService) {
+    //    public SimpleOrderService( PizzaService pizzaService) {
 //        this.orderRepository = null;
 //        this.pizzaService = pizzaService;
 //    }
-@Autowired
+    @Autowired
     public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService) {
         this.orderRepository = orderRepository;
         this.pizzaService = pizzaService;
@@ -36,7 +37,7 @@ public class SimpleOrderService implements OrderService/*, ApplicationContextAwa
 //        newOrder.setPizzas(getPizzasListById(pizzasID));
 
         orderRepository.save(order);
-      //  createNewCardIfNotExist(order);
+        //  createNewCardIfNotExist(order);
         return order;
         // return newOrder;
     }

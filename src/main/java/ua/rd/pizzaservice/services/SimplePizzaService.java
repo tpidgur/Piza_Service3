@@ -9,13 +9,15 @@ import ua.rd.pizzaservice.repository.PizzaRepository;
 @Service
 public class SimplePizzaService implements PizzaService {
     private PizzaRepository pizzaRepo;//=new InMemoryPizzaRepository();
-@Autowired
+
+    @Autowired
     public SimplePizzaService(PizzaRepository pizzaRepo) {
 //        InitialContext context = new InitialContext();
 //        this.pizzaRepo = context.getInstance("PizzaRepository");
         this.pizzaRepo = pizzaRepo;
     }
-@BenchMark(false)
+
+    @BenchMark(false)
     public Pizza find(Long id) {
         return pizzaRepo.find(id);
     }
