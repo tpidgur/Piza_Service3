@@ -21,18 +21,11 @@ public class SpringAppRunner {
 
 
         System.out.println(Arrays.toString(appContext.getBeanDefinitionNames()));
-
-//        PizzaRepo pizzaRepo = (PizzaRepo) repoContext.getBean("pizzaRepository");
-//        System.out.println(pizzaRepo.find(new Long(1)));
-
-
-
-
-
-       // OrderService orderService = (OrderService) appContext.getBean("simpleOrderService");
         OrderService orderService =  appContext.getBean("simpleOrderService",OrderService.class);
-       // (( SimpleOrderService)orderService).setApplicationContext((ApplicationContext) appContext);
         Order order = orderService.placeNewOrder(null, new Long(1), new Long(2), new Long(3));
+
+        System.out.println(order);
+        System.out.println(orderService.getClass());
 
 
         repoContext.close();
