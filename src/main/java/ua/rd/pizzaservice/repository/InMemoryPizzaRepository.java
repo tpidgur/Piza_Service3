@@ -1,17 +1,20 @@
 package ua.rd.pizzaservice.repository;
 
+import org.springframework.stereotype.Repository;
 import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
 import ua.rd.pizzaservice.services.PizzaService;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
+@Repository
 public class InMemoryPizzaRepository implements PizzaRepo {
     private  List<Pizza> pizzas = new LinkedList<>();
-@BenchMark
+@PostConstruct
+    @BenchMark
    public void init() {
         pizzas.add(new Pizza("Neapolitan Pizza", new BigDecimal(1), Pizza.PizzaType.MEAT));
         pizzas.add(new Pizza("Chicago Pizza", new BigDecimal(2), Pizza.PizzaType.MEAT));

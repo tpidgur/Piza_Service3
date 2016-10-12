@@ -1,11 +1,13 @@
 package ua.rd.pizzaservice.repository;
 
+import org.springframework.stereotype.Repository;
 import ua.rd.pizzaservice.domain.Order;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class InMemoryOrderRepository implements OrderRepo {
     private static List<Order> orders = new LinkedList<>();//added static
 

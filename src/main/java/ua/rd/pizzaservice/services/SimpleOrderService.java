@@ -1,20 +1,31 @@
 package ua.rd.pizzaservice.services;
 
+import org.mockito.internal.matchers.Or;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Service;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
+
 import ua.rd.pizzaservice.repository.OrderRepo;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-public class SimpleOrderService implements OrderService {
+@Service
+public class SimpleOrderService implements OrderService/*, ApplicationContextAware*/ {
     private final int MAX_PIZZAS_AMOUNT = 10;
     private final OrderRepo orderRepo;
     private final PizzaService pizzaService;
+//private ApplicationContext context;
 
-
+//    public SimpleOrderService( PizzaService pizzaService) {
+//        this.orderRepo = null;
+//        this.pizzaService = pizzaService;
+//    }
+@Autowired
     public SimpleOrderService(OrderRepo orderRepo, PizzaService pizzaService) {
         this.orderRepo = orderRepo;
         this.pizzaService = pizzaService;
@@ -23,13 +34,28 @@ public class SimpleOrderService implements OrderService {
     public Order placeNewOrder(Customer customer, Long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
         Order order = new Order(customer, getPizzasListById(pizzasID));
-        createNewCardIfNotExist(order);
+//        Order newOrder=createNewOrder();
+//        newOrder.setCustomer(customer);
+//        newOrder.setPizzas(getPizzasListById(pizzasID));
+
         orderRepo.save(order);
+      //  createNewCardIfNotExist(order);
         return order;
+        // return newOrder;
     }
 
+
+//    public void setApplicationContext(ApplicationContext context) {
+//        this.context = context;
+//    }
+
+
+//    private Order createNewOrder() {
+//       return (Order) context.getBean("order");
+//    }
+
     public void closeOrder(Long orderId) {
-       Order order= findOrderById(orderId);
+        Order order = findOrderById(orderId);
         order.setStatus(Order.Status.DONE);
         updateCummulativeCardBalance(order);
     }

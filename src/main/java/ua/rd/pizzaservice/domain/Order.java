@@ -1,10 +1,14 @@
 package ua.rd.pizzaservice.domain;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
+@Component
+@Scope("prototype")
 public class Order {
     public static final BigDecimal CUMMULATIVE_CARD_DISCOUNT_COEF = new BigDecimal(0.1);
     public static final BigDecimal TOTAL_ORDER_DISCOUNT = new BigDecimal(0.3);
