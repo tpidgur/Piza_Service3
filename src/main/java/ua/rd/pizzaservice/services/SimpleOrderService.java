@@ -1,15 +1,12 @@
 package ua.rd.pizzaservice.services;
 
-import org.mockito.internal.matchers.Or;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
 
-import ua.rd.pizzaservice.repository.OrderRepo;
+import ua.rd.pizzaservice.repository.OrderRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,17 +14,17 @@ import java.util.List;
 @Service
 public class SimpleOrderService implements OrderService/*, ApplicationContextAware*/ {
     private final int MAX_PIZZAS_AMOUNT = 10;
-    private final OrderRepo orderRepo;
+    private final OrderRepository orderRepository;
     private final PizzaService pizzaService;
 //private ApplicationContext context;
 
 //    public SimpleOrderService( PizzaService pizzaService) {
-//        this.orderRepo = null;
+//        this.orderRepository = null;
 //        this.pizzaService = pizzaService;
 //    }
 @Autowired
-    public SimpleOrderService(OrderRepo orderRepo, PizzaService pizzaService) {
-        this.orderRepo = orderRepo;
+    public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService) {
+        this.orderRepository = orderRepository;
         this.pizzaService = pizzaService;
     }
 
@@ -38,7 +35,7 @@ public class SimpleOrderService implements OrderService/*, ApplicationContextAwa
 //        newOrder.setCustomer(customer);
 //        newOrder.setPizzas(getPizzasListById(pizzasID));
 
-        orderRepo.save(order);
+        orderRepository.save(order);
       //  createNewCardIfNotExist(order);
         return order;
         // return newOrder;
@@ -93,7 +90,7 @@ public class SimpleOrderService implements OrderService/*, ApplicationContextAwa
     }
 
     public Order findOrderById(Long orderId) {
-        return orderRepo.getOrder(orderId);
+        return orderRepository.getOrder(orderId);
     }
 
     public void changeStatus(Long orderId, Order.Status newStatus) {

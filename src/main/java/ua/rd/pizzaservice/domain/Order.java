@@ -7,11 +7,10 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
 @Component
 @Scope("prototype")
 public class Order {
-    public static final BigDecimal CUMMULATIVE_CARD_DISCOUNT_COEF = new BigDecimal(0.1);
-    public static final BigDecimal TOTAL_ORDER_DISCOUNT = new BigDecimal(0.3);
     private Long id;
     private List<Pizza> pizzas;
     private Customer customer;
@@ -19,6 +18,21 @@ public class Order {
     private Status status;
     private final int amountOfPizzasForDicount = 4;
     private BigDecimal discountMultiplier = new BigDecimal(0.3);
+    public static final BigDecimal CUMMULATIVE_CARD_DISCOUNT_COEF = new BigDecimal(0.1);
+    public static final BigDecimal TOTAL_ORDER_DISCOUNT = new BigDecimal(0.3);
+
+
+    public enum Status {
+        NEW, IN_PROGRESS, CANCELLED, DONE
+    }
+
+    public Order(Customer customer, List<Pizza> pizzas) {
+        this.pizzas = pizzas;
+        this.customer = customer;
+        this.status = Status.NEW;
+        id = counter++;
+    }
+
 
     public BigDecimal calculateDiscountForFourPizzas() {
         if (pizzas.size() > amountOfPizzasForDicount) {
@@ -41,12 +55,9 @@ public class Order {
         return pizzas.stream().map(j -> j.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public void addAdditionalPizzas(List<Pizza> pizzasListById) {
-        pizzas.addAll(pizzasListById);
-    }
 
     public BigDecimal calculateDiscountFromCummulativeCard() {
-        CumulativeCard card = customer.getCard();
+        PizzaCard card = customer.getCard();
         BigDecimal cummulativeCardDiscount = CUMMULATIVE_CARD_DISCOUNT_COEF.multiply(card.getBalance());
         BigDecimal totalOrderDiscount = TOTAL_ORDER_DISCOUNT.multiply(calculateTotalPrice());
         if (cummulativeCardDiscount.compareTo(totalOrderDiscount) == 1) {
@@ -54,16 +65,8 @@ public class Order {
         } else return cummulativeCardDiscount;
     }
 
-
-    public enum Status {
-        NEW, IN_PROGRESS, CANCELLED, DONE
-    }
-
-    public Order(Customer customer, List<Pizza> pizzas) {
-        this.pizzas = pizzas;
-        this.customer = customer;
-        this.status = Status.NEW;
-        id = counter++;
+    public void addAdditionalPizzas(List<Pizza> pizzasListById) {
+        pizzas.addAll(pizzasListById);
     }
 
     public Long getId() {

@@ -15,12 +15,14 @@ public class Pizza {
         VEGETERIAN, SEA, MEAT
     }
 
+
     public Pizza(String name, BigDecimal price, PizzaType type) {
         this.name = name;
         this.price = price;
         this.type = type;
         id = counter++;
     }
+
 
     public Long getId() {
         return id;

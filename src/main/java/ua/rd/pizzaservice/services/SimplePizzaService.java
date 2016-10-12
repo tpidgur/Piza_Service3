@@ -3,16 +3,16 @@ package ua.rd.pizzaservice.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
-import ua.rd.pizzaservice.infrastructure.InitialContext;
 import ua.rd.pizzaservice.domain.Pizza;
-import ua.rd.pizzaservice.repository.PizzaRepo;
+import ua.rd.pizzaservice.repository.PizzaRepository;
+
 @Service
 public class SimplePizzaService implements PizzaService {
-    private PizzaRepo pizzaRepo;//=new InMemoryPizzaRepository();
+    private PizzaRepository pizzaRepo;//=new InMemoryPizzaRepository();
 @Autowired
-    public SimplePizzaService(PizzaRepo pizzaRepo) {
+    public SimplePizzaService(PizzaRepository pizzaRepo) {
 //        InitialContext context = new InitialContext();
-//        this.pizzaRepo = context.getInstance("PizzaRepo");
+//        this.pizzaRepo = context.getInstance("PizzaRepository");
         this.pizzaRepo = pizzaRepo;
     }
 @BenchMark(false)

@@ -8,12 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class InMemoryOrderRepository implements OrderRepo {
-    private static List<Order> orders = new LinkedList<>();//added static
+public class InMemoryOrderRepository implements OrderRepository {
+    private static List<Order> orders = new LinkedList<>();
 
-    public List<Order> getOrders() {
-        return orders;
-    }
 
     @Override
     public Order save(Order order) {
@@ -23,11 +20,15 @@ public class InMemoryOrderRepository implements OrderRepo {
 
     @Override
     public Order getOrder(long orderId) {
-        Optional<Order> optional = orders.stream().filter(i -> i.getId().equals(orderId)).findFirst();
-        if (optional.isPresent()) {
-            return optional.get();
+        Optional<Order> orderOpt = orders.stream().filter(i -> i.getId().equals(orderId)).findFirst();
+        if (orderOpt.isPresent()) {
+            return orderOpt.get();
         }
         return null;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 
     public void setOrders(List<Order> orders) {

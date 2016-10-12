@@ -1,6 +1,5 @@
 package ua.rd.pizzaservice.domain;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +43,7 @@ public class OrderTest {
     public void getCumulativeCardDiscountTest() {
         Customer customer = order.getCustomer();
         customer.createNewCard();
-        CumulativeCard card = order.getCustomer().getCard();
+        PizzaCard card = order.getCustomer().getCard();
         card.setBalance(INITIAL_BALANCE);
         BigDecimal discount = order.calculateDiscountFromCummulativeCard();
         assertThat(discount,is(PIZZA_PRICE1.multiply(new BigDecimal(4)).add(PIZZA_PRICE2).multiply(new BigDecimal(0.3))));

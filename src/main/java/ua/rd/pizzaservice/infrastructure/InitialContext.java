@@ -1,8 +1,5 @@
 package ua.rd.pizzaservice.infrastructure;
 
-import ua.rd.pizzaservice.repository.InMemoryPizzaRepository;
-import ua.rd.pizzaservice.repository.PizzaRepo;
-
 public class InitialContext {
     private static Config config=new JavaConfig();
 

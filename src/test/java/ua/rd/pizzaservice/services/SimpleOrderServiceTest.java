@@ -2,7 +2,6 @@ package ua.rd.pizzaservice.services;
 
 import org.junit.Before;
 import org.junit.Test;
-import ua.rd.pizzaservice.domain.CumulativeCard;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.repository.InMemoryOrderRepository;
@@ -61,7 +60,7 @@ public class SimpleOrderServiceTest {
 //    @Test
 //    public void updateCummulativeCardBalanceTest() {
 //        Order order = generateNewOrder(1);
-//         CumulativeCard card = order.getCustomer().getCard();
+//         PizzaCard card = order.getCustomer().getCard();
 //        simpleOrderService.closeOrder(order.getId());
 //        BigDecimal newBalance=card.getBalance();
 //        assertThat(newBalance, is(new BigDecimal(2)));
