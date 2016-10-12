@@ -2,12 +2,12 @@ package ua.rd.pizzaservice.domain;
 
 import java.math.BigDecimal;
 
-public class CumulativeCard {
+public class PizzaCard {
     private long id;
     private BigDecimal balance=new BigDecimal(0);
     private static long counter;
 
-    public CumulativeCard() {
+    public PizzaCard() {
         id = counter++;
     }
 
