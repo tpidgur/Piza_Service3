@@ -3,6 +3,7 @@ package ua.rd.pizzaservice.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.rd.pizzaservice.domain.Customer;
+import ua.rd.pizzaservice.domain.Discount;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
 
@@ -17,6 +18,7 @@ public class SimpleOrderService implements OrderService/*, ApplicationContextAwa
     private final int MAX_PIZZAS_AMOUNT = 10;
     private final OrderRepository orderRepository;
     private final PizzaService pizzaService;
+    private final SimpleDiscountService discountService=new SimpleDiscountService();
 //private ApplicationContext context;
 
     //    public SimpleOrderService( PizzaService pizzaService) {

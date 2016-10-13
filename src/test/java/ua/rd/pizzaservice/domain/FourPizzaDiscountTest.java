@@ -11,11 +11,13 @@ import static org.junit.Assert.*;
 
 
 public class FourPizzaDiscountTest {
+    public static final BigDecimal ONE_HUNDRED_PERCENTS = new BigDecimal(100);
     private FourPizzaDiscount fourPizzaDiscount;
     private Order order;
     public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
     public static final BigDecimal PIZZA_PRICE2 = new BigDecimal(1);
-    public static final BigDecimal DISCOUNT_MULTIPLICAND = new BigDecimal(0.3);
+    public static final BigDecimal DISCOUNT_MULTIPLICAND = new BigDecimal(30);
+
     @Before
     public void initializeFourPizzaDiscountInstance() {
         fourPizzaDiscount = new FourPizzaDiscount();
@@ -40,6 +42,6 @@ public class FourPizzaDiscountTest {
     @Test
     public void makeDiscountTest() {
         BigDecimal discount = fourPizzaDiscount.calculateDiscount(order);
-        assertThat(discount, is(PIZZA_PRICE1.multiply(DISCOUNT_MULTIPLICAND)));
+        assertThat(discount, is(PIZZA_PRICE1.multiply(DISCOUNT_MULTIPLICAND).divide(ONE_HUNDRED_PERCENTS)));
     }
 }
