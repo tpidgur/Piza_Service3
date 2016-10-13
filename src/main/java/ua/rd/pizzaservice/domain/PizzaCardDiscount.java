@@ -19,10 +19,9 @@ public class PizzaCardDiscount extends Discount {
 
 
     private BigDecimal getPizzaCardDiscount(Order order) {
-        if (order.getCustomer().getCard()!=null){
-        return order.getCustomer().getCard().getBalance().multiply(CARD_DISCOUNT);}
-        else return null;
+        return order.getCustomer().getCard().getBalance().multiply(CARD_DISCOUNT);
     }
+
 
     private BigDecimal getOrderDiscount(Order order) {
         return order.calculateTotalPrice().multiply(ORDER_DISCOUNT);
