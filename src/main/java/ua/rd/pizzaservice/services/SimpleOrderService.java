@@ -3,7 +3,6 @@ package ua.rd.pizzaservice.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.Discount;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
 
@@ -14,62 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SimpleOrderService implements OrderService/*, ApplicationContextAware*/ {
+public class SimpleOrderService implements OrderService {
     private final int MAX_PIZZAS_AMOUNT = 10;
     private final OrderRepository orderRepository;
     private final PizzaService pizzaService;
-    private final SimpleDiscountService discountService=new SimpleDiscountService();
-//private ApplicationContext context;
+    private final SimpleDiscountService discountService;
 
-    //    public SimpleOrderService( PizzaService pizzaService) {
-//        this.orderRepository = null;
-//        this.pizzaService = pizzaService;
-//    }
     @Autowired
-    public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService) {
+    public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService,
+                              SimpleDiscountService discountService) {
         this.orderRepository = orderRepository;
         this.pizzaService = pizzaService;
+        this.discountService = discountService;
     }
+
 
     public Order placeNewOrder(Customer customer, Long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
         Order order = new Order(customer, getPizzasListById(pizzasID));
-//        Order newOrder=createNewOrder();
-//        newOrder.setCustomer(customer);
-//        newOrder.setPizzas(getPizzasListById(pizzasID));
-
         orderRepository.save(order);
-        //  createNewCardIfNotExist(order);
+        createNewCardIfNotExist(order);
         return order;
-        // return newOrder;
-    }
-
-
-//    public void setApplicationContext(ApplicationContext context) {
-//        this.context = context;
-//    }
-
-
-//    private Order createNewOrder() {
-//       return (Order) context.getBean("order");
-//    }
-
-    public void closeOrder(Long orderId) {
-        Order order = findOrderById(orderId);
-        order.setStatus(Order.Status.DONE);
-        updateCummulativeCardBalance(order);
-    }
-
-    private void updateCummulativeCardBalance(Order order) {
-        BigDecimal oldBalance = order.getCustomer().getCard().getBalance();
-        BigDecimal newBalance = order.calculateTotalPriceWithDiscount();
-        order.getCustomer().getCard().setBalance(oldBalance.add(newBalance));
-    }
-
-    private void createNewCardIfNotExist(Order order) {
-        if (!order.getCustomer().hasCard()) {
-            order.getCustomer().createNewCard();
-        }
     }
 
     private void isPizzasAmountLessThanMaxAllowable(int pizzaNumber) {
@@ -87,14 +51,24 @@ public class SimpleOrderService implements OrderService/*, ApplicationContextAwa
         return pizzas;
     }
 
-
     Pizza findPizaById(Long id) {
         return pizzaService.find(id);
     }
 
-    public Order findOrderById(Long orderId) {
-        return orderRepository.getOrder(orderId);
+
+    private void createNewCardIfNotExist(Order order) {
+        if (!order.getCustomer().hasCard()) {
+            order.getCustomer().createNewCard();
+        }
     }
+
+
+    private void updateCummulativeCardBalance(Order order) {
+        BigDecimal oldBalance = order.getCustomer().getCard().getBalance();
+        BigDecimal newBalance = order.calculateTotalPriceWithDiscount();
+        order.getCustomer().getCard().setBalance(oldBalance.add(newBalance));
+    }
+
 
     public void changeStatus(Long orderId, Order.Status newStatus) {
         Order order = findOrderById(orderId);
@@ -109,6 +83,15 @@ public class SimpleOrderService implements OrderService/*, ApplicationContextAwa
         } else throw new RuntimeException("The status " + newStatus + " isn't allowed");
     }
 
+    public Order findOrderById(Long orderId) {
+        return orderRepository.getOrder(orderId);
+    }
+
+    public void closeOrder(Long orderId) {
+        Order order = findOrderById(orderId);
+        order.setStatus(Order.Status.DONE);
+        updateCummulativeCardBalance(order);
+    }
 
     public BigDecimal getTotalOrderPrice(Long orderId) {
         return findOrderById(orderId).calculateTotalPrice();

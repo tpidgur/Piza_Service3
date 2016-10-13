@@ -22,8 +22,9 @@ public class SimpleOrderServiceTest {
     public void initializeOrder() {
         InMemoryPizzaRepository inMemoryPizzaRepository = new InMemoryPizzaRepository();
         inMemoryPizzaRepository.init();
+        SimpleDiscountService discountService=new SimpleDiscountService();
         simpleOrderService = new SimpleOrderService(new InMemoryOrderRepository(),
-                new SimplePizzaService(inMemoryPizzaRepository));
+                new SimplePizzaService(inMemoryPizzaRepository), discountService);
     }
 
     @Test(expected = RuntimeException.class)
