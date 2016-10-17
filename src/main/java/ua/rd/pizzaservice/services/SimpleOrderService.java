@@ -40,7 +40,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     public Order placeNewOrder(Customer customer, Long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
         Order order = createNewOrder();
-                //new Order(customer, convertIdsArrayInListOfPizzas(pizzasID));
+               // new Order(customer, convertIdsArrayInListOfPizzas(pizzasID));
         order.setCustomer(customer);
         order.setPizzas(convertIdsArrayInListOfPizzas(pizzasID));
         orderRepository.save(order);
@@ -49,7 +49,8 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     }
 
      Order createNewOrder() {
-        throw new IllegalStateException();
+       throw new IllegalStateException();
+
     }
 
     private void isPizzasAmountLessThanMaxAllowable(int pizzaNumber) {

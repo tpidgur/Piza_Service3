@@ -17,7 +17,7 @@ public class SimplePizzaService implements PizzaService {
         this.pizzaRepo = pizzaRepo;
     }
 
-    @BenchMark(false)
+    @BenchMark(true)
     public Pizza find(Long id) {
         return pizzaRepo.find(id);
     }

@@ -19,7 +19,7 @@ public class PizzaApp {
         System.out.println(pizzaRepo.find(new Long(1)));
 
         OrderService orderService = context.getBean("orderService");
-        Order order = orderService.placeNewOrder(customer, new Long(1), new Long(2), new Long(3));
+            Order order = orderService.placeNewOrder(customer, new Long(1), new Long(2), new Long(3));
 
 
     }

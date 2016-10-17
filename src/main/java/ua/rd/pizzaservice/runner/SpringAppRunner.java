@@ -18,8 +18,8 @@ public class SpringAppRunner {
 
 
         System.out.println(Arrays.toString(appContext.getBeanDefinitionNames()));
+
         OrderService orderService =  appContext.getBean("simpleOrderService",OrderService.class);
-       // Customer customer=appContext.getBean("customer",Customer.class);
         Order order = orderService.placeNewOrder(null, new Long(1), new Long(2), new Long(3));
 
         System.out.println(order);
