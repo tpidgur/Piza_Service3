@@ -13,12 +13,17 @@ public class Customer {
         id = counter++;
     }
 
+    public void createNewCardIfNotExist() {
+        if (!hasCard()) {
+            createNewCard();
+        }
+    }
 
-    public boolean hasCard() {
+    private boolean hasCard() {
         return card != null;
     }
 
-    public void createNewCard() {
+    private void createNewCard() {
         card = new PizzaCard();
     }
 

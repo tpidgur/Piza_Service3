@@ -1,9 +1,13 @@
 package ua.rd.pizzaservice.domain;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+@Component
+@Scope("prototype")
 public class Pizza {
     private Long id;
     private String name;

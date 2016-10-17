@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 public class FourPizzaDiscount extends Discount {
-
+    public static final BigDecimal DISCOUNT_MULTIPLICAND = new BigDecimal(30);
     public static final int MIN_PIZZAS_NUMBER = 4;
 
 

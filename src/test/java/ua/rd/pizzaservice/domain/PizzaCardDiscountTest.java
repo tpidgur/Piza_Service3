@@ -44,14 +44,14 @@ public class PizzaCardDiscountTest {
 
     @Test
     public void isLiableToDiscountTest() {
-        customer.createNewCard();
+        customer.createNewCardIfNotExist();
         boolean hasDiscount = discount.isLiableToDiscount(order);
         assertThat(hasDiscount, is(true));
     }
 
     @Test
     public void makeDiscountTest() {
-        customer.createNewCard();
+        customer.createNewCardIfNotExist();
         assertThat(discount.calculateDiscount(order), is(getSmallestDiscount()));
     }
 

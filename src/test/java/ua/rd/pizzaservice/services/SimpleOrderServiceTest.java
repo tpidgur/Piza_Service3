@@ -51,12 +51,12 @@ public class SimpleOrderServiceTest {
         assertThat(newStatus, is(Order.Status.IN_PROGRESS));
     }
 
-    @Test
-    public void getOrderPriceTest() {
-        Order order = generateNewOrder(5);
-        BigDecimal orderPrice = simpleOrderService.getTotalOrderPrice(order.getId());
-        assertThat(orderPrice, is(new BigDecimal(10)));
-    }
+//    @Test
+//    public void getOrderPriceTest() {
+//        Order order = generateNewOrder(5);
+//        BigDecimal orderPrice = simpleOrderService.getTotalOrderPrice(order.getId());
+//        assertThat(orderPrice, is(new BigDecimal(10)));
+//    }
 
 //    @Test
 //    public void updateCummulativeCardBalanceTest() {

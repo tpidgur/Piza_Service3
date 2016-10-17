@@ -31,6 +31,7 @@ public class SimpleDiscountServiceTest {
                         new Pizza("Greek Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETERIAN),
                         new Pizza("Sea Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA),
                         new Pizza("Sea Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA)));
+        order.getCustomer().createNewCardIfNotExist();
     }
 
     @Test
@@ -44,6 +45,7 @@ public class SimpleDiscountServiceTest {
     }
 
     private BigDecimal getTotalDiscount(Discount discount) {
+        System.out.println(discount.isLiableToDiscount(order)+""+discount);
         return (discount.isLiableToDiscount(order)) ? discount.calculateDiscount(order) : new BigDecimal(0);
     }
 

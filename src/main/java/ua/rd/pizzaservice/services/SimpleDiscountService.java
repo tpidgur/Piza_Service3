@@ -14,8 +14,9 @@ public class SimpleDiscountService implements DiscountService {
     private List<Discount> discounts;
 
     public void init() {
-        discounts=   Arrays.asList(new FourPizzaDiscount(), new PizzaCardDiscount());
-
+        if (discounts == null) {
+            discounts = Arrays.asList(new FourPizzaDiscount(), new PizzaCardDiscount());
+        }
     }
 
     @Override
