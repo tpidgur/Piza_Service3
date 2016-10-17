@@ -1,6 +1,9 @@
 package ua.rd.pizzaservice.services;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
@@ -12,12 +15,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class SimpleOrderService implements OrderService {
+
+public class SimpleOrderService implements OrderService, ApplicationContextAware {
     private final int MAX_PIZZAS_AMOUNT = 10;
     private final OrderRepository orderRepository;
     private final PizzaService pizzaService;
     private final SimpleDiscountService discountService;
+    private ApplicationContext context;
+
 
     @Autowired
     public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService,
@@ -27,13 +32,24 @@ public class SimpleOrderService implements OrderService {
         this.discountService = discountService;
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext context) throws BeansException {
+        this.context = context;
+    }
 
     public Order placeNewOrder(Customer customer, Long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
-        Order order = new Order(customer, convertIdsArrayInListOfPizzas(pizzasID));
+        Order order = createNewOrder();
+                //new Order(customer, convertIdsArrayInListOfPizzas(pizzasID));
+        order.setCustomer(customer);
+        order.setPizzas(convertIdsArrayInListOfPizzas(pizzasID));
         orderRepository.save(order);
         createNewCardIfNotExist(order);
         return order;
+    }
+
+     Order createNewOrder() {
+        throw new IllegalStateException();
     }
 
     private void isPizzasAmountLessThanMaxAllowable(int pizzaNumber) {
@@ -94,7 +110,7 @@ public class SimpleOrderService implements OrderService {
     }
 
     private BigDecimal calculateTotalPriceWithAllDiscounts(Order order) {
-        discountService.init();
+       // discountService.init();
         BigDecimal discounts = discountService.calculateTotalDiscount(order);
         BigDecimal totalPrice = order.calculateTotalPrice();
         return totalPrice.subtract(discounts);
@@ -108,4 +124,6 @@ public class SimpleOrderService implements OrderService {
         convertIdsArrayInListOfPizzas(pizzasID);
         order.addAdditionalPizzas(convertIdsArrayInListOfPizzas(pizzasID));
     }
+
+
 }

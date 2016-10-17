@@ -23,6 +23,9 @@ public class Order {
         NEW, IN_PROGRESS, CANCELLED, DONE
     }
 
+    public Order() {
+    }
+
     public Order(Customer customer, List<Pizza> pizzas) {
         this.pizzas = pizzas;
         this.customer = customer;
