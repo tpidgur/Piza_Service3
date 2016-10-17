@@ -1,8 +1,12 @@
 package ua.rd.pizzaservice.domain;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 
-//Pizza Cumulative card
+@Component
+@Scope("prototype")
 public class PizzaCard {
     private long id;
     private BigDecimal balance = new BigDecimal(0);

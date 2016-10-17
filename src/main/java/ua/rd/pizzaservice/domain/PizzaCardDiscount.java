@@ -1,7 +1,9 @@
 package ua.rd.pizzaservice.domain;
 
-import java.math.BigDecimal;
+import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+@Component
 public class PizzaCardDiscount extends Discount {
     public static final BigDecimal CARD_DISCOUNT = new BigDecimal(10).divide(new BigDecimal(100));
     public static final BigDecimal ORDER_DISCOUNT = new BigDecimal(30).divide(new BigDecimal(100));

@@ -57,7 +57,10 @@ public class SimpleOrderService implements OrderService {
 
 
     private void createNewCardIfNotExist(Order order) {
-        order.getCustomer().createNewCardIfNotExist();
+        if (order.getCustomer() != null) {
+            order.getCustomer().createNewCardIfNotExist();
+        }
+
     }
 
 
@@ -80,7 +83,7 @@ public class SimpleOrderService implements OrderService {
         updateCummulativeCardBalance(order);
     }
 
-    private Order findOrderById(Long orderId) {
+    public Order findOrderById(Long orderId) {
         return orderRepository.getOrder(orderId);
     }
 
@@ -96,9 +99,6 @@ public class SimpleOrderService implements OrderService {
         BigDecimal totalPrice = order.calculateTotalPrice();
         return totalPrice.subtract(discounts);
     }
-
-
-
 
 
     //варто перевірити,що статус не закритий у завки

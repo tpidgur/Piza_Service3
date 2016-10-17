@@ -9,11 +9,6 @@
 
 
 
-    <!--<bean name="pizzaRepository" class="ua.rd.pizzaservice.repository.InMemoryPizzaRepository"-->
-          <!--init-method="init"/>-->
-    <!--<bean name="orderRepository" class="ua.rd.pizzaservice.repository.InMemoryOrderRepository"-->
-    <!--/>-->
-
 
 <context:component-scan base-package="ua.rd.pizzaservice.repository"/>
 

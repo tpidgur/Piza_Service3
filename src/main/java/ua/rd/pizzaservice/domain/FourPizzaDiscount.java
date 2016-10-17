@@ -1,9 +1,11 @@
 package ua.rd.pizzaservice.domain;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Optional;
-
+@Component
 public class FourPizzaDiscount extends Discount {
     public static final BigDecimal DISCOUNT_MULTIPLICAND = new BigDecimal(30);
     public static final int MIN_PIZZAS_NUMBER = 4;
