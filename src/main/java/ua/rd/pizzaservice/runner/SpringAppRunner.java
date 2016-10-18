@@ -25,6 +25,7 @@ public class SpringAppRunner {
         Order order = orderService.placeNewOrder(null, new Long(1), new Long(2), new Long(3));
 order.toString();
         System.out.println(order);
+
         System.out.println(orderService.getClass());
 
 

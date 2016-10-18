@@ -21,13 +21,13 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     private final int MAX_PIZZAS_AMOUNT = 10;
     private final OrderRepository orderRepository;
     private final PizzaService pizzaService;
-    private final SimpleDiscountService discountService;
+    private final DiscountService discountService;
     private ApplicationContext context;
 
 
     @Autowired
     public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService,
-                              SimpleDiscountService discountService) {
+                              DiscountService discountService) {
         this.orderRepository = orderRepository;
         this.pizzaService = pizzaService;
         this.discountService = discountService;
@@ -73,7 +73,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         return pizzaService.find(id);
     }
 
-
+@BenchMark
     private void createNewCardIfNotExist(Order order) {
         if (order.getCustomer() != null) {
             order.getCustomer().createNewCardIfNotExist();

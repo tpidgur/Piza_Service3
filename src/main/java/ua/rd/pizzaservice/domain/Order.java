@@ -34,7 +34,7 @@ public class Order {
         id = counter++;
     }
 
-
+//@BenchMark
     public BigDecimal calculateTotalPrice() {
         return pizzas.stream().map(j -> j.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }

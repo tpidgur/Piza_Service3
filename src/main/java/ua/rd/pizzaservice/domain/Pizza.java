@@ -5,11 +5,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Component
-@Scope("prototype")
-public class Pizza {
+@Entity
+//@Scope("prototype")
+public class Pizza implements Serializable{
+    @Id
     private Long id;
     private String name;
     private BigDecimal price;
@@ -20,6 +24,8 @@ public class Pizza {
         VEGETERIAN, SEA, MEAT
     }
 
+    public Pizza() {
+    }
 
     public Pizza(String name, BigDecimal price, PizzaType type) {
         this.name = name;

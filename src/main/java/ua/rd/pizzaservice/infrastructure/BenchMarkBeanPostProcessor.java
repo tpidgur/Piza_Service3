@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BenchMarkBeanPostProcessor<T> implements BeanPostProcessor {
 
@@ -80,24 +77,7 @@ public class BenchMarkBeanPostProcessor<T> implements BeanPostProcessor {
                 if (method.isAnnotationPresent(annotationClass)){return true;}
             }
         }
-
       return false;
-
-          //    Arrays.stream(bean.getClass().getDeclaredMethods()).anyMatch(e -> e.isAnnotationPresent(annotationClass));
-
-//        Class<?>[] declaredInterfaces = getDeclaredInterfaces(bean);
-//        System.out.println("Declared interfaces: " + Arrays.toString(declaredInterfaces));
-//        for (Class elem : declaredInterfaces) {
-//            System.out.println("\nElem: " + elem);
-//            Method[] methods = elem.getDeclaredMethods();
-//
-//            if (Arrays.stream(methods)
-//                    .anyMatch(e -> e.isAnnotationPresent(annotationClass))) {
-//                return true;
-//            }
-//
-//        }
-//        return false;
     }
 
     public boolean isBenchMarkAnnotationPresentAndTrue(Method beanMethod) {
