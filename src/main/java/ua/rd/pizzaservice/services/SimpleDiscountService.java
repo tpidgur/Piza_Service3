@@ -1,10 +1,12 @@
 package ua.rd.pizzaservice.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.rd.pizzaservice.domain.Discount;
 import ua.rd.pizzaservice.domain.FourPizzaDiscount;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.PizzaCardDiscount;
+import ua.rd.pizzaservice.infrastructure.BenchMark;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
@@ -22,6 +24,7 @@ public class SimpleDiscountService implements DiscountService {
             discounts = Arrays.asList(new FourPizzaDiscount(), new PizzaCardDiscount());
         }
     }
+
 
     @Override
     public void placeNewDiscount(Discount discount) {

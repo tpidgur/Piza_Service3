@@ -9,6 +9,7 @@ import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
 
+import ua.rd.pizzaservice.infrastructure.BenchMark;
 import ua.rd.pizzaservice.repository.OrderRepository;
 
 import java.math.BigDecimal;
@@ -36,7 +37,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     public void setApplicationContext(ApplicationContext context) throws BeansException {
         this.context = context;
     }
-
+    @BenchMark
     public Order placeNewOrder(Customer customer, Long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
         Order order = createNewOrder();
@@ -52,7 +53,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
        throw new IllegalStateException();
 
     }
-
+@BenchMark
     private void isPizzasAmountLessThanMaxAllowable(int pizzaNumber) {
         if (pizzaNumber > MAX_PIZZAS_AMOUNT) {
             throw new RuntimeException("The chosen amount of pizzas" +

@@ -12,7 +12,7 @@ import java.util.Optional;
 public class InMemoryOrderRepository implements OrderRepository {
     private static List<Order> orders = new LinkedList<>();
 
-
+    @BenchMark
     @Override
     public Order save(Order order) {
         orders.add(order);

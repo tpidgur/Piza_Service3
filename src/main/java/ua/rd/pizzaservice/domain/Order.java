@@ -2,6 +2,7 @@ package ua.rd.pizzaservice.domain;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import ua.rd.pizzaservice.infrastructure.BenchMark;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -32,7 +33,6 @@ public class Order {
         this.status = Status.NEW;
         id = counter++;
     }
-
 
 
     public BigDecimal calculateTotalPrice() {

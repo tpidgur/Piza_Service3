@@ -3,6 +3,7 @@ package ua.rd.pizzaservice.domain;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import ua.rd.pizzaservice.infrastructure.BenchMark;
 
 import java.math.BigDecimal;
 

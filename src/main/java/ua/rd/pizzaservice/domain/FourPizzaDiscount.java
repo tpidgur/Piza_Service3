@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.domain;
 
 import org.springframework.stereotype.Component;
+import ua.rd.pizzaservice.infrastructure.BenchMark;
 
 import java.math.BigDecimal;
 import java.util.Comparator;

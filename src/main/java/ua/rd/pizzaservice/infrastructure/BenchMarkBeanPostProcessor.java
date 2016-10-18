@@ -8,46 +8,96 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class BenchMarkBeanPostProcessor implements BeanPostProcessor {
+public class BenchMarkBeanPostProcessor<T> implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        //System.out.println("Created " + beanName);
+        System.out.println("Created " + beanName);
         return bean;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-       // System.out.println("Initialized " + beanName);
-               return createBeanProxy(bean);
+        // System.out.println("Initialized " + beanName);
+        return createBeanProxy(bean);
     }
 
-    public Object createBeanProxy(Object bean) {
+    public T createBeanProxy(Object bean) {
         if (hasMethodAnnotation(BenchMark.class, bean)) {
-            Object original = bean;
+            System.out.println("Bench " + bean);
+            T original = (T) bean;
             Class<?> type = bean.getClass();
-            bean = Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), type.getInterfaces(),
+            Class<?>[] declaredInterfaces = getDeclaredInterfaces(bean);
+            System.out.println("Declared interfaces" + Arrays.toString(declaredInterfaces));
+            bean = (T) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), declaredInterfaces,
                     new InvocationHandler() {
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                            Method beanMethod = type.getMethod(method.getName(),
-                                    method.getParameterTypes());
+                            Method beanMethod = type.getMethod(method.getName(), method.getParameterTypes());
+                            System.out.println(beanMethod);
                             if (isBenchMarkAnnotationPresentAndTrue(beanMethod)) {
-                                System.out.println("BenchmarkAnnot "+type);
+                                System.out.println("BenchmarkAnnot " + type);
                                 return wrapMethodInBenchmark(original, beanMethod, args);
-                            }
-                            return beanMethod.invoke(original, args);
+                            } else return beanMethod.invoke(original, args);
                         }
                     });
         }
-        return bean;
+        return (T) bean;
     }
 
+    private Class<?>[] getDeclaredInterfaces(Object o) {
+        List<Class<?>> interfaces = new ArrayList<>();
+        Class<?> klazz = o.getClass();
+        while (klazz != null) {
+            Collections.addAll(interfaces, klazz.getInterfaces());
+            klazz = klazz.getSuperclass();
+        }
+        return interfaces.stream().toArray(Class<?>[]::new);
+    }
+
+    private Class<?>[] getDeclaredClasses(Object o) {
+        List<Class<?>> classes = new ArrayList<>();
+        Class<?> klazz = o.getClass();
+        while (klazz != null) {
+            Collections.addAll(classes, klazz);
+            klazz = klazz.getSuperclass();
+        }
+        return classes.stream().toArray(Class<?>[]::new);
+    }
     public boolean hasMethodAnnotation(Class<? extends Annotation> annotationClass, Object bean) {
-        return Arrays.stream(bean.getClass().getDeclaredMethods())
-                .anyMatch(e -> e.isAnnotationPresent(annotationClass));
+        Class<?>[] classes=getDeclaredClasses(bean);
+        for (Class item:classes){
+            Method [] methods=item.getDeclaredMethods();
+            for (Method method:methods){
+                if (method.isAnnotationPresent(annotationClass)){return true;}
+            }
+        }
+
+      return false;
+
+          //    Arrays.stream(bean.getClass().getDeclaredMethods()).anyMatch(e -> e.isAnnotationPresent(annotationClass));
+
+//        Class<?>[] declaredInterfaces = getDeclaredInterfaces(bean);
+//        System.out.println("Declared interfaces: " + Arrays.toString(declaredInterfaces));
+//        for (Class elem : declaredInterfaces) {
+//            System.out.println("\nElem: " + elem);
+//            Method[] methods = elem.getDeclaredMethods();
+//
+//            if (Arrays.stream(methods)
+//                    .anyMatch(e -> e.isAnnotationPresent(annotationClass))) {
+//                return true;
+//            }
+//
+//        }
+//        return false;
     }
 
     public boolean isBenchMarkAnnotationPresentAndTrue(Method beanMethod) {
