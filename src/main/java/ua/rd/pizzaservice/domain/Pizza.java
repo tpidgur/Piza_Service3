@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Scope("prototype")
 public class Pizza implements Serializable {
     @TableGenerator(name = "Pizza_Gen",
-            table = "Pizza_ID_GEN",
+            table = "ID_GEN",
             pkColumnName = "Gen_name",
             valueColumnName = "Gen_val",
             initialValue = 0,
