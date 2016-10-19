@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @Entity
 @Component
 @Scope("prototype")
-public class Order {
+public class Order implements Serializable{
     @TableGenerator(name = "Order_Gen",
             table = "ID_GEN",
             pkColumnName = "Gen_name",
@@ -24,10 +25,8 @@ public class Order {
     @GeneratedValue(generator = "Order_Gen")
     private Long id;
 
-//    @OneToMany (mappedBy = "order")
-//    @OrderBy ("name ASC")
-    @ElementCollection
-    @CollectionTable
+   @OneToMany
+ @JoinTable
     private List<Pizza> pizzas;
 
     @OneToOne

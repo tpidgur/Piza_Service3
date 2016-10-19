@@ -8,12 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.TableGenerator;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
 @Component
 @Scope("prototype")
-public class PizzaCard {
+public class PizzaCard implements Serializable {
     @TableGenerator(name = "Pizza_Card_Gen",
             table = "ID_GEN",
             pkColumnName = "Gen_name",

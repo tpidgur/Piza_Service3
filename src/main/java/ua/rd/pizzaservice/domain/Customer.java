@@ -4,9 +4,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Customer {
+public class Customer implements Serializable {
     @TableGenerator(name = "Customer_Gen",
             table = "ID_GEN",
             pkColumnName = "Gen_name",
