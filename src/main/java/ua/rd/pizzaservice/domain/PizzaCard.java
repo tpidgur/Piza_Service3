@@ -22,7 +22,7 @@ public class PizzaCard {
             allocationSize = 50)
     @Id
     @GeneratedValue(generator = "Pizza_Card_Gen")
-    private long id;
+    private Long id;
 
     private BigDecimal balance = new BigDecimal(0);
 

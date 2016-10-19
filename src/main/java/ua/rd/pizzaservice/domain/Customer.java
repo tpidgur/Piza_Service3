@@ -3,18 +3,32 @@ package ua.rd.pizzaservice.domain;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
 
+@Entity
 public class Customer {
+    @TableGenerator(name = "Customer_Gen",
+            table = "ID_GEN",
+            pkColumnName = "Gen_name",
+            valueColumnName = "Gen_val",
+            initialValue = 0,
+            allocationSize = 50)
+    @Id
+    @GeneratedValue(generator = "Customer_Gen")
     private Long id;
+
     private String name;
-    private static long counter;
     private String address;
+
+   @OneToOne
+   @JoinColumn(name="PCard_ID")
     private PizzaCard card;
 
+    public Customer() {
+    }
 
     public Customer(String name) {
         this.name = name;
-        id = counter++;
     }
 
     public void createNewCardIfNotExist() {
@@ -48,13 +62,6 @@ public class Customer {
         this.name = name;
     }
 
-    public static long getCounter() {
-        return counter;
-    }
-
-    public static void setCounter(long counter) {
-        Customer.counter = counter;
-    }
 
     public String getAddress() {
         return address;
