@@ -24,7 +24,7 @@ public class Order {
     @GeneratedValue(generator = "Order_Gen")
     private Long id;
     private List<Pizza> pizzas;
-    
+
     private Customer customer;
     @Enumerated(EnumType.STRING)
     private Status status;
