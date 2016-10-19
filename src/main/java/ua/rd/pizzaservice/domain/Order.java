@@ -15,7 +15,7 @@ public class Order {
     private Long id;
     private List<Pizza> pizzas;
     private Customer customer;
-    private static long counter;
+
     private Status status;
 
 
@@ -31,10 +31,10 @@ public class Order {
         this.pizzas = pizzas;
         this.customer = customer;
         this.status = Status.NEW;
-        id = counter++;
+
     }
 
-//@BenchMark
+
     public BigDecimal calculateTotalPrice() {
         return pizzas.stream().map(j -> j.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }

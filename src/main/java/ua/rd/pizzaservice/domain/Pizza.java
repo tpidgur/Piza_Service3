@@ -2,23 +2,31 @@ package ua.rd.pizzaservice.domain;
 
 
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import ua.rd.pizzaservice.infrastructure.BenchMark;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-//@Scope("prototype")
-public class Pizza implements Serializable{
+@Scope("prototype")
+public class Pizza implements Serializable {
+    @TableGenerator(name = "Pizza_Gen",
+            table = "Pizza_ID_GEN",
+            pkColumnName = "Gen_name",
+            valueColumnName = "Gen_val",
+            initialValue = 0,
+            allocationSize = 50)
     @Id
+    @GeneratedValue(generator = "Pizza_Gen")
     private Long id;
+
     private String name;
     private BigDecimal price;
+
+    @Enumerated(EnumType.STRING)
     private PizzaType type;
-    private static long counter;
+
 
     public enum PizzaType {
         VEGETERIAN, SEA, MEAT
@@ -31,7 +39,6 @@ public class Pizza implements Serializable{
         this.name = name;
         this.price = price;
         this.type = type;
-        id = counter++;
     }
 
 
