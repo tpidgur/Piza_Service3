@@ -23,9 +23,17 @@ public class Order {
     @Id
     @GeneratedValue(generator = "Order_Gen")
     private Long id;
+
+//    @OneToMany (mappedBy = "order")
+//    @OrderBy ("name ASC")
+    @ElementCollection
+    @CollectionTable
     private List<Pizza> pizzas;
 
+    @OneToOne
+    @JoinColumn(name = "Customer_ID")
     private Customer customer;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
