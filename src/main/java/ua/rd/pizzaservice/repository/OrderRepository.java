@@ -1,14 +1,14 @@
 package ua.rd.pizzaservice.repository;
 
-import ua.rd.pizzaservice.domain.Order;
+import ua.rd.pizzaservice.domain.PizzaOrder;
 
 
 import java.util.List;
 
 public interface OrderRepository {
-    List<Order> getOrders();
+    List<PizzaOrder> getOrders();
 
-    Order save(Order order);
+    PizzaOrder save(PizzaOrder order);
 
-    Order getOrder(long orderId);
+    PizzaOrder getOrder(long orderId);
 }

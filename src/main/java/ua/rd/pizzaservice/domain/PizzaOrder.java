@@ -14,7 +14,7 @@ import java.util.Optional;
 @Entity
 @Component
 @Scope("prototype")
-public class Order implements Serializable{
+public class PizzaOrder implements Serializable{
     @TableGenerator(name = "Order_Gen",
             table = "ID_GEN",
             pkColumnName = "Gen_name",
@@ -41,10 +41,10 @@ public class Order implements Serializable{
         NEW, IN_PROGRESS, CANCELLED, DONE
     }
 
-    public Order() {
+    public PizzaOrder() {
     }
 
-    public Order(Customer customer, List<Pizza> pizzas) {
+    public PizzaOrder(Customer customer, List<Pizza> pizzas) {
         this.pizzas = pizzas;
         this.customer = customer;
         this.status = Status.NEW;

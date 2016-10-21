@@ -1,7 +1,7 @@
 package ua.rd.pizzaservice.runner;
 
 import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.Order;
+import ua.rd.pizzaservice.domain.PizzaOrder;
 import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.domain.PizzaCard;
 
@@ -11,7 +11,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
 
 public class JPAAppRunner {
     public static void main(String[] args) {
@@ -25,7 +24,7 @@ public class JPAAppRunner {
 
         Customer customer = createCustomer();
         customer.setCard(card);
-        Order order = new Order(customer, Arrays.asList(p1, p2));
+        PizzaOrder order = new PizzaOrder(customer, Arrays.asList(p1, p2));
 
 
         EntityTransaction entityTransaction = em.getTransaction();

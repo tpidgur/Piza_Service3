@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class FourPizzaDiscountTest {
     private FourPizzaDiscount discount;
-    private Order order;
+    private PizzaOrder order;
     public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
     public static final BigDecimal PIZZA_PRICE2 = new BigDecimal(1);
     public static final BigDecimal DISCOUNT = new BigDecimal(30).divide(new BigDecimal(100));
@@ -24,7 +24,7 @@ public class FourPizzaDiscountTest {
 
     @Before
     public void initializeOrderInstance() {
-        order = new Order(new Customer("Ivan"), Arrays.asList
+        order = new PizzaOrder(new Customer("Ivan"), Arrays.asList
                 (new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT),
                         new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT),
                         new Pizza("Greek Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETERIAN),

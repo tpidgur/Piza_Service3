@@ -3,11 +3,10 @@ package ua.rd.pizzaservice.services;
 import org.junit.Before;
 import org.junit.Test;
 import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.Order;
+import ua.rd.pizzaservice.domain.PizzaOrder;
 import ua.rd.pizzaservice.repository.InMemoryOrderRepository;
 import ua.rd.pizzaservice.repository.InMemoryPizzaRepository;
 
-import java.math.BigDecimal;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -32,7 +31,7 @@ public class SimpleOrderServiceTest {
         generateNewOrder(15);
     }
 
-    private Order generateNewOrder(int pizzasNumber) {
+    private PizzaOrder generateNewOrder(int pizzasNumber) {
         return simpleOrderService.placeNewOrder(new Customer("Ivan"),
                 generatePizzasId(pizzasNumber));
     }
@@ -45,17 +44,17 @@ public class SimpleOrderServiceTest {
 
     @Test
     public void changeStatusTest() {
-        Order order = generateNewOrder(5);
-        simpleOrderService.changeStatus(order.getId(), Order.Status.IN_PROGRESS);
-        Order.Status newStatus = order.getStatus();
-        assertThat(newStatus, is(Order.Status.IN_PROGRESS));
+        PizzaOrder order = generateNewOrder(5);
+        simpleOrderService.changeStatus(order.getId(), PizzaOrder.Status.IN_PROGRESS);
+        PizzaOrder.Status newStatus = order.getStatus();
+        assertThat(newStatus, is(PizzaOrder.Status.IN_PROGRESS));
     }
 
 
 
     @Test
     public void addPizzasToExistingOrderTest() {
-        Order order = generateNewOrder(5);
+        PizzaOrder order = generateNewOrder(5);
         simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID);
         int pizzasAmount = simpleOrderService.findOrderById(order.getId()).getPizzas().size();
         assertThat(pizzasAmount, is(6));

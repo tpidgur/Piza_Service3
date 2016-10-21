@@ -1,7 +1,6 @@
 package ua.rd.pizzaservice.domain;
 
 import org.springframework.stereotype.Component;
-import ua.rd.pizzaservice.infrastructure.BenchMark;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -13,12 +12,12 @@ public class FourPizzaDiscount extends Discount {
 
 
     @Override
-    public boolean isLiableToDiscount(Order order) {
+    public boolean isLiableToDiscount(PizzaOrder order) {
         return order.getPizzas().size() > MIN_PIZZAS_NUMBER;
     }
 
     @Override
-    public BigDecimal calculateDiscount(Order order) {
+    public BigDecimal calculateDiscount(PizzaOrder order) {
         Optional<BigDecimal> maxPriceOpt = order.getPizzas().stream()
                 .map(i -> i.getPrice()).max(Comparator.naturalOrder());
         if (maxPriceOpt.isPresent()) {
