@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Component
-@Scope("prototype")
+//@Scope("prototype")
 public class PizzaCard implements Serializable {
     @TableGenerator(name = "Pizza_Card_Gen",
             table = "ID_GEN",

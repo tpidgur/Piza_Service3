@@ -48,10 +48,6 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         return order;
     }
 
-     PizzaOrder createNewOrder() {
-       throw new IllegalStateException();
-
-    }
 @BenchMark
     private void isPizzasAmountLessThanMaxAllowable(int pizzaNumber) {
         if (pizzaNumber > MAX_PIZZAS_AMOUNT) {
@@ -127,4 +123,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     }
 
 
+    public PizzaOrder createNewOrder() {
+        throw new IllegalStateException();
+    }
 }

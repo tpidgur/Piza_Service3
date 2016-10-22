@@ -13,7 +13,7 @@
     <bean class="ua.rd.pizzaservice.infrastructure.BenchMarkBeanPostProcessor"/>
 
     <bean name="simpleOrderService" class="ua.rd.pizzaservice.services.SimpleOrderService">
-        <lookup-method name="createNewOrder" bean="order"/>
+        <lookup-method name="createNewOrder" bean="pizzaOrder"/>
     </bean>
 
     <context:component-scan base-package="ua.rd.pizzaservice.services"/>
