@@ -13,9 +13,9 @@ import java.util.Optional;
 
 @Entity
 @Component
-@Table(name ="pizzaOrders")
+@Table(name = "orders")
 @Scope("prototype")
-public class PizzaOrder implements Serializable{
+public class PizzaOrder implements Serializable {
     @TableGenerator(name = "Order_Gen",
             table = "ID_GEN",
             pkColumnName = "Gen_name",
@@ -26,11 +26,13 @@ public class PizzaOrder implements Serializable{
     @GeneratedValue(generator = "Order_Gen")
     private Long id;
 
-   @OneToMany
- @JoinTable
+    @OneToMany
+    @JoinTable(name = "PizzasList",
+            joinColumns = @JoinColumn(name = "Order_ID"),
+            inverseJoinColumns = @JoinColumn(name = "Pizza_ID"))
     private List<Pizza> pizzas;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "Customer_ID")
     private Customer customer;
 
