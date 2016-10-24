@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name ="customers")
 public class Customer implements Serializable {
     @TableGenerator(name = "Customer_Gen",
             table = "ID_GEN",

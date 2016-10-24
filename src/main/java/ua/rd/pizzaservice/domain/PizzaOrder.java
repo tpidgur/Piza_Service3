@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @Entity
 @Component
+@Table(name ="pizzaOrders")
 @Scope("prototype")
 public class PizzaOrder implements Serializable{
     @TableGenerator(name = "Order_Gen",

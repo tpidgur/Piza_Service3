@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 
 @Entity
 //@Scope("prototype")
+@Table(name ="pizzas")
 public class Pizza implements Serializable {
     @TableGenerator(name = "Pizza_Gen",
             table = "ID_GEN",
