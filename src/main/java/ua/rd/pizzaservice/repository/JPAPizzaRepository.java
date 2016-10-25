@@ -28,7 +28,7 @@ public class JPAPizzaRepository implements PizzaRepository {
     @Override
     @Transactional
     public Pizza save(Pizza pizza) {
-      return   em.merge(pizza);
+        return em.merge(pizza);
 
     }
 }

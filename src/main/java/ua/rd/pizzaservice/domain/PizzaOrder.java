@@ -11,10 +11,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-@Entity
+
 @Component
-@Table(name = "orders")
 @Scope("prototype")
+@Entity
+@Table(name = "orders")
 public class PizzaOrder implements Serializable {
     @TableGenerator(name = "Order_Gen",
             table = "ID_GEN",
@@ -32,7 +33,7 @@ public class PizzaOrder implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "Pizza_ID"))
     private List<Pizza> pizzas;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "Customer_ID")
     private Customer customer;
 

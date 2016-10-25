@@ -1,7 +1,5 @@
 package ua.rd.pizzaservice.domain;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,7 +20,7 @@ public class Customer implements Serializable {
     private String name;
     private String address;
 
-   @OneToOne
+   @OneToOne(cascade = {CascadeType.PERSIST})
    @JoinColumn(name="PCard_ID")
     private PizzaCard card;
 
