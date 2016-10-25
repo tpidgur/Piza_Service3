@@ -22,7 +22,7 @@ public class JPAPizzaRepository implements PizzaRepository {
 
     @Override
     public List<Pizza> findAllByType(Pizza.PizzaType type) {
-        return em.createNamedQuery("Pizza.findAllByType", Pizza.class).getResultList();
+        return em.createNamedQuery("Pizza.findAllByType", Pizza.class).setParameter("type",type).getResultList();
     }
 
     @Override
