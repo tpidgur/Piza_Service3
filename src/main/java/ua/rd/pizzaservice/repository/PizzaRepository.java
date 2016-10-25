@@ -5,7 +5,9 @@ import ua.rd.pizzaservice.domain.Pizza;
 import java.util.List;
 
 public interface PizzaRepository {
-    List<Pizza> getPizzas();
+    List<Pizza> findAll();
+
+    List<Pizza> findAllByType(Pizza.PizzaType type);
 
     Pizza find(Long id);
 

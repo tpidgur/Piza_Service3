@@ -24,8 +24,13 @@ public class InMemoryPizzaRepository implements PizzaRepository {
         pizzas.add(new Pizza("Sea Pizza", new BigDecimal(3), Pizza.PizzaType.SEA));
     }
 
-    public List<Pizza> getPizzas() {
+    public List<Pizza> findAll() {
         return pizzas;
+    }
+
+    @Override
+    public List<Pizza> findAllByType(Pizza.PizzaType type) {
+        throw new IllegalArgumentException("Not realized method yet!");
     }
 
     @BenchMark

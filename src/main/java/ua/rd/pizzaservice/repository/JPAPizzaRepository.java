@@ -16,8 +16,13 @@ public class JPAPizzaRepository implements PizzaRepository {
 
     @Override
 
-    public List<Pizza> getPizzas() {
-        return null;
+    public List<Pizza> findAll() {
+        return em.createNamedQuery("Pizza.findAll", Pizza.class).getResultList();
+    }
+
+    @Override
+    public List<Pizza> findAllByType(Pizza.PizzaType type) {
+        return em.createNamedQuery("Pizza.findAllByType", Pizza.class).getResultList();
     }
 
     @Override

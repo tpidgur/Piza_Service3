@@ -10,7 +10,11 @@ import java.math.BigDecimal;
 
 @Entity
 //@Scope("prototype")
-@Table(name ="pizzas")
+@Table(name = "pizzas")
+@NamedQueries({
+        @NamedQuery(name = "Pizza.findAll", query = "SELECT p FROM Pizza p"),
+        @NamedQuery(name = "Pizza.findAllByType", query = "SELECT p FROM Pizza p WHERE p.type=:type")
+})
 public class Pizza implements Serializable {
     @TableGenerator(name = "Pizza_Gen",
             table = "ID_GEN",
