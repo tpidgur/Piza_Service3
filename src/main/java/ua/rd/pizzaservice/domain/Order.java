@@ -31,7 +31,7 @@ public class Order implements Serializable {
     @GeneratedValue(generator = "Order_Gen")
     private Long id;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "PizzasList",
             joinColumns = @JoinColumn(name = "Order_ID"),
             inverseJoinColumns = @JoinColumn(name = "Pizza_ID"))

@@ -3,6 +3,7 @@ package ua.rd.pizzaservice.repository;
 import org.springframework.stereotype.Repository;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
+import ua.rd.pizzaservice.domain.Pizza;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,21 +16,23 @@ public class JpaOrderRepository implements OrderRepository {
 
     @Override
     public Order save(Order order) {
-        return null;
+        return em.merge(order);
     }
 
     @Override
     public Order find(long id) {
-        return null;
+        return em.find(Order.class, id);
     }
 
     @Override
     public List<Order> findByCustomer(Customer customer) {
-        return null;
+        return em.createNamedQuery("Order.findAllByCustomer", Order.class).setParameter("customer", customer)
+                .getResultList();
+
     }
 
     @Override
     public List<Order> findAll() {
-        return null;
+        return em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 }

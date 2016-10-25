@@ -65,7 +65,6 @@ public class JPAPizzaRepositoryIT extends RepositoryTestConfig {
         pizza.setType(Pizza.PizzaType.SEA);
         pizza.setPrice(new BigDecimal(10));
         pizza = pizzaRepository.save(pizza);
-        System.out.println(pizza);
         assertNotNull(pizza);
     }
 
