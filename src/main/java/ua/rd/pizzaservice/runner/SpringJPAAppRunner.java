@@ -3,10 +3,7 @@ package ua.rd.pizzaservice.runner;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ua.rd.pizzaservice.domain.Pizza;
-import ua.rd.pizzaservice.domain.PizzaOrder;
-import ua.rd.pizzaservice.repository.JPAPizzaRepository;
 import ua.rd.pizzaservice.repository.PizzaRepository;
-import ua.rd.pizzaservice.services.OrderService;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

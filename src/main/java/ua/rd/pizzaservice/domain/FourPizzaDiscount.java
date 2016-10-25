@@ -12,12 +12,12 @@ public class FourPizzaDiscount extends Discount {
 
 
     @Override
-    public boolean isLiableToDiscount(PizzaOrder order) {
+    public boolean isLiableToDiscount(Order order) {
         return order.getPizzas().size() > MIN_PIZZAS_NUMBER;
     }
 
     @Override
-    public BigDecimal calculateDiscount(PizzaOrder order) {
+    public BigDecimal calculateDiscount(Order order) {
         Optional<BigDecimal> maxPriceOpt = order.getPizzas().stream()
                 .map(i -> i.getPrice()).max(Comparator.naturalOrder());
         if (maxPriceOpt.isPresent()) {

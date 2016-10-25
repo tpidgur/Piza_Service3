@@ -16,7 +16,11 @@ import java.util.Optional;
 @Scope("prototype")
 @Entity
 @Table(name = "orders")
-public class PizzaOrder implements Serializable {
+@NamedQueries({
+        @NamedQuery(name = "Order.findAll", query = "SELECT o from Order o"),
+        @NamedQuery(name = "Order.findAllByCustomer", query = "SELECT o from Order o where o.customer=:customer")
+})
+public class Order implements Serializable {
     @TableGenerator(name = "Order_Gen",
             table = "ID_GEN",
             pkColumnName = "Gen_name",
@@ -45,10 +49,10 @@ public class PizzaOrder implements Serializable {
         NEW, IN_PROGRESS, CANCELLED, DONE
     }
 
-    public PizzaOrder() {
+    public Order() {
     }
 
-    public PizzaOrder(Customer customer, List<Pizza> pizzas) {
+    public Order(Customer customer, List<Pizza> pizzas) {
         this.pizzas = pizzas;
         this.customer = customer;
         this.status = Status.NEW;

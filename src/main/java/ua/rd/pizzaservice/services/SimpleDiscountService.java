@@ -3,7 +3,7 @@ package ua.rd.pizzaservice.services;
 import org.springframework.stereotype.Service;
 import ua.rd.pizzaservice.domain.Discount;
 import ua.rd.pizzaservice.domain.FourPizzaDiscount;
-import ua.rd.pizzaservice.domain.PizzaOrder;
+import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.PizzaCardDiscount;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
 
@@ -31,7 +31,7 @@ public class SimpleDiscountService implements DiscountService {
 
     @BenchMark
     @Override
-    public BigDecimal calculateTotalDiscount(PizzaOrder order) {
+    public BigDecimal calculateTotalDiscount(Order order) {
         return discounts.stream().filter(e -> e.isLiableToDiscount(order)).map(e -> e.calculateDiscount(order))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

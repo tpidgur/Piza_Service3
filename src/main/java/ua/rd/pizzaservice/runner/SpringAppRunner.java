@@ -2,7 +2,7 @@ package ua.rd.pizzaservice.runner;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ua.rd.pizzaservice.domain.PizzaOrder;
+import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.services.OrderService;
 
 import java.util.Arrays;
@@ -21,7 +21,7 @@ public class SpringAppRunner {
 
         OrderService orderService = appContext.getBean("simpleOrderService", OrderService.class);
 
-        PizzaOrder order = orderService.placeNewOrder(null, new Long(1), new Long(2), new Long(3));
+        Order order = orderService.placeNewOrder(null, new Long(1), new Long(2), new Long(3));
 order.toString();
         System.out.println(order);
 

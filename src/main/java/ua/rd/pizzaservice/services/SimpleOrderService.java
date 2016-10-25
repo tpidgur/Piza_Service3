@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.PizzaOrder;
+import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
 
 import ua.rd.pizzaservice.infrastructure.BenchMark;
@@ -37,9 +37,9 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         this.context = context;
     }
     @BenchMark
-    public PizzaOrder placeNewOrder(Customer customer, Long... pizzasID) {
+    public Order placeNewOrder(Customer customer, Long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
-        PizzaOrder order = createNewOrder();
+        Order order = createNewOrder();
                // new Order(customer, convertIdsArrayInListOfPizzas(pizzasID));
         order.setCustomer(customer);
         order.setPizzas(convertIdsArrayInListOfPizzas(pizzasID));
@@ -69,7 +69,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     }
 
 @BenchMark
-    private void createNewCardIfNotExist(PizzaOrder order) {
+    private void createNewCardIfNotExist(Order order) {
         if (order.getCustomer() != null) {
             order.getCustomer().createNewCardIfNotExist();
         }
@@ -77,36 +77,36 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     }
 
 
-    public void changeStatus(Long orderId, PizzaOrder.Status newStatus) {
-        PizzaOrder order = findOrderById(orderId);
-        if (newStatus == PizzaOrder.Status.CANCELLED) {
-            order.setStatus(PizzaOrder.Status.CANCELLED);
-        } else if (newStatus == PizzaOrder.Status.IN_PROGRESS &&
-                order.getStatus() == PizzaOrder.Status.NEW) {
-            order.setStatus(PizzaOrder.Status.IN_PROGRESS);
-        } else if (newStatus == PizzaOrder.Status.DONE &&
-                order.getStatus() == PizzaOrder.Status.IN_PROGRESS) {
-            order.setStatus(PizzaOrder.Status.DONE);
+    public void changeStatus(Long orderId, Order.Status newStatus) {
+        Order order = findOrderById(orderId);
+        if (newStatus == Order.Status.CANCELLED) {
+            order.setStatus(Order.Status.CANCELLED);
+        } else if (newStatus == Order.Status.IN_PROGRESS &&
+                order.getStatus() == Order.Status.NEW) {
+            order.setStatus(Order.Status.IN_PROGRESS);
+        } else if (newStatus == Order.Status.DONE &&
+                order.getStatus() == Order.Status.IN_PROGRESS) {
+            order.setStatus(Order.Status.DONE);
         } else throw new RuntimeException("The status " + newStatus + " isn't allowed");
     }
 
     public void closeOrder(Long orderId) {
-        PizzaOrder order = findOrderById(orderId);
-        changeStatus(orderId, PizzaOrder.Status.DONE);
+        Order order = findOrderById(orderId);
+        changeStatus(orderId, Order.Status.DONE);
         updateCummulativeCardBalance(order);
     }
 
-    public PizzaOrder findOrderById(Long orderId) {
-        return orderRepository.getOrder(orderId);
+    public Order findOrderById(Long orderId) {
+        return orderRepository.find(orderId);
     }
 
-    private void updateCummulativeCardBalance(PizzaOrder order) {
+    private void updateCummulativeCardBalance(Order order) {
         BigDecimal oldBalance = order.getCustomer().getCard().getBalance();
         BigDecimal newBalance = calculateTotalPriceWithAllDiscounts(order);
         order.getCustomer().getCard().setBalance(oldBalance.add(newBalance));
     }
 
-    private BigDecimal calculateTotalPriceWithAllDiscounts(PizzaOrder order) {
+    private BigDecimal calculateTotalPriceWithAllDiscounts(Order order) {
        // discountService.init();
         BigDecimal discounts = discountService.calculateTotalDiscount(order);
         BigDecimal totalPrice = order.calculateTotalPrice();
@@ -116,14 +116,14 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
 
     //варто перевірити,що статус не закритий у завки
     public void addPizzasToExistingOrder(long orderId, Long... pizzasID) {
-        PizzaOrder order = findOrderById(orderId);
+        Order order = findOrderById(orderId);
         isPizzasAmountLessThanMaxAllowable(order.getPizzas().size() + pizzasID.length);
         convertIdsArrayInListOfPizzas(pizzasID);
         order.addAdditionalPizzas(convertIdsArrayInListOfPizzas(pizzasID));
     }
 
 
-    public PizzaOrder createNewOrder() {
+    public Order createNewOrder() {
         throw new IllegalStateException();
     }
 }
