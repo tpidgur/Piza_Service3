@@ -8,4 +8,6 @@ public interface PizzaRepository {
     List<Pizza> getPizzas();
 
     Pizza find(Long id);
+
+    Pizza save(Pizza pizza);
 }

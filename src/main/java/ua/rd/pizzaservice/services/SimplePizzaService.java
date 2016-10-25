@@ -11,10 +11,10 @@ public class SimplePizzaService implements PizzaService {
     private PizzaRepository pizzaRepo;//=new InMemoryPizzaRepository();
 
     @Autowired
-    public SimplePizzaService(PizzaRepository pizzaRepo) {
+    public SimplePizzaService(PizzaRepository pizzaRepository) {
 //        InitialContext context = new InitialContext();
-//        this.pizzaRepo = context.getInstance("PizzaRepository");
-        this.pizzaRepo = pizzaRepo;
+//        this.pizzaRepository = context.getInstance("PizzaRepository");
+        this.pizzaRepo = pizzaRepository;
     }
 
     @BenchMark(true)
