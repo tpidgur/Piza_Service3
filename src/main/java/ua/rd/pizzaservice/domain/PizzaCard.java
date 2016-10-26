@@ -40,4 +40,16 @@ public class PizzaCard implements Serializable {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "PizzaCard{" +
+                "id=" + id +
+                ", balance=" + balance +
+                '}';
+    }
 }

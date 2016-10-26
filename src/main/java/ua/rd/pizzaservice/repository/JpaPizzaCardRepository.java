@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository("cardRepository")
-public class JpaCardRepository implements PizzaCardRepository {
+public class JpaPizzaCardRepository implements PizzaCardRepository {
     @PersistenceContext
     private EntityManager em;
 

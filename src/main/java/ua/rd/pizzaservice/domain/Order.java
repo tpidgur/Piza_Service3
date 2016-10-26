@@ -31,13 +31,13 @@ public class Order implements Serializable {
     @GeneratedValue(generator = "Order_Gen")
     private Long id;
 
-    @OneToMany(cascade = {CascadeType.PERSIST})
+    @OneToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "PizzasList",
             joinColumns = @JoinColumn(name = "Order_ID"),
             inverseJoinColumns = @JoinColumn(name = "Pizza_ID"))
     private List<Pizza> pizzas;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "Customer_ID")
     private Customer customer;
 
