@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 @Component
 //@Scope("prototype")
 @Table(name ="pizzaCards")
+@NamedQueries({
+        @NamedQuery(name = "PizzaCard.findAll", query = "SELECT pc from PizzaCard pc")})
 public class PizzaCard implements Serializable {
     @TableGenerator(name = "Pizza_Card_Gen",
             table = "ID_GEN",
