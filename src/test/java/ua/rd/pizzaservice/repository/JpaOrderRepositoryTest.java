@@ -31,10 +31,12 @@ public class JpaOrderRepositoryTest extends RepositoryTestConfig {
 
     @Test
     public void saveTest() throws Exception {
-        System.out.println(initializeOrder());
-        Order order= orderRepository.save(initializeOrder());
-        System.out.println(order);//list of pizzas needs to be saved
-       // assertNotNull(order2.getId());
+        Order order1 = initializeOrder();
+        Customer customer = new Customer("Ivan");
+        Pizza pizza = new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT);
+        Order order = orderRepository.save(order1);
+        System.out.println(order);
+
     }
 
     @Test

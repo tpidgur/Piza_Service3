@@ -5,7 +5,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name ="customers")
+@Table(name = "customers")
+@NamedQueries({
+        @NamedQuery(name = "Customer.findAll", query = "SELECT c from Customer c"),
+        @NamedQuery(name = "Customer.findByName", query = "SELECT c from Customer c WHERE c.name=:name")})
 public class Customer implements Serializable {
     @TableGenerator(name = "Customer_Gen",
             table = "ID_GEN",
@@ -16,12 +19,11 @@ public class Customer implements Serializable {
     @Id
     @GeneratedValue(generator = "Customer_Gen")
     private Long id;
-
     private String name;
     private String address;
 
-   @OneToOne(cascade = {CascadeType.PERSIST})
-   @JoinColumn(name="PCard_ID")
+    @OneToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "PCard_ID")
     private PizzaCard card;
 
     public Customer() {
@@ -30,6 +32,7 @@ public class Customer implements Serializable {
     public Customer(String name) {
         this.name = name;
     }
+
 
     public void createNewCardIfNotExist() {
         if (!hasCard()) {
@@ -77,5 +80,15 @@ public class Customer implements Serializable {
 
     public void setCard(PizzaCard card) {
         this.card = card;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", card=" + card +
+                '}';
     }
 }
