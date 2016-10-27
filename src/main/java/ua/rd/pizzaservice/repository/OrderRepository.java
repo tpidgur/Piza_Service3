@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface OrderRepository {
 
-    Order save(Order order);
-
     Order find(long id);
 
-    List<Order> findByCustomer(Customer customer);
+    List<Order> findAllByCustomer(Customer customer);
 
     List<Order> findAll();
+
+    Order save(Order order);
 }

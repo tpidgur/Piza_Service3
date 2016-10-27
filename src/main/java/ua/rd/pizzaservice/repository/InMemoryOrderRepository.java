@@ -30,7 +30,7 @@ public class InMemoryOrderRepository implements OrderRepository {
     }
 
     @Override
-    public List<Order> findByCustomer(Customer customer) {
+    public List<Order> findAllByCustomer(Customer customer) {
         return null;
     }
 

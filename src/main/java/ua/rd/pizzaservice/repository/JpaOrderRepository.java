@@ -14,25 +14,26 @@ public class JpaOrderRepository implements OrderRepository {
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-    public Order save(Order order) {
-        return em.merge(order);
-    }
 
     @Override
     public Order find(long id) {
         return em.find(Order.class, id);
     }
 
+
     @Override
-    public List<Order> findByCustomer(Customer customer) {
+    public List<Order> findAllByCustomer(Customer customer) {
         return em.createNamedQuery("Order.findAllByCustomer", Order.class).setParameter("customer", customer)
                 .getResultList();
-
     }
 
     @Override
     public List<Order> findAll() {
         return em.createNamedQuery("Order.findAll", Order.class).getResultList();
+    }
+
+    @Override
+    public Order save(Order order) {
+        return em.merge(order);
     }
 }
