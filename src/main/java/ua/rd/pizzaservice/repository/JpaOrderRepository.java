@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.repository;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
@@ -32,6 +33,7 @@ public class JpaOrderRepository implements OrderRepository {
         return em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 
+    @Transactional
     @Override
     public Order save(Order order) {
         return em.merge(order);

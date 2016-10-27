@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.repository;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ua.rd.pizzaservice.domain.Customer;
 
 import javax.persistence.EntityManager;
@@ -30,7 +31,7 @@ public class JpaCustomerRepository implements CustomerRepository {
                 .getResultList();
     }
 
-
+    @Transactional
     @Override
     public Customer save(Customer customer) {
         return em.merge(customer);

@@ -2,8 +2,10 @@ package ua.rd.pizzaservice.runner;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.repository.PizzaRepository;
+import ua.rd.pizzaservice.services.OrderService;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -27,14 +29,13 @@ public class SpringJPAAppRunner {
         pizza=pizzaRepository.save(pizza);
         System.out.println(pizza);
 
-//        OrderService orderService = appContext.getBean("simpleOrderService", OrderService.class);
-//
-//        PizzaOrder order = orderService.placeNewOrder(null, new Long(1), new Long(2), new Long(3));
-//        order.toString();
-//        System.out.println(order);
-//
-//        System.out.println(orderService.getClass());
-//
+        OrderService orderService = appContext.getBean("simpleOrderService", OrderService.class);
+
+        Order order = orderService.placeNewOrder(null, new Long(1), new Long(2), new Long(3));
+
+        System.out.println(order);
+
+
 
         repoContext.close();
         appContext.close();

@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.repository;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.PizzaCard;
 
@@ -24,7 +25,7 @@ public class JpaPizzaCardRepository implements PizzaCardRepository {
         return em.createNamedQuery("PizzaCard.findAll", PizzaCard.class).getResultList();
     }
 
-
+    @Transactional
     @Override
     public PizzaCard save(PizzaCard card) {
         return em.merge(card);
