@@ -27,16 +27,18 @@ public class JpaPizzaCardRepositoryITest extends RepositoryTestConfig {
         assertEquals(expected, actual);
     }
 
-    private PizzaCard initializeOnePizzaCard() {
-        PizzaCard actual = new PizzaCard();
-        actual=pizzaCardRepository.save(actual);
-        return actual;
-    }
 
     @Test
     public void saveTest() {
         PizzaCard pizzaCard = initializeOnePizzaCard();
         assertNotNull(pizzaCard.getId());
     }
+
+    private PizzaCard initializeOnePizzaCard() {
+        PizzaCard actual = new PizzaCard();
+        actual=pizzaCardRepository.save(actual);
+        return actual;
+    }
+
 
 }

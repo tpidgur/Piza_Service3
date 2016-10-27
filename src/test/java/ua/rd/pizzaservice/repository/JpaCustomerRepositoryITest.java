@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ua.rd.pizzaservice.domain.Address;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.PizzaCard;
-
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.Assert.*;
 
-public class JPACustomerRepositoryITest extends RepositoryTestConfig {
+public class JpaCustomerRepositoryITest extends RepositoryTestConfig {
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -22,9 +20,9 @@ public class JPACustomerRepositoryITest extends RepositoryTestConfig {
     }
 
     @Test
-    public void findAllTest() {
-        List<Customer> expected = initializeTwoCustomers();
-        List<Customer> actual = customerRepository.findAll();
+    public void findTest() {
+        Customer expected = initializeCustomer();
+        Customer actual = customerRepository.find(expected.getId());
         assertEquals(expected, actual);
     }
 
@@ -37,11 +35,10 @@ public class JPACustomerRepositoryITest extends RepositoryTestConfig {
     }
 
     @Test
-    public void findTest() {
-        Customer expected = initializeCustomer();
-        Customer actual = customerRepository.find(expected.getId());
+    public void findAllTest() {
+        List<Customer> expected = initializeTwoCustomers();
+        List<Customer> actual = customerRepository.findAll();
         assertEquals(expected, actual);
-
     }
 
 

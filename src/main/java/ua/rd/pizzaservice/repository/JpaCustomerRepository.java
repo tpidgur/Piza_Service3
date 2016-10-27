@@ -12,22 +12,23 @@ public class JpaCustomerRepository implements CustomerRepository {
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-    public List<Customer> findAll() {
-        return em.createNamedQuery("Customer.findAll", Customer.class).getResultList();
-    }
-
-    @Override
-    public List<Customer> findAllByName(String name) {
-        return em.createNamedQuery("Customer.findByName", Customer.class)
-                .setParameter("name",name).getResultList();
-
-    }
 
     @Override
     public Customer find(Long id) {
         return em.find(Customer.class, id);
     }
+
+    @Override
+    public List<Customer> findAllByName(String name) {
+        return em.createNamedQuery("Customer.findByName", Customer.class)
+                .setParameter("name", name).getResultList();
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        return em.createNamedQuery("Customer.findAll", Customer.class).getResultList();
+    }
+
 
     @Override
     public Customer save(Customer customer) {
