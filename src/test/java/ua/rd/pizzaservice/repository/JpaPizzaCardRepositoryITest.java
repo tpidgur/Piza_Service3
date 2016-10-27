@@ -11,8 +11,10 @@ public class JpaPizzaCardRepositoryITest extends RepositoryTestConfig {
     private PizzaCardRepository pizzaCardRepository;
 
     @Test
-    public void findAllTest() {
-
+    public void findTest() {
+        PizzaCard actual = initializeOnePizzaCard();
+        PizzaCard expected = pizzaCardRepository.find(actual.getId());
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -21,10 +23,8 @@ public class JpaPizzaCardRepositoryITest extends RepositoryTestConfig {
     }
 
     @Test
-    public void findTest() {
-        PizzaCard actual = initializeOnePizzaCard();
-        PizzaCard expected = pizzaCardRepository.find(actual.getId());
-        assertEquals(expected, actual);
+    public void findAllTest() {
+
     }
 
 
@@ -36,7 +36,7 @@ public class JpaPizzaCardRepositoryITest extends RepositoryTestConfig {
 
     private PizzaCard initializeOnePizzaCard() {
         PizzaCard actual = new PizzaCard();
-        actual=pizzaCardRepository.save(actual);
+        actual = pizzaCardRepository.save(actual);
         return actual;
     }
 

@@ -14,8 +14,8 @@ public class JpaPizzaCardRepository implements PizzaCardRepository {
     private EntityManager em;
 
     @Override
-    public List<PizzaCard> findAll() {
-        return em.createNamedQuery("PizzaCard.findAll", PizzaCard.class).getResultList();
+    public PizzaCard find(Long id) {
+        return em.find(PizzaCard.class, id);
     }
 
     @Override
@@ -24,10 +24,10 @@ public class JpaPizzaCardRepository implements PizzaCardRepository {
     }
 
     @Override
-    public PizzaCard find(Long id) {
-        return em.find(PizzaCard.class, id);
-
+    public List<PizzaCard> findAll() {
+        return em.createNamedQuery("PizzaCard.findAll", PizzaCard.class).getResultList();
     }
+
 
     @Override
     public PizzaCard save(PizzaCard card) {
