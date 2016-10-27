@@ -36,4 +36,9 @@ public class JpaOrderRepository implements OrderRepository {
     public Order save(Order order) {
         return em.merge(order);
     }
+
+    @Override
+    public void delete() {
+        em.createNamedQuery("Order.deleteAll").executeUpdate();
+    }
 }

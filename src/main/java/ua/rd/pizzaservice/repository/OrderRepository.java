@@ -15,4 +15,7 @@ public interface OrderRepository {
     List<Order> findAll();
 
     Order save(Order order);
+
+    void delete();
+
 }

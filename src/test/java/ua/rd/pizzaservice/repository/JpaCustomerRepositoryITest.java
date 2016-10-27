@@ -21,7 +21,7 @@ public class JpaCustomerRepositoryITest extends RepositoryTestConfig {
 
     @Test
     public void findTest() {
-        Customer expected = initializeCustomer();
+        Customer expected = initializeOneCustomer();
         Customer actual = customerRepository.find(expected.getId());
         assertEquals(expected, actual);
     }
@@ -29,7 +29,7 @@ public class JpaCustomerRepositoryITest extends RepositoryTestConfig {
     @Test
     public void findAllByNameTest() {
         initializeTwoCustomers();
-        Customer customer = initializeCustomer();
+        Customer customer = initializeOneCustomer();
         List<Customer> actual = customerRepository.findAllByName(customer.getName());
         assertEquals(actual, Arrays.asList(customer));
     }
@@ -44,12 +44,12 @@ public class JpaCustomerRepositoryITest extends RepositoryTestConfig {
 
     @Test
     public void saveTest() {
-        Customer customer = initializeCustomer();
+        Customer customer = initializeOneCustomer();
         assertNotNull(customer.getId());
 
     }
 
-    private Customer initializeCustomer() {
+    private Customer initializeOneCustomer() {
         return customerRepository.save(new Customer("Ivanov Ivan",
                 new Address("c.Kiev, Lomonosova 26, fl.23"), new PizzaCard()));
     }

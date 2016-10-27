@@ -13,12 +13,6 @@ import java.util.Optional;
 public class InMemoryOrderRepository implements OrderRepository {
     private static List<Order> orders = new LinkedList<>();
 
-    @BenchMark
-    @Override
-    public Order save(Order order) {
-        orders.add(order);
-        return order;
-    }
 
     @Override
     public Order find(long orderId) {
@@ -38,9 +32,16 @@ public class InMemoryOrderRepository implements OrderRepository {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+
+    @BenchMark
+    @Override
+    public Order save(Order order) {
+        orders.add(order);
+        return order;
     }
 
+    @Override
+    public void delete() {
 
+    }
 }

@@ -31,9 +31,14 @@ public class JpaPizzaRepository implements PizzaRepository {
         return em.createNamedQuery("Pizza.findAll", Pizza.class).getResultList();
     }
 
-
+    @Transactional
     @Override
     public Pizza save(Pizza pizza) {
-        return em.merge(pizza);
+        if (pizza.getId() == null) {
+            em.persist(pizza);
+        } else {
+            pizza = em.merge(pizza);
+        }
+        return pizza;
     }
 }

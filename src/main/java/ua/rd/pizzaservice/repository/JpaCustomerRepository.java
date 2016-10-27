@@ -26,7 +26,8 @@ public class JpaCustomerRepository implements CustomerRepository {
 
     @Override
     public List<Customer> findAll() {
-        return em.createNamedQuery("Customer.findAll", Customer.class).getResultList();
+        return em.createNamedQuery("Customer.findAll", Customer.class)
+                .getResultList();
     }
 
 

@@ -18,7 +18,8 @@ import java.util.Optional;
 @Table(name = "orders")
 @NamedQueries({
         @NamedQuery(name = "Order.findAll", query = "SELECT o from Order o"),
-        @NamedQuery(name = "Order.findAllByCustomer", query = "SELECT o from Order o where o.customer=:customer")
+        @NamedQuery(name = "Order.findAllByCustomer", query = "SELECT o from Order o where o.customer=:customer"),
+        @NamedQuery(name = "Order.deleteAll", query = "delete  from Order o")
 })
 public class Order implements Serializable {
     @TableGenerator(name = "Order_Gen",
