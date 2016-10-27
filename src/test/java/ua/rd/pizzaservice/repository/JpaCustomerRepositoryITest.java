@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.rd.pizzaservice.domain.Address;
 import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.domain.PizzaCard;
 
 import java.util.Arrays;
@@ -32,7 +31,9 @@ public class JPACustomerRepositoryITest extends RepositoryTestConfig {
     @Test
     public void findAllByNameTest() {
         initializeTwoCustomers();
-       // Customer customer = Arrays.asList(initializeCustomer());
+        Customer customer = initializeCustomer();
+        List<Customer> actual = customerRepository.findAllByName(customer.getName());
+        assertEquals(actual, Arrays.asList(customer));
     }
 
     @Test
