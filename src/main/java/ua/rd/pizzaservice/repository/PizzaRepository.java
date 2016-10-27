@@ -5,11 +5,11 @@ import ua.rd.pizzaservice.domain.Pizza;
 import java.util.List;
 
 public interface PizzaRepository {
-    List<Pizza> findAll();
+    Pizza find(Long id);
 
     List<Pizza> findAllByType(Pizza.PizzaType type);
 
-    Pizza find(Long id);
+    List<Pizza> findAll();
 
     Pizza save(Pizza pizza);
 }

@@ -29,16 +29,12 @@ public class JpaPizzaRepositoryITest extends RepositoryTestConfig {
         assertEquals(expected, actual);
     }
 
-    private Pizza initializeOnePizza() {
-        Pizza pizza = new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.SEA);
-        return pizzaRepository.save(pizza);
-    }
 
     @Test
     public void findAllByTypeTest() {
         initializeTwoPizzas();
         List<Pizza> actual = Arrays.asList(initializeOnePizza());
-        List<Pizza> expected=pizzaRepository.findAllByType(PIZZA_TYPE);
+        List<Pizza> expected = pizzaRepository.findAllByType(PIZZA_TYPE);
         assertEquals(expected, actual);
     }
 
@@ -49,16 +45,7 @@ public class JpaPizzaRepositoryITest extends RepositoryTestConfig {
         assertEquals(expected, actual);
     }
 
-    private List<Pizza> initializeTwoPizzas() {
-        Pizza pizza1 = new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT);
-        Pizza pizza2 = new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT);
-        pizza1 = pizzaRepository.save(pizza1);
-        pizza2 = pizzaRepository.save(pizza2);
-        return Arrays.asList(pizza1,pizza2);
-    }
 
-    //  @Transactional
-    //  @Rollback
     @Test
     public void saveTest() {
         Pizza pizza = new Pizza();
@@ -68,5 +55,19 @@ public class JpaPizzaRepositoryITest extends RepositoryTestConfig {
         pizza = pizzaRepository.save(pizza);
         assertNotNull(pizza);
     }
+
+    private Pizza initializeOnePizza() {
+        Pizza pizza = new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.SEA);
+        return pizzaRepository.save(pizza);
+    }
+
+    private List<Pizza> initializeTwoPizzas() {
+        Pizza pizza1 = new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT);
+        Pizza pizza2 = new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT);
+        pizza1 = pizzaRepository.save(pizza1);
+        pizza2 = pizzaRepository.save(pizza2);
+        return Arrays.asList(pizza1, pizza2);
+    }
+
 
 }

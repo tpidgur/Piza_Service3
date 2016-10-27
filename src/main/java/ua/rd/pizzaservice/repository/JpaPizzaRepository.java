@@ -14,16 +14,6 @@ public class JpaPizzaRepository implements PizzaRepository {
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-
-    public List<Pizza> findAll() {
-        return em.createNamedQuery("Pizza.findAll", Pizza.class).getResultList();
-    }
-
-    @Override
-    public List<Pizza> findAllByType(Pizza.PizzaType type) {
-        return em.createNamedQuery("Pizza.findAllByType", Pizza.class).setParameter("type",type).getResultList();
-    }
 
     @Override
     public Pizza find(Long id) {
@@ -31,9 +21,19 @@ public class JpaPizzaRepository implements PizzaRepository {
     }
 
     @Override
-    @Transactional
+    public List<Pizza> findAllByType(Pizza.PizzaType type) {
+        return em.createNamedQuery("Pizza.findAllByType", Pizza.class)
+                .setParameter("type", type).getResultList();
+    }
+
+    @Override
+    public List<Pizza> findAll() {
+        return em.createNamedQuery("Pizza.findAll", Pizza.class).getResultList();
+    }
+
+
+    @Override
     public Pizza save(Pizza pizza) {
         return em.merge(pizza);
-
     }
 }
