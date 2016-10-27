@@ -6,7 +6,7 @@ import ua.rd.pizzaservice.domain.PizzaCard;
 
 import static org.junit.Assert.*;
 
-public class JpaPizzaCardRepositoryTest extends RepositoryTestConfig {
+public class JpaPizzaCardRepositoryITest extends RepositoryTestConfig {
     @Autowired
     private PizzaCardRepository pizzaCardRepository;
 

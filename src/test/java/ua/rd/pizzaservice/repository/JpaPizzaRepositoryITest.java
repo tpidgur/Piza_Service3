@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @Rollback
-public class JpaPizzaRepositoryIT extends RepositoryTestConfig {
+public class JpaPizzaRepositoryITest extends RepositoryTestConfig {
     public static final Long PIZZA_ID = new Long(1);
     public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
     public static final BigDecimal PIZZA_PRICE2 = new BigDecimal(1);

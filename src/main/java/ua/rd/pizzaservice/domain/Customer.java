@@ -8,7 +8,9 @@ import java.io.Serializable;
 @Table(name = "customers")
 @NamedQueries({
         @NamedQuery(name = "Customer.findAll", query = "SELECT c from Customer c"),
-        @NamedQuery(name = "Customer.findByName", query = "SELECT c from Customer c WHERE c.name=:name")})
+        @NamedQuery(name = "Customer.findByName", query = "SELECT c from Customer c WHERE c.name=:name"),
+        @NamedQuery(name = "Customer.deleteAll", query = "delete  from Customer с")
+})
 public class Customer implements Serializable {
     @TableGenerator(name = "Customer_Gen",
             table = "ID_GEN",
@@ -19,12 +21,16 @@ public class Customer implements Serializable {
     @Id
     @GeneratedValue(generator = "Customer_Gen")
     private Long id;
+
     @Column(nullable = false)
     private String name;
-    private String address;
 
-    @OneToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "PCard_ID")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "card_id")
     private PizzaCard card;
 
     public Customer() {
@@ -34,6 +40,11 @@ public class Customer implements Serializable {
         this.name = name;
     }
 
+    public Customer(String name, Address address, PizzaCard card) {
+        this.name = name;
+        this.address = address;
+        this.card = card;
+    }
 
     public void createNewCardIfNotExist() {
         if (!hasCard()) {
@@ -67,11 +78,11 @@ public class Customer implements Serializable {
     }
 
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

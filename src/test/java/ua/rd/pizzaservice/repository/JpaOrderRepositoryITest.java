@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Rollback
-public class JpaOrderRepositoryTest extends RepositoryTestConfig {
+public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
     public static final BigDecimal PIZZA_PRICE2 = new BigDecimal(1);
 

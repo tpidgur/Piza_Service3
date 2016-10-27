@@ -12,4 +12,6 @@ public interface CustomerRepository {
     Customer find(Long id);
 
     Customer save(Customer customer);
+
+    void delete();
 }
