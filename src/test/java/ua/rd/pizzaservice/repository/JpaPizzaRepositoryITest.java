@@ -1,59 +1,57 @@
 package ua.rd.pizzaservice.repository;
 
+import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import ua.rd.pizzaservice.domain.Pizza;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-@Rollback
+
 public class JpaPizzaRepositoryITest extends RepositoryTestConfig {
-    public static final Long PIZZA_ID = new Long(1);
     public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
     public static final BigDecimal PIZZA_PRICE2 = new BigDecimal(1);
     public static final Pizza.PizzaType PIZZA_TYPE = Pizza.PizzaType.SEA;
     @Autowired
     private PizzaRepository pizzaRepository;
 
+    @After
+    public void intialTune() {
+        pizzaRepository.delete();
+    }
 
     @Test
     public void findTest() {
-        Pizza actual = initializeOnePizza();
-        Pizza expected = pizzaRepository.find(actual.getId());
-        assertEquals(expected, actual);
+        Pizza expected = initializeOnePizza();
+        Pizza actual = pizzaRepository.find(expected.getId());
+        assertEquals(actual, expected);
     }
 
 
     @Test
     public void findAllByTypeTest() {
         initializeTwoPizzas();
-        List<Pizza> actual = Arrays.asList(initializeOnePizza());
-        List<Pizza> expected = pizzaRepository.findAllByType(PIZZA_TYPE);
-        assertEquals(expected, actual);
+        List<Pizza> expected = Arrays.asList(initializeOnePizza());
+        List<Pizza> actual = pizzaRepository.findAllByType(PIZZA_TYPE);
+        assertEquals(actual, expected);
     }
 
     @Test
     public void findAllTest() {
-        List<Pizza> actual = initializeTwoPizzas();
-        List<Pizza> expected = pizzaRepository.findAll();
-        assertEquals(expected, actual);
+        List<Pizza> expected = initializeTwoPizzas();
+        List<Pizza> actual = pizzaRepository.findAll();
+        assertEquals(actual, expected);
     }
 
 
     @Test
     public void saveTest() {
-        Pizza pizza = new Pizza();
-        pizza.setName("Sea");
-        pizza.setType(Pizza.PizzaType.SEA);
-        pizza.setPrice(new BigDecimal(10));
-        pizza = pizzaRepository.save(pizza);
-        assertNotNull(pizza);
+        Pizza pizza = initializeOnePizza();
+        assertNotNull(pizza.getId());
     }
 
     private Pizza initializeOnePizza() {
@@ -62,10 +60,10 @@ public class JpaPizzaRepositoryITest extends RepositoryTestConfig {
     }
 
     private List<Pizza> initializeTwoPizzas() {
-        Pizza pizza1 = new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT);
-        Pizza pizza2 = new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT);
-        pizza1 = pizzaRepository.save(pizza1);
-        pizza2 = pizzaRepository.save(pizza2);
+        Pizza pizza1 = pizzaRepository.save(
+                new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT));
+        Pizza pizza2 = pizzaRepository.save(
+                new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
         return Arrays.asList(pizza1, pizza2);
     }
 

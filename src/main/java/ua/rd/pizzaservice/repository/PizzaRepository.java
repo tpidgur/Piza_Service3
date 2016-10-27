@@ -12,4 +12,6 @@ public interface PizzaRepository {
     List<Pizza> findAll();
 
     Pizza save(Pizza pizza);
+
+    void delete();
 }

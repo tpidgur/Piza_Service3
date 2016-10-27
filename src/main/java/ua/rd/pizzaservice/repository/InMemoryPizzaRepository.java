@@ -24,17 +24,7 @@ public class InMemoryPizzaRepository implements PizzaRepository {
         pizzas.add(new Pizza("Sea Pizza", new BigDecimal(3), Pizza.PizzaType.SEA));
     }
 
-    public List<Pizza> findAll() {
-        return pizzas;
-    }
-
-    @Override
-    public List<Pizza> findAllByType(Pizza.PizzaType type) {
-        throw new IllegalArgumentException("Not realized method yet!");
-    }
-
     @BenchMark
-
     public Pizza find(Long pizzaId) {
         //  return pizzas.stream().filter(e->e.getId().equals(id)).findAny().orElse(null);
         Iterator<Pizza> iter = pizzas.iterator();
@@ -47,13 +37,25 @@ public class InMemoryPizzaRepository implements PizzaRepository {
         return null;
     }
 
+
     @Override
-    public Pizza save(Pizza pizza) {
-        return null;
+    public List<Pizza> findAllByType(Pizza.PizzaType type) {
+        throw new IllegalArgumentException("Not realized method yet!");
     }
 
-    public void setPizzas(List<Pizza> pizzas) {
-        this.pizzas = pizzas;
+    public List<Pizza> findAll() {
+        return pizzas;
     }
+
+    @Override
+    public Pizza save(Pizza pizza) {
+        throw new IllegalArgumentException("Yet not realized");
+    }
+
+    @Override
+    public void delete() {
+        throw new IllegalArgumentException("Yet not realized");
+    }
+
 
 }

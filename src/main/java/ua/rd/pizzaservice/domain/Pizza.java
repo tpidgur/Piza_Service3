@@ -1,9 +1,6 @@
 package ua.rd.pizzaservice.domain;
 
 
-import org.springframework.context.annotation.Scope;
-
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,7 +10,8 @@ import java.math.BigDecimal;
 @Table(name = "pizzas")
 @NamedQueries({
         @NamedQuery(name = "Pizza.findAll", query = "SELECT p FROM Pizza p"),
-        @NamedQuery(name = "Pizza.findAllByType", query = "SELECT p FROM Pizza p WHERE p.type=:type")
+        @NamedQuery(name = "Pizza.findAllByType", query = "SELECT p FROM Pizza p WHERE p.type=:type"),
+        @NamedQuery(name = "Pizza.deleteAll", query = "delete  from Pizza p")
 })
 public class Pizza implements Serializable {
     @TableGenerator(name = "Pizza_Gen",

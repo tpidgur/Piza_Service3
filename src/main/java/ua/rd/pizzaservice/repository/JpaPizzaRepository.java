@@ -41,4 +41,9 @@ public class JpaPizzaRepository implements PizzaRepository {
         }
         return pizza;
     }
+
+    @Override
+    public void delete() {
+        em.createNamedQuery("Pizza.deleteAll").executeUpdate();
+    }
 }
