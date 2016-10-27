@@ -2,6 +2,7 @@ package ua.rd.pizzaservice.repository;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import ua.rd.pizzaservice.domain.Pizza;
 
 import java.math.BigDecimal;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-
+@Rollback
 public class JpaPizzaRepositoryIT extends RepositoryTestConfig {
     public static final Long PIZZA_ID = new Long(1);
     public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
@@ -36,7 +37,7 @@ public class JpaPizzaRepositoryIT extends RepositoryTestConfig {
     @Test
     public void findAllByTypeTest() {
         initializeTwoPizzas();
-        List<Pizza> actual = new ArrayList<>(Arrays.asList(initializeOnePizza()));
+        List<Pizza> actual = Arrays.asList(initializeOnePizza());
         List<Pizza> expected=pizzaRepository.findAllByType(PIZZA_TYPE);
         assertEquals(expected, actual);
     }
@@ -53,7 +54,7 @@ public class JpaPizzaRepositoryIT extends RepositoryTestConfig {
         Pizza pizza2 = new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT);
         pizza1 = pizzaRepository.save(pizza1);
         pizza2 = pizzaRepository.save(pizza2);
-        return new ArrayList<>(Arrays.asList(pizza1,pizza2));
+        return Arrays.asList(pizza1,pizza2);
     }
 
     //  @Transactional

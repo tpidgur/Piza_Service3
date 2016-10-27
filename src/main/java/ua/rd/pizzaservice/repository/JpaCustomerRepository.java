@@ -31,6 +31,8 @@ public class JpaCustomerRepository implements CustomerRepository {
 
     @Override
     public Customer save(Customer customer) {
+        System.out.println(customer);
+        System.out.println(em);
         return em.merge(customer);
     }
 }
