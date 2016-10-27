@@ -9,9 +9,9 @@ public interface PizzaCardRepository {
 
     PizzaCard find(Long id);
 
-    List<PizzaCard> findAllByCustomer(Customer customer);
-
     List<PizzaCard> findAll();
 
     PizzaCard save(PizzaCard card);
+
+    void delete();
 }

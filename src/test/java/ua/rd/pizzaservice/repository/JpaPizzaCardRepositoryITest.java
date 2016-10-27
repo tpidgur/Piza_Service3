@@ -1,14 +1,24 @@
 package ua.rd.pizzaservice.repository;
 
+import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.domain.PizzaCard;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class JpaPizzaCardRepositoryITest extends RepositoryTestConfig {
     @Autowired
     private PizzaCardRepository pizzaCardRepository;
+
+    @After
+    public void intialTune() {
+        pizzaCardRepository.delete();
+    }
 
     @Test
     public void findTest() {
@@ -17,14 +27,12 @@ public class JpaPizzaCardRepositoryITest extends RepositoryTestConfig {
         assertEquals(expected, actual);
     }
 
-    @Test
-    public void findAllByCustomerTest() {
-//not realized yet
-    }
 
     @Test
     public void findAllTest() {
-
+        List<PizzaCard> expected = initializeTwoCards();
+        List<PizzaCard> actual = pizzaCardRepository.findAll();
+        assertEquals(actual, expected);
     }
 
 
@@ -35,9 +43,13 @@ public class JpaPizzaCardRepositoryITest extends RepositoryTestConfig {
     }
 
     private PizzaCard initializeOnePizzaCard() {
-        PizzaCard actual = new PizzaCard();
-        actual = pizzaCardRepository.save(actual);
-        return actual;
+        return pizzaCardRepository.save(new PizzaCard());
+    }
+
+    private List<PizzaCard> initializeTwoCards() {
+        PizzaCard card1 = pizzaCardRepository.save(new PizzaCard());
+        PizzaCard card2 = pizzaCardRepository.save(new PizzaCard());
+        return Arrays.asList(card1, card2);
     }
 
 

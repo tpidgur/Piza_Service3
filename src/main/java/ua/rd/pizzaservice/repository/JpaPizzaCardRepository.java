@@ -18,10 +18,6 @@ public class JpaPizzaCardRepository implements PizzaCardRepository {
         return em.find(PizzaCard.class, id);
     }
 
-    @Override
-    public List<PizzaCard> findAllByCustomer(Customer customer) {
-        throw new IllegalArgumentException("Not realized yet!");
-    }
 
     @Override
     public List<PizzaCard> findAll() {
@@ -32,5 +28,10 @@ public class JpaPizzaCardRepository implements PizzaCardRepository {
     @Override
     public PizzaCard save(PizzaCard card) {
         return em.merge(card);
+    }
+
+    @Override
+    public void delete() {
+        em.createNamedQuery("PizzaCard.deleteAll").executeUpdate();
     }
 }

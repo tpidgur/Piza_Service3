@@ -13,7 +13,8 @@ import java.math.BigDecimal;
 //@Scope("prototype")
 @Table(name ="pizzaCards")
 @NamedQueries({
-        @NamedQuery(name = "PizzaCard.findAll", query = "SELECT pc from PizzaCard pc")})
+        @NamedQuery(name = "PizzaCard.findAll", query = "SELECT pc from PizzaCard pc"),
+        @NamedQuery(name = "PizzaCard.deleteAll", query = "delete  from PizzaCard pс")})
 public class PizzaCard implements Serializable {
     @TableGenerator(name = "Pizza_Card_Gen",
             table = "ID_GEN",
