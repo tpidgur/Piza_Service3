@@ -25,7 +25,7 @@ public class Pizza implements Serializable {
     private Long id;
 
     private String name;
-    @Column(precision=1, scale =0)
+    //@Column(precision=1, scale =0)
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)

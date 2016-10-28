@@ -22,8 +22,8 @@ import static org.mockito.Mockito.mock;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"/H2WithSpringJPA.xml"})
 public class SimplePizzaServiceITest {
-    public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
-    public static final BigDecimal PIZZA_PRICE2 = new BigDecimal(1);
+    public static final BigDecimal PIZZA_PRICE1 =BigDecimal.TEN;
+    public static final BigDecimal PIZZA_PRICE2 = BigDecimal.ONE;
     @Autowired
     private PizzaService pizzaService;
     @Autowired
@@ -37,7 +37,7 @@ public class SimplePizzaServiceITest {
     @Test
     public void findTest() {
         Pizza pizza=initializeOnePizza();
-        assertThat(pizzaService.find(pizza.getId()), is(pizza));
+        assertThat(pizzaService.find(pizza.getId()).getId(), is(pizza.getId()));
     }
 
     private Pizza initializeOnePizza() {
