@@ -1,5 +1,7 @@
 package ua.rd.pizzaservice.services;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
@@ -26,16 +29,17 @@ public class SimplePizzaServiceITest {
     @Autowired
     private PizzaRepository pizzaRepository;
 
+    @Before
+    public void init() {
+        initializeTwoPizzas();
+    }
 
     @Test
     public void findTest() {
         Pizza pizza=initializeOnePizza();
-        System.out.println("1.Pizza "+pizza);
-        System.out.println("2.List of two pizza: "+initializeTwoPizzas());
-        System.out.println("find 1"+pizzaService.find(new Long(1)));
-
-
+        assertThat(pizzaService.find(pizza.getId()), is(pizza));
     }
+
     private Pizza initializeOnePizza() {
         Pizza pizza = new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.SEA);
         return pizzaRepository.save(pizza);
@@ -43,7 +47,7 @@ public class SimplePizzaServiceITest {
 
     private List<Pizza> initializeTwoPizzas() {
         Pizza pizza1 = pizzaRepository.save(
-                new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT));
+                new Pizza("Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT));
         Pizza pizza2 = pizzaRepository.save(
                 new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
         return Arrays.asList(pizza1, pizza2);
