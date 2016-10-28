@@ -2,6 +2,10 @@ package ua.rd.pizzaservice.services;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.repository.InMemoryOrderRepository;
@@ -12,8 +16,10 @@ import java.util.stream.IntStream;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({"/repoContext.xml","/appContext.xml"})
 public class SimpleOrderServiceTest {
+    @Autowired
     private SimpleOrderService simpleOrderService;
     private final long PIZZA_ID = 1;
 
@@ -21,10 +27,11 @@ public class SimpleOrderServiceTest {
     public void initializeOrder() {
         InMemoryPizzaRepository inMemoryPizzaRepository = new InMemoryPizzaRepository();
         inMemoryPizzaRepository.init();
-        SimpleDiscountService discountService=new SimpleDiscountService();
-        simpleOrderService = new SimpleOrderService(new InMemoryOrderRepository(),
-                new SimplePizzaService(inMemoryPizzaRepository), discountService);
+       // SimpleDiscountService discountService=new SimpleDiscountService();
+//        simpleOrderService = new SimpleOrderService(new InMemoryOrderRepository(),
+//                new SimplePizzaService(inMemoryPizzaRepository), discountService);
     }
+
 
     @Test(expected = RuntimeException.class)
     public void placeNewOrderTest() {
@@ -32,6 +39,7 @@ public class SimpleOrderServiceTest {
     }
 
     private Order generateNewOrder(int pizzasNumber) {
+        System.out.println("SimpleOrderservice created "+simpleOrderService);
         return simpleOrderService.placeNewOrder(new Customer("Ivan"),
                 generatePizzasId(pizzasNumber));
     }

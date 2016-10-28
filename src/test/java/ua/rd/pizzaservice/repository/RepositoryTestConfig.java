@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:inMemoryRepoContext.xml"})
+@ContextConfiguration(locations = {"classpath:H2InMemoryRepoContext.xml"})
 @Rollback(false)
 //@ContextConfiguration(locations = {"classpath:/repoContext.xml"})
 public class RepositoryTestConfig extends AbstractTransactionalJUnit4SpringContextTests {

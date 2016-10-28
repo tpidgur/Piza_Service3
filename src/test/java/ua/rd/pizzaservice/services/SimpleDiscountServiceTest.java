@@ -45,7 +45,6 @@ public class SimpleDiscountServiceTest {
     }
 
     private BigDecimal getTotalDiscount(Discount discount) {
-        System.out.println(discount.isLiableToDiscount(order)+""+discount);
         return (discount.isLiableToDiscount(order)) ? discount.calculateDiscount(order) : new BigDecimal(0);
     }
 
