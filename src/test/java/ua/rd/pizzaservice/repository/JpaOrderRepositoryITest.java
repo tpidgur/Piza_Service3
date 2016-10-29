@@ -4,9 +4,7 @@ package ua.rd.pizzaservice.repository;
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.Order;
-import ua.rd.pizzaservice.domain.Pizza;
+import ua.rd.pizzaservice.domain.*;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -24,14 +22,16 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private JpaCustomerRepository customerRepository;
-
-
-    @After
-    public void intialTune() {
-        orderRepository.delete();
-        customerRepository.delete();
-    }
+    private CustomerRepository customerRepository;
+    @Autowired
+    private PizzaRepository pizzaRepository;
+//
+//    @After
+//    public void intialTune() {
+//        orderRepository.delete();
+//        customerRepository.delete();
+//
+//    }
 
     @Test
     public void findTest() {
@@ -53,6 +53,7 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     @Test
     public void findAllTest() {
         List<Order> actual = initializeTwoOrdersWithSameCustomer();
+        System.out.println(actual);
         List<Order> expected = orderRepository.findAll();
         assertEquals(expected, actual);
     }
@@ -64,9 +65,12 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     }
 
     public Order initializeOneOrder() {
+
         Map<Pizza, Integer> pizzas = new HashMap<>();
-        pizzas.put(new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT), 1);
-        pizzas.put(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT), 4);
+        Pizza pizza1 = pizzaRepository.save(new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT));
+        Pizza pizza2 = pizzaRepository.save(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
+        pizzas.put(pizza1, 1);
+        pizzas.put(pizza2, 4);
         Order order = new Order(pizzas, new Customer("Ivan"));
         return orderRepository.save(order);
 //        return orderRepository.save(new Order(new Customer("Ivan"), Arrays.asList
@@ -80,17 +84,33 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     public List<Order> initializeTwoOrdersWithSameCustomer() {
         Customer customer = customerRepository.save(new Customer("Iren"));
         Map<Pizza, Integer> pizzas1 = new HashMap<>();
-        pizzas1.put(new Pizza("Bavarian", PIZZA_PRICE1, Pizza.PizzaType.MEAT), 1);
-        Order order1 = new Order(pizzas1, new Customer("Ivan"));
+        Pizza pizza1 = pizzaRepository.save(new Pizza("Bavarian", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
+        pizzas1.put(pizza1, 1);
+        Order order1 = orderRepository.save(new Order(pizzas1, customer));
 
         Map<Pizza, Integer> pizzas2 = new HashMap<>();
-        pizzas2.put(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT), 1);
-        Order order2 = new Order(pizzas2, new Customer("Ivan"));
+        Pizza pizza2 = pizzaRepository.save(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
+        pizzas2.put(pizza2, 1);
+        Order order2 = orderRepository.save(new Order(pizzas2, customer));
 //        Order order1 = orderRepository.save(new Order(customer, Arrays.asList
 //                (new Pizza("Bavarian", PIZZA_PRICE1, Pizza.PizzaType.MEAT))));
 //        Order order2 = orderRepository.save(new Order(customer, Arrays.asList
 //                (new Pizza("Bavarian", PIZZA_PRICE1, Pizza.PizzaType.MEAT))));
         return Arrays.asList(order1, order2);
     }
+//    @Test
+//    public void initializeTwoOrdersWithSameCus() {
+////        Customer customer1 = customerRepository.save(new Customer("Kruk Oleg",
+////                new Address("c.Lutsk, Gromova 50, fl.40"), new PizzaCard()));
+//        Customer customer = customerRepository.save(new Customer("Iren"));
+//        Map<Pizza, Integer> pizzas1 = new HashMap<>();
+//        pizzas1.put(new Pizza("Bavarian", PIZZA_PRICE1, Pizza.PizzaType.MEAT), 1);
+//        Order order1 = new Order(pizzas1, new Customer("Ivan"));
+//
+//        Map<Pizza, Integer> pizzas2 = new HashMap<>();
+//        pizzas2.put(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT), 1);
+//        Order order2 = new Order(pizzas2, new Customer("Ivan"));
+//
+//    }
 
 }
