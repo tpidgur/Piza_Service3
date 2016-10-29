@@ -7,9 +7,8 @@ import ua.rd.pizzaservice.infrastructure.BenchMark;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 
 @Component
@@ -32,11 +31,17 @@ public class Order implements Serializable {
     @GeneratedValue(generator = "Order_Gen")
     private Long id;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "PizzasList",
-            joinColumns = @JoinColumn(name = "Order_ID"),
-            inverseJoinColumns = @JoinColumn(name = "Pizza_ID"))
-    private List<Pizza> pizzas;
+    //    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JoinTable(name = "PizzasList",
+//            joinColumns = @JoinColumn(name = "Order_ID"),
+//            inverseJoinColumns = @JoinColumn(name = "Pizza_ID"))
+//    private List<Pizza> pizzas;
+
+    @ElementCollection
+    @CollectionTable(name = "pizzasAmount")
+    @MapKeyJoinColumn(name = "pizza_id", referencedColumnName = "id")
+    @Column(name = "quantity")
+    private Map<Pizza, Integer> pizzas = new HashMap<>();
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "Customer_ID")
@@ -44,7 +49,10 @@ public class Order implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private Status status;
-
+    @Column(name = "date")
+    private LocalDate date;
+    @OneToOne
+    private Address address;
 
     public enum Status {
         NEW, IN_PROGRESS, CANCELLED, DONE
@@ -53,37 +61,57 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Customer customer, List<Pizza> pizzas) {
+//    public Order(Customer customer, List<Pizza> pizzas) {
+//        this.pizzas = pizzas;
+//        this.customer = customer;
+//        this.status = Status.NEW;
+//
+//    }
+
+
+    public Order(Map<Pizza, Integer> pizzas, Customer customer) {
         this.pizzas = pizzas;
         this.customer = customer;
-        this.status = Status.NEW;
-
     }
-
 
     public BigDecimal calculateTotalPrice() {
-        return pizzas.stream().map(j -> j.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal result=BigDecimal.ZERO;
+        Iterator<Map.Entry<Pizza,Integer>> itr=pizzas.entrySet().iterator();
+        while (itr.hasNext()){
+            Map.Entry<Pizza,Integer> entry=itr.next();
+            result= result.add(entry.getKey().getPrice().multiply(new BigDecimal(entry.getValue())));
+        }
+       return result;
+//        return pizzas.stream().map(j -> j.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 
-    public void addAdditionalPizzas(List<Pizza> pizzasListById) {
-        pizzas.addAll(pizzasListById);
-    }
+//    public void addAdditionalPizzas(List<Pizza> pizzasListById) {
+//        pizzas.addAll(pizzasListById);
+//    }
 
     public Long getId() {
         return id;
     }
 
 
-    public void setId (Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public List<Pizza> getPizzas() {
+//    public List<Pizza> getPizzas() {
+//        return pizzas;
+//    }
+//
+//    public void setPizzas(List<Pizza> pizzas) {
+//        this.pizzas = pizzas;
+//    }
+
+    public Map<Pizza, Integer> getPizzas() {
         return pizzas;
     }
 
-    public void setPizzas(List<Pizza> pizzas) {
+    public void setPizzas(Map<Pizza, Integer> pizzas) {
         this.pizzas = pizzas;
     }
 

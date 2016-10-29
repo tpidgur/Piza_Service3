@@ -10,6 +10,8 @@ import ua.rd.pizzaservice.domain.*;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
@@ -31,12 +33,16 @@ public class SimpleDiscountServiceITest {
 
     @Before
     public void initializeOrderInstance() {
-        order = new Order(new Customer("Ivan"), asList
-                (new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT),
-                        new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT),
-                        new Pizza("Greek Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETERIAN),
-                        new Pizza("Sea Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA),
-                        new Pizza("Sea Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA)));
+        Map<Pizza, Integer> pizzas = new HashMap<>();
+        pizzas.put(new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT), 1);
+        pizzas.put(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT), 4);
+        order = new Order(pizzas,new Customer("Ivan"));
+//        order = new Order(new Customer("Ivan"), asList
+//                (new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT),
+//                        new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT),
+//                        new Pizza("Greek Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETERIAN),
+//                        new Pizza("Sea Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA),
+//                        new Pizza("Sea Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA)));
         order.getCustomer().createNewCardIfNotExist();
     }
 

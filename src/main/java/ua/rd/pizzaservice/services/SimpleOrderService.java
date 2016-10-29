@@ -12,8 +12,7 @@ import ua.rd.pizzaservice.infrastructure.BenchMark;
 import ua.rd.pizzaservice.repository.OrderRepository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class SimpleOrderService implements OrderService, ApplicationContextAware {
@@ -36,19 +35,42 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     public void setApplicationContext(ApplicationContext context) throws BeansException {
         this.context = context;
     }
+
     @BenchMark
     public Order placeNewOrder(Customer customer, Long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
         Order order = createNewOrder();
-               // new Order(customer, convertIdsArrayInListOfPizzas(pizzasID));
+        // new Order(customer, convertIdsArrayInListOfPizzas(pizzasID));
         order.setCustomer(customer);
-        order.setPizzas(convertIdsArrayInListOfPizzas(pizzasID));
-        orderRepository.save(order);
+        order.setPizzas(convertIdMapInPizzaMap(convertIdListInIdMap(Arrays.asList(pizzasID))));
+
+        Order newOrder = orderRepository.save(order);
         createNewCardIfNotExist(order);
-        return order;
+        return newOrder;
     }
 
-@BenchMark
+    private Map<Long, Integer> convertIdListInIdMap(List pizzasID) {
+        Map<Long, Integer> pizzaIdQuantity = new HashMap<>();
+        Set<Long> uniqueSet = new HashSet<>(pizzasID);
+        for (Long item : uniqueSet) {
+            if (!pizzaIdQuantity.containsKey(item)) {
+                pizzaIdQuantity.put(item, Collections.frequency(pizzasID, item));
+            }
+        }
+        return pizzaIdQuantity;
+    }
+
+    private Map<Pizza, Integer> convertIdMapInPizzaMap(Map<Long, Integer> pizzaIds) {
+        Map<Pizza, Integer> pizzas = new HashMap<>();
+        pizzaIds.forEach((s, integer) -> pizzas.put(findPizaById(s), integer));
+        return pizzas;
+    }
+
+    public Order saveOrder(Order order) {
+        return orderRepository.save(order);
+    }
+
+    @BenchMark
     private void isPizzasAmountLessThanMaxAllowable(int pizzaNumber) {
         if (pizzaNumber > MAX_PIZZAS_AMOUNT) {
             throw new RuntimeException("The chosen amount of pizzas" +
@@ -68,12 +90,11 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         return pizzaService.find(id);
     }
 
-@BenchMark
+    @BenchMark
     private void createNewCardIfNotExist(Order order) {
         if (order.getCustomer() != null) {
             order.getCustomer().createNewCardIfNotExist();
         }
-
     }
 
 
@@ -107,20 +128,19 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     }
 
     private BigDecimal calculateTotalPriceWithAllDiscounts(Order order) {
-       // discountService.init();
         BigDecimal discounts = discountService.calculateTotalDiscount(order);
         BigDecimal totalPrice = order.calculateTotalPrice();
         return totalPrice.subtract(discounts);
     }
 
 
-    //варто перевірити,що статус не закритий у завки
-    public void addPizzasToExistingOrder(long orderId, Long... pizzasID) {
-        Order order = findOrderById(orderId);
-        isPizzasAmountLessThanMaxAllowable(order.getPizzas().size() + pizzasID.length);
-        convertIdsArrayInListOfPizzas(pizzasID);
-        order.addAdditionalPizzas(convertIdsArrayInListOfPizzas(pizzasID));
-    }
+//    //варто перевірити,що статус не закритий у завки
+//    public void addPizzasToExistingOrder(long orderId, Long... pizzasID) {
+//        Order order = findOrderById(orderId);
+//        isPizzasAmountLessThanMaxAllowable(order.getPizzas().size() + pizzasID.length);
+//        convertIdsArrayInListOfPizzas(pizzasID);
+//        // order.addAdditionalPizzas(convertIdsArrayInListOfPizzas(pizzasID));
+//    }
 
 
     public Order createNewOrder() {
