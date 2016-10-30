@@ -37,7 +37,7 @@ public class Order implements Serializable {
 //            inverseJoinColumns = @JoinColumn(name = "Pizza_ID"))
 //    private List<Pizza> pizzas;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "pizzasAmount")
     @MapKeyJoinColumn(name = "pizza_id", referencedColumnName = "id")
     @Column(name = "quantity")

@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-@Repository
+//@Repository
 public class InMemoryPizzaRepository implements PizzaRepository {
     private List<Pizza> pizzas = new LinkedList<>();
 

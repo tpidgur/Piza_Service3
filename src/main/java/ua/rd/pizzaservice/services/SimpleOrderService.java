@@ -40,10 +40,8 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     public Order placeNewOrder(Customer customer, Long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
         Order order = createNewOrder();
-        // new Order(customer, convertIdsArrayInListOfPizzas(pizzasID));
         order.setCustomer(customer);
         order.setPizzas(convertIdMapInPizzaMap(convertIdListInIdMap(Arrays.asList(pizzasID))));
-
         Order newOrder = orderRepository.save(order);
         createNewCardIfNotExist(order);
         return newOrder;
@@ -62,7 +60,12 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
 
     private Map<Pizza, Integer> convertIdMapInPizzaMap(Map<Long, Integer> pizzaIds) {
         Map<Pizza, Integer> pizzas = new HashMap<>();
-        pizzaIds.forEach((s, integer) -> pizzas.put(findPizaById(s), integer));
+         pizzaIds.forEach((s, integer) -> pizzas.put(findPizaById(s), integer));
+//        Iterator<Map.Entry<Long, Integer>> itr = pizzaIds.entrySet().iterator();
+//        while (itr.hasNext()) {
+//            Map.Entry<Long, Integer> entry = itr.next();
+//            pizzas.put(findPizaById(entry.getKey()), entry.getValue());
+//        }
         return pizzas;
     }
 
