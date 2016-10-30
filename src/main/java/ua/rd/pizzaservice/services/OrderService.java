@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
-    Order placeNewOrder(Customer customer, long... pizzasID);
+    Order placeNewOrder(Customer customer, Long... pizzasID);
+
     Order findOrderById(Long orderId);
 
+    void addPizzasToExistingOrder(Long orderId, Long... pizzaId);
 }

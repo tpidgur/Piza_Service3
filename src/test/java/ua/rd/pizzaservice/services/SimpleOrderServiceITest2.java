@@ -75,7 +75,10 @@ public class SimpleOrderServiceITest2 {
 
     private Order createManyPizzaOrder(int pizzaNumber) {
         Customer customer = customerRepository.find(CUSTOMER_ID);
-        long[] pizzasIds = LongStream.range(1, 15).map(i -> 1L).toArray();
+        Long[] pizzasIds=new Long[pizzaNumber];
+        for (int i=0;i<pizzaNumber;i++){
+          pizzasIds[i]=PIZZA_ID1;
+        }
         return simpleOrderService.placeNewOrder(customer, pizzasIds);
     }
 
@@ -131,12 +134,21 @@ public class SimpleOrderServiceITest2 {
 
     @Test
     public void addPizzasToExistingOrderTest() {
-        Order order = createOrder();
-     //   simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID1);
-        int pizzasAmount = simpleOrderService.findOrderById(order.getId()).getPizzas().size();
-        assertThat(pizzasAmount, is(6));
+        Order order = placeNewSingleOrder();
+        simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID1,PIZZA_ID2);
+        int pizzasAmount = simpleOrderService.findOrderById(order.getId()).getAmountOfPizzas();
+        assertThat(pizzasAmount, is(5));
+    }
+    @Test(expected = RuntimeException.class)
+    public void addPizzasToExistingOrderTest2() {
+        Order order = createManyPizzaOrder(10);
+        simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID1);
     }
 
+    private Order placeNewSingleOrder() {
+        return simpleOrderService.placeNewOrder(customerRepository.find(CUSTOMER_ID),
+                PIZZA_ID1, PIZZA_ID1, PIZZA_ID2);
+    }
 
 
 }

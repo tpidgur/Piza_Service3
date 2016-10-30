@@ -37,7 +37,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     }
 
     @BenchMark
-    public Order placeNewOrder(Customer customer, long... pizzasID) {
+    public Order placeNewOrder(Customer customer, Long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
         Order order = createNewOrder();
         order.setCustomer(customer);
@@ -122,6 +122,15 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
 
     public Order findOrderById(Long orderId) {
         return orderRepository.find(orderId);
+    }
+
+    @Override
+    public void addPizzasToExistingOrder(Long orderId, Long... pizzaId) {
+        Order order = findOrderById(orderId);
+        isPizzasAmountLessThanMaxAllowable(order.getAmountOfPizzas() + pizzaId.length);
+        Map <Pizza, Integer> additional=convertIdMapInPizzaMap(convertIdListInIdMap(Arrays.asList(pizzaId)));
+        order.addPizzas(additional);
+        orderRepository.save(order);
     }
 
 //    //варто перевірити,що статус не закритий у завки

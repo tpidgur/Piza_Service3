@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Component
@@ -31,12 +33,6 @@ public class Order implements Serializable {
     @GeneratedValue(generator = "Order_Gen")
     private Long id;
 
-    //    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinTable(name = "PizzasList",
-//            joinColumns = @JoinColumn(name = "Order_ID"),
-//            inverseJoinColumns = @JoinColumn(name = "Pizza_ID"))
-//    private List<Pizza> pizzas;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "pizzasAmount")
     @MapKeyJoinColumn(name = "pizza_id", referencedColumnName = "id")
@@ -54,24 +50,31 @@ public class Order implements Serializable {
     @OneToOne
     private Address address;
 
-    public enum Status {
-        NEW, IN_PROGRESS, CANCELLED, DONE
-    }
-
     public Order() {
     }
-
-//    public Order(Customer customer, List<Pizza> pizzas) {
-//        this.pizzas = pizzas;
-//        this.customer = customer;
-//        this.status = Status.NEW;
-//
-//    }
 
 
     public Order(Map<Pizza, Integer> pizzas, Customer customer) {
         this.pizzas = pizzas;
         this.customer = customer;
+    }
+
+    public enum Status {
+        NEW, IN_PROGRESS, CANCELLED, DONE
+    }
+
+    public void addPizzas(Map<Pizza, Integer> additionalPizzas) {
+        pizzas = Stream.concat(pizzas.entrySet().stream(), additionalPizzas.entrySet().stream())
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey(),//The key
+                        entry -> entry.getValue(),//The value
+                        //  The merger
+                        Integer::sum
+                ));
+    }
+
+    public int getAmountOfPizzas() {
+        return pizzas.values().stream().reduce(0, Integer::sum);
     }
 
     public BigDecimal calculateTotalPrice() {
@@ -82,13 +85,8 @@ public class Order implements Serializable {
             result = result.add(entry.getKey().getPrice().multiply(new BigDecimal(entry.getValue())));
         }
         return result;
-//        return pizzas.stream().map(j -> j.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-
-//    public void addAdditionalPizzas(List<Pizza> pizzasListById) {
-//        pizzas.addAll(pizzasListById);
-//    }
 
     public Long getId() {
         return id;
@@ -99,13 +97,6 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-//    public List<Pizza> getPizzas() {
-//        return pizzas;
-//    }
-//
-//    public void setPizzas(List<Pizza> pizzas) {
-//        this.pizzas = pizzas;
-//    }
 
     public Map<Pizza, Integer> getPizzas() {
         return pizzas;
@@ -131,33 +122,6 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", pizzas=" + pizzas +
-                ", customer=" + customer +
-                ", status=" + status +
-                ", date=" + date +
-                ", address=" + address +
-                '}';
-    }
-
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//
-//        Order order = (Order) o;
-//
-//        if (id != null ? !id.equals(order.id) : order.id != null) return false;
-//        if (pizzas != null ? !pizzas.equals(order.pizzas) : order.pizzas != null) return false;
-//        if (customer != null ? !customer.equals(order.customer) : order.customer != null) return false;
-//        if (status != order.status) return false;
-//        if (date != null ? !date.equals(order.date) : order.date != null) return false;
-//        return address != null ? address.equals(order.address) : order.address == null;
-//    }
 
     @Override
     public boolean equals(Object o) {
@@ -168,11 +132,10 @@ public class Order implements Serializable {
 
         if (id != null ? !id.equals(order.id) : order.id != null) return false;
         if (pizzas != null ? !pizzas.equals(order.pizzas) : order.pizzas != null) return false;
-       if (customer != null ? !customer.equals(order.customer) : order.customer != null) return false;
+        if (customer != null ? !customer.equals(order.customer) : order.customer != null) return false;
         if (status != order.status) return false;
         if (date != null ? !date.equals(order.date) : order.date != null) return false;
         return address != null ? address.equals(order.address) : order.address == null;
-       // return true;
     }
 
     @Override
@@ -184,6 +147,18 @@ public class Order implements Serializable {
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", pizzas=" + pizzas +
+                ", customer=" + customer +
+                ", status=" + status +
+                ", date=" + date +
+                ", address=" + address +
+                '}';
     }
 
 }
