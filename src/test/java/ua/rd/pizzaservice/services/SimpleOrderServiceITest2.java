@@ -15,6 +15,7 @@ import ua.rd.pizzaservice.repository.OrderRepository;
 import ua.rd.pizzaservice.repository.PizzaRepository;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.LongStream;
@@ -25,9 +26,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"/H2WithSpringJPA.xml"})
 public class SimpleOrderServiceITest2 {
-    public static final long PIZZA_ID1 = 1L;
-    public static final long PIZZA_ID2 = 2L;
-    public static final long CUSTOMER_ID = 1L;
+
     @Autowired
     private SimpleOrderService simpleOrderService;
     @Autowired
@@ -40,6 +39,16 @@ public class SimpleOrderServiceITest2 {
     private static PizzaRepository pizzaRepository;
     private static CustomerRepository customerRepository;
 
+    public static final long PIZZA_ID1 = 1L;
+    public static final long PIZZA_ID2 = 2L;
+    public static final long PIZZA_ID3 = 3l;
+
+
+    public static final int AMOUNT1 = 1;
+    public static final int AMOUNT2 = 2;
+    public static final int AMOUNT3 = 3;
+
+    public static final long CUSTOMER_ID = 1L;
     public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
 
 
@@ -61,46 +70,73 @@ public class SimpleOrderServiceITest2 {
 
     @Test(expected = RuntimeException.class)
     public void placeNewOrderWithExceptionTest() {
-        generateNewOrder(15);
+        createManyPizzaOrder(15);
     }
+
+    private Order createManyPizzaOrder(int pizzaNumber) {
+        Customer customer = customerRepository.find(CUSTOMER_ID);
+        long[] pizzasIds = LongStream.range(1, 15).map(i -> 1L).toArray();
+        return simpleOrderService.placeNewOrder(customer, pizzasIds);
+    }
+
 
     @Test
     public void placeNewOrder() {
         Order actual = simpleOrderService.placeNewOrder(customerRepository.find(CUSTOMER_ID),
-                1l, 1l, 2l);
-        Order expected = createOneOrder();
-        expected.setId(actual.getId());//without
+                PIZZA_ID1, PIZZA_ID1, PIZZA_ID2);
+        Order expected = createOrder();
+        expected.setId(actual.getId());
         assertThat(actual, is(expected));
     }
 
-    private Order createOneOrder() {
+    private Order createOrder() {
         Map<Pizza, Integer> pizzas = new HashMap();
-        pizzas.put(pizzaRepository.find(PIZZA_ID1), 2);
-        pizzas.put(pizzaRepository.find(PIZZA_ID2), 1);
+        pizzas.put(pizzaRepository.find(PIZZA_ID1), AMOUNT2);
+        pizzas.put(pizzaRepository.find(PIZZA_ID2), AMOUNT1);
         Customer customer = customerRepository.find(CUSTOMER_ID);
         return new Order(pizzas, customer);
     }
 
+    @Test
+    public void convertIdListInIdMapTest() {
+        Map<Long, Integer> actual = simpleOrderService.convertIdListInIdMap(
+                Arrays.asList(PIZZA_ID1, PIZZA_ID1, PIZZA_ID1, PIZZA_ID2, PIZZA_ID2, PIZZA_ID3));
+        Map<Long, Integer> expected = getMapOfIdsWithTheirQuantites();
+        assertThat(actual, is(expected));
+    }
+
+    private Map<Long, Integer> getMapOfIdsWithTheirQuantites() {
+        Map<Long, Integer> expected = new HashMap<>();
+        expected.put(PIZZA_ID1, AMOUNT3);
+        expected.put(PIZZA_ID2, AMOUNT2);
+        expected.put(PIZZA_ID3, AMOUNT1);
+        return expected;
+    }
 
     @Test
-    public void changeStatusTest() {
-        Order order = generateNewOrder(5);
-        simpleOrderService.changeStatus(order.getId(), Order.Status.IN_PROGRESS);
-        Order.Status newStatus = order.getStatus();
-        assertThat(newStatus, is(Order.Status.IN_PROGRESS));
+    public void convertIdMapInPizzaMapTest() {
+        Map<Pizza, Integer> actual = simpleOrderService
+                .convertIdMapInPizzaMap(getMapOfIdsWithTheirQuantites());
+        Map<Pizza, Integer> expected = getMapOfPizzasWithTheirQuantities();
+        assertThat(actual, is(expected));
     }
 
-
-    private Order generateNewOrder(int pizzasNumber) {
-        return simpleOrderService.placeNewOrder(new Customer("Ivan"),
-                generatePizzasId(pizzasNumber));
+    private Map<Pizza, Integer> getMapOfPizzasWithTheirQuantities() {
+        Map<Pizza, Integer> expected = new HashMap<>();
+        expected.put(pizzaRepository.find(PIZZA_ID1), AMOUNT3);
+        expected.put(pizzaRepository.find(PIZZA_ID2), AMOUNT2);
+        expected.put(pizzaRepository.find(PIZZA_ID3), AMOUNT1);
+        return expected;
     }
 
-    private Long[] generatePizzasId(int number) {
-        Long[] pizzasIDs = new Long[number];
-        LongStream.range(0, pizzasIDs.length).forEach(i -> pizzasIDs[(int) i] = PIZZA_ID1);
-        return pizzasIDs;
+    @Test
+    public void addPizzasToExistingOrderTest() {
+        Order order = createOrder();
+     //   simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID1);
+        int pizzasAmount = simpleOrderService.findOrderById(order.getId()).getPizzas().size();
+        assertThat(pizzasAmount, is(6));
     }
+
 
 
 }

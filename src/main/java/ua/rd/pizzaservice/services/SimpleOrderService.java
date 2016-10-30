@@ -37,7 +37,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     }
 
     @BenchMark
-    public Order placeNewOrder(Customer customer, Long... pizzasID) {
+    public Order placeNewOrder(Customer customer, long... pizzasID) {
         isPizzasAmountLessThanMaxAllowable(pizzasID.length);
         Order order = createNewOrder();
         order.setCustomer(customer);
@@ -45,32 +45,6 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         Order newOrder = orderRepository.save(order);
         createNewCardIfNotExist(order);
         return newOrder;
-    }
-
-    private Map<Long, Integer> convertIdListInIdMap(List pizzasID) {
-        Map<Long, Integer> pizzaIdQuantity = new HashMap<>();
-        Set<Long> uniqueSet = new HashSet<>(pizzasID);
-        for (Long item : uniqueSet) {
-            if (!pizzaIdQuantity.containsKey(item)) {
-                pizzaIdQuantity.put(item, Collections.frequency(pizzasID, item));
-            }
-        }
-        return pizzaIdQuantity;
-    }
-
-    private Map<Pizza, Integer> convertIdMapInPizzaMap(Map<Long, Integer> pizzaIds) {
-        Map<Pizza, Integer> pizzas = new HashMap<>();
-         pizzaIds.forEach((s, integer) -> pizzas.put(findPizaById(s), integer));
-//        Iterator<Map.Entry<Long, Integer>> itr = pizzaIds.entrySet().iterator();
-//        while (itr.hasNext()) {
-//            Map.Entry<Long, Integer> entry = itr.next();
-//            pizzas.put(findPizaById(entry.getKey()), entry.getValue());
-//        }
-        return pizzas;
-    }
-
-    public Order saveOrder(Order order) {
-        return orderRepository.save(order);
     }
 
     @BenchMark
@@ -81,11 +55,24 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         }
     }
 
-    private List<Pizza> convertIdsArrayInListOfPizzas(Long[] pizzasID) {
-        List<Pizza> pizzas = new ArrayList<>();
-        for (Long id : pizzasID) {
-            pizzas.add(findPizaById(id));  // get Pizza from predifined in-memory list
+    public Order createNewOrder() {
+        throw new IllegalStateException();
+    }
+
+    protected Map<Long, Integer> convertIdListInIdMap(List pizzasID) {
+        Map<Long, Integer> pizzaIdQuantity = new HashMap<>();
+        Set<Long> uniqueSet = new HashSet<>(pizzasID);
+        for (Long item : uniqueSet) {
+            if (!pizzaIdQuantity.containsKey(item)) {
+                pizzaIdQuantity.put(item, Collections.frequency(pizzasID, item));
+            }
         }
+        return pizzaIdQuantity;
+    }
+
+    protected Map<Pizza, Integer> convertIdMapInPizzaMap(Map<Long, Integer> pizzaIds) {
+        Map<Pizza, Integer> pizzas = new HashMap<>();
+        pizzaIds.forEach((s, integer) -> pizzas.put(findPizaById(s), integer));
         return pizzas;
     }
 
@@ -120,9 +107,6 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         updateCummulativeCardBalance(order);
     }
 
-    public Order findOrderById(Long orderId) {
-        return orderRepository.find(orderId);
-    }
 
     private void updateCummulativeCardBalance(Order order) {
         BigDecimal oldBalance = order.getCustomer().getCard().getBalance();
@@ -136,6 +120,9 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         return totalPrice.subtract(discounts);
     }
 
+    public Order findOrderById(Long orderId) {
+        return orderRepository.find(orderId);
+    }
 
 //    //варто перевірити,що статус не закритий у завки
 //    public void addPizzasToExistingOrder(long orderId, Long... pizzasID) {
@@ -146,7 +133,4 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
 //    }
 
 
-    public Order createNewOrder() {
-        throw new IllegalStateException();
-    }
 }

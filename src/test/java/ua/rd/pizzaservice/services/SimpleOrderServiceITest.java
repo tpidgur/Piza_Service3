@@ -95,8 +95,8 @@ public class SimpleOrderServiceITest {
                 generatePizzasId(pizzasNumber));
     }
 
-    private Long[] generatePizzasId(int number) {
-        Long[] pizzasIDs = new Long[number];
+    private long[] generatePizzasId(int number) {
+       long[] pizzasIDs = new long[number];
         LongStream.range(0, pizzasIDs.length).forEach(i -> pizzasIDs[(int) i] = PIZZA_ID);
         return pizzasIDs;
     }
