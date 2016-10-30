@@ -77,9 +77,9 @@ public class SimpleOrderServiceITest {
 
     private Order createManyPizzaOrder(int pizzaNumber) {
         Customer customer = customerRepository.find(CUSTOMER_ID);
-        Long[] pizzasIds=new Long[pizzaNumber];
-        for (int i=0;i<pizzaNumber;i++){
-          pizzasIds[i]=PIZZA_ID1;
+        Long[] pizzasIds = new Long[pizzaNumber];
+        for (int i = 0; i < pizzaNumber; i++) {
+            pizzasIds[i] = PIZZA_ID1;
         }
         return simpleOrderService.placeNewOrder(customer, pizzasIds);
     }
@@ -137,10 +137,11 @@ public class SimpleOrderServiceITest {
     @Test
     public void addPizzasToExistingOrderTest() {
         Order order = placeNewSingleOrder();
-        simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID1,PIZZA_ID2);
+        simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID1, PIZZA_ID2);
         int pizzasAmount = simpleOrderService.findOrderById(order.getId()).getAmountOfPizzas();
         assertThat(pizzasAmount, is(5));
     }
+
     @Test(expected = RuntimeException.class)
     public void addPizzasToExistingOrderTest2() {
         Order order = createManyPizzaOrder(10);
@@ -160,5 +161,11 @@ public class SimpleOrderServiceITest {
         assertThat(actual, is(IN_PROGRESS));
     }
 
-
+    @Test
+    public void findOrderByIdTest() {
+        Order order = placeNewSingleOrder();
+        Order actual = simpleOrderService.findOrderById(order.getId());
+        Order expected = orderRepository.find(order.getId());
+        assertThat(actual, is(expected));
+    }
 }

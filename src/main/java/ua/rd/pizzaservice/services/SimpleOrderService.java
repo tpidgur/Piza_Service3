@@ -134,13 +134,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         orderRepository.save(order);
     }
 
-//    //варто перевірити,що статус не закритий у завки
-//    public void addPizzasToExistingOrder(long orderId, Long... pizzasID) {
-//        Order order = findOrderById(orderId);
-//        isPizzasAmountLessThanMaxAllowable(order.getPizzas().size() + pizzasID.length);
-//        convertIdsArrayInListOfPizzas(pizzasID);
-//        // order.addAdditionalPizzas(convertIdsArrayInListOfPizzas(pizzasID));
-//    }
+
 
 
 }
