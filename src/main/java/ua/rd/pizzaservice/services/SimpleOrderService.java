@@ -128,13 +128,36 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     @Override
     public void addPizzasToExistingOrder(Long orderId, Long... pizzaId) {
         Order order = findOrderById(orderId);
+        checkStatus(order);
         isPizzasAmountLessThanMaxAllowable(order.getAmountOfPizzas() + pizzaId.length);
         Map<Pizza, Integer> additional = convertIdMapInPizzaMap(convertIdListInIdMap(Arrays.asList(pizzaId)));
         order.addPizzas(additional);
         orderRepository.save(order);
     }
 
+    @Override
+    public void removePizzaFromExistingOrder(Long orderId, Long pizzaId) {
+        Order order = findOrderById(orderId);
+        checkStatus(order);
+        Pizza pizza=findPizaById(pizzaId);
+        isOrderContainsPizza(order,pizza);
+        order.removePizza(pizza);
+        orderRepository.save(order);
+    }
 
+
+    private void checkStatus(Order order) {
+        Order.Status status = order.getStatus();
+        if (status == Order.Status.CANCELLED || status == Order.Status.DONE) {
+            throw new RuntimeException("Error modifying order that has been cancelled or done!");
+        }
+    }
+
+    private void isOrderContainsPizza(Order order,Pizza pizza) {
+        if (!order.getPizzas().containsKey(pizza)||order.getPizzas().get(pizza)==0) {
+            throw new RuntimeException("No pizzas have been found in the order!");
+        }
+    }
 
 
 }

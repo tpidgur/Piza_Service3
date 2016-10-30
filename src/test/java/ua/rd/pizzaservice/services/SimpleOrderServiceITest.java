@@ -148,10 +148,6 @@ public class SimpleOrderServiceITest {
         simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID1);
     }
 
-    private Order placeNewSingleOrder() {
-        return simpleOrderService.placeNewOrder(customerRepository.find(CUSTOMER_ID),
-                PIZZA_ID1, PIZZA_ID1, PIZZA_ID2);
-    }
 
     @Test
     public void changeStatusTest() {
@@ -167,5 +163,34 @@ public class SimpleOrderServiceITest {
         Order actual = simpleOrderService.findOrderById(order.getId());
         Order expected = orderRepository.find(order.getId());
         assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void removePizzaFromExistingOrderTest() {
+        Order order = placeNewSingleOrder();
+        simpleOrderService.removePizzaFromExistingOrder(order.getId(), PIZZA_ID1);
+        Order actual = simpleOrderService.findOrderById(order.getId());
+        assertThat(actual.getPizzas(), is(getMapOfPizzasWithTheirQuantities2()));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void removePizzaFromExistingOrderTestFails() {
+        Order order = placeNewSingleOrder();
+        simpleOrderService.removePizzaFromExistingOrder(order.getId(), PIZZA_ID2);
+        simpleOrderService.removePizzaFromExistingOrder(order.getId(), PIZZA_ID2);
+        System.out.println(simpleOrderService.findOrderById(order.getId()));
+
+    }
+
+    private Map<Pizza, Integer> getMapOfPizzasWithTheirQuantities2() {
+        Map<Pizza, Integer> expected = new HashMap<>();
+        expected.put(pizzaRepository.find(PIZZA_ID1), AMOUNT1);
+        expected.put(pizzaRepository.find(PIZZA_ID2), AMOUNT1);
+        return expected;
+    }
+
+    private Order placeNewSingleOrder() {
+        return simpleOrderService.placeNewOrder(customerRepository.find(CUSTOMER_ID),
+                PIZZA_ID1, PIZZA_ID1, PIZZA_ID2);
     }
 }

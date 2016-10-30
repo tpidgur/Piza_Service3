@@ -59,6 +59,7 @@ public class Order implements Serializable {
         this.customer = customer;
     }
 
+
     public enum Status {
         NEW, IN_PROGRESS, CANCELLED, DONE
     }
@@ -71,6 +72,10 @@ public class Order implements Serializable {
                         //  The merger
                         Integer::sum
                 ));
+    }
+
+    public void removePizza(Pizza pizza) {
+        pizzas.put(pizza, pizzas.get(pizza) - 1);
     }
 
     public int getAmountOfPizzas() {
