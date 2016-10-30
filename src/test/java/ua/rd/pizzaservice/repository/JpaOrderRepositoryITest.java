@@ -2,6 +2,7 @@ package ua.rd.pizzaservice.repository;
 
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.rd.pizzaservice.domain.*;
@@ -26,12 +27,12 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     @Autowired
     private PizzaRepository pizzaRepository;
 
-    @After
-    public void intialTune() {
-        orderRepository.delete();
-        customerRepository.delete();
-
-    }
+//    @After
+//    public void intialTune() {
+//        orderRepository.delete();
+//        customerRepository.delete();
+//
+//    }
 
     @Test
     public void findTest() {
@@ -50,7 +51,7 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
 
     }
 
-    @Test
+    @Test @Ignore
     public void findAllTest() {
         List<Order> actual = initializeTwoOrdersWithSameCustomer();
         System.out.println(actual);

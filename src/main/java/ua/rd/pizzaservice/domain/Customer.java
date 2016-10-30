@@ -95,16 +95,6 @@ public class Customer implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", card=" + card +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -122,4 +112,16 @@ public class Customer implements Serializable {
         result = 31 * result + name.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", card=" + card +
+                '}';
+    }
+
+
 }

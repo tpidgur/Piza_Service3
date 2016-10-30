@@ -24,35 +24,25 @@ public class SpringJPAAppRunner {
 
 
         System.out.println(Arrays.toString(appContext.getBeanDefinitionNames()));
-    //    PizzaRepository pizzaRepository=(PizzaRepository) appContext.getBean("pizzaRepository");
-
-
-
-
-//        Pizza pizza =new Pizza();
-//        pizza.setName("Sea");
-//        pizza.setType(Pizza.PizzaType.SEA);
-//        pizza.setPrice(new BigDecimal(10));
-//        pizza=pizzaRepository.save(pizza);
+//        PizzaRepository pizzaRepository=(PizzaRepository) appContext.getBean("pizzaRepository");
+//
 //        Pizza p1 = new Pizza("Sea Pizza", new BigDecimal(1), Pizza.PizzaType.SEA);
 //        Pizza p2 = new Pizza("New York Style Pizza", new BigDecimal(1), Pizza.PizzaType.MEAT);
 //        Pizza p3 = new Pizza("New Pizza", new BigDecimal(1), Pizza.PizzaType.VEGETERIAN);
-//
-//        System.out.println(p1+"|||"+p2);
-
-
+//        pizzaRepository.save(p1);
+//        pizzaRepository.save(p2);
+//        pizzaRepository.save(p3);
 
         OrderService orderService = appContext.getBean("simpleOrderService", OrderService.class);
         Customer customer = createCustomer();
         customer.setCard(createPizzaCard());
 
-        Order order = orderService.placeNewOrder(customer, 1L, 52L, 102L);
+        Order order = orderService.placeNewOrder(customer, 1L, 2L, 3L);
 
 
 
         repoContext.close();
         appContext.close();
-       System.out.println(order);
 
     }
 
