@@ -25,13 +25,13 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     private CustomerRepository customerRepository;
     @Autowired
     private PizzaRepository pizzaRepository;
-//
-//    @After
-//    public void intialTune() {
-//        orderRepository.delete();
-//        customerRepository.delete();
-//
-//    }
+
+    @After
+    public void intialTune() {
+        orderRepository.delete();
+        customerRepository.delete();
+
+    }
 
     @Test
     public void findTest() {
@@ -65,7 +65,6 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     }
 
     public Order initializeOneOrder() {
-
         Map<Pizza, Integer> pizzas = new HashMap<>();
         Pizza pizza1 = pizzaRepository.save(new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT));
         Pizza pizza2 = pizzaRepository.save(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));

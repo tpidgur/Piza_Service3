@@ -99,6 +99,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
                 order.getStatus() == Order.Status.IN_PROGRESS) {
             order.setStatus(Order.Status.DONE);
         } else throw new RuntimeException("The status " + newStatus + " isn't allowed");
+        orderRepository.save(order);
     }
 
     public void closeOrder(Long orderId) {
@@ -128,7 +129,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     public void addPizzasToExistingOrder(Long orderId, Long... pizzaId) {
         Order order = findOrderById(orderId);
         isPizzasAmountLessThanMaxAllowable(order.getAmountOfPizzas() + pizzaId.length);
-        Map <Pizza, Integer> additional=convertIdMapInPizzaMap(convertIdListInIdMap(Arrays.asList(pizzaId)));
+        Map<Pizza, Integer> additional = convertIdMapInPizzaMap(convertIdListInIdMap(Arrays.asList(pizzaId)));
         order.addPizzas(additional);
         orderRepository.save(order);
     }
