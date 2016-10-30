@@ -1,6 +1,8 @@
-package ua.rd.pizzaservice.domain;
+package ua.rd.pizzaservice.domain.discounts;
 
 import org.springframework.stereotype.Component;
+import ua.rd.pizzaservice.domain.Order;
+
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Optional;

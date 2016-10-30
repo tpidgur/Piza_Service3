@@ -103,4 +103,23 @@ public class Customer implements Serializable {
                 ", card=" + card +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Customer customer = (Customer) o;
+
+        if (!id.equals(customer.id)) return false;
+        return name.equals(customer.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 }

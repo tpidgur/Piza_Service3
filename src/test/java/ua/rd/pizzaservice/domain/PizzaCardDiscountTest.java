@@ -2,9 +2,9 @@ package ua.rd.pizzaservice.domain;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.rd.pizzaservice.domain.discounts.PizzaCardDiscount;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

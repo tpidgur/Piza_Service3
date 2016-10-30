@@ -7,13 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ua.rd.pizzaservice.domain.*;
+import ua.rd.pizzaservice.domain.discounts.Discount;
+import ua.rd.pizzaservice.domain.discounts.FourPizzaDiscount;
+import ua.rd.pizzaservice.domain.discounts.PizzaCardDiscount;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)

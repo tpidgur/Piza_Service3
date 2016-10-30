@@ -1,26 +1,22 @@
 package ua.rd.pizzaservice.services;
 
-import org.junit.Before;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.Order;
-import ua.rd.pizzaservice.domain.Pizza;
-import ua.rd.pizzaservice.repository.InMemoryOrderRepository;
-import ua.rd.pizzaservice.repository.InMemoryPizzaRepository;
+import ua.rd.pizzaservice.domain.*;
+import ua.rd.pizzaservice.repository.CustomerRepository;
 import ua.rd.pizzaservice.repository.OrderRepository;
 import ua.rd.pizzaservice.repository.PizzaRepository;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,7 +24,10 @@ import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"/H2WithSpringJPA.xml"})
-public class SimpleOrderServiceITest {
+public class SimpleOrderServiceITest2 {
+    public static final long PIZZA_ID1 = 1L;
+    public static final long PIZZA_ID2 = 2L;
+    public static final long CUSTOMER_ID = 1L;
     @Autowired
     private SimpleOrderService simpleOrderService;
     @Autowired
@@ -37,26 +36,49 @@ public class SimpleOrderServiceITest {
     private PizzaService pizzaService;
     @Autowired
     private DiscountService discountService;
-    @Autowired
-    private PizzaRepository pizzaRepository;
+
+    private static PizzaRepository pizzaRepository;
+    private static CustomerRepository customerRepository;
 
     public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
-    private final long PIZZA_ID = 1;
 
-    @Before
-    public void init() {
-        Pizza pizza1 = pizzaRepository.save(
+
+    @BeforeClass
+    public static void init() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("H2WithSpringJPA.xml");
+        pizzaRepository = (PizzaRepository) context.getBean("pizzaRepository");
+        pizzaRepository.save(
                 new Pizza("Neapolitan Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
-        Pizza pizza2 = pizzaRepository.save(
+        pizzaRepository.save(
                 new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETERIAN));
-        Pizza pizza3 = pizzaRepository.save(
+        pizzaRepository.save(
                 new Pizza("New  Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA));
+
+        customerRepository = (CustomerRepository) context.getBean("customerRepository");
+        customerRepository.save(new Customer("Ivan"));
     }
 
 
     @Test(expected = RuntimeException.class)
-    public void placeNewOrderTest() {
+    public void placeNewOrderWithExceptionTest() {
         generateNewOrder(15);
+    }
+
+    @Test
+    public void placeNewOrder() {
+        Order actual = simpleOrderService.placeNewOrder(customerRepository.find(CUSTOMER_ID),
+                1l, 1l, 2l);
+        Order expected = createOneOrder();
+        expected.setId(actual.getId());//without
+        assertThat(actual, is(expected));
+    }
+
+    private Order createOneOrder() {
+        Map<Pizza, Integer> pizzas = new HashMap();
+        pizzas.put(pizzaRepository.find(PIZZA_ID1), 2);
+        pizzas.put(pizzaRepository.find(PIZZA_ID2), 1);
+        Customer customer = customerRepository.find(CUSTOMER_ID);
+        return new Order(pizzas, customer);
     }
 
 
@@ -69,35 +91,14 @@ public class SimpleOrderServiceITest {
     }
 
 
-//    @Test
-//    public void addPizzasToExistingOrderTest() {
-//        Order order = generateNewOrder(5);
-//        System.out.println(order + "!!!!!!!!!!");
-//        System.out.println("++++++++++++++" + simpleOrderService);
-//        simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID1);
-//        int pizzasAmount = simpleOrderService.findOrderById(order.getId()).getPizzas().size();
-//        assertThat(pizzasAmount, is(6));
-//    }
-
-
-
-
-    @Test
-    public void placeNewOrder() {
-        System.out.println(simpleOrderService.placeNewOrder(new Customer("Ivan"),
-                1l, 2l));
-
-    }
-
     private Order generateNewOrder(int pizzasNumber) {
-        System.out.println("SimpleOrderservice created " + simpleOrderService);
         return simpleOrderService.placeNewOrder(new Customer("Ivan"),
                 generatePizzasId(pizzasNumber));
     }
 
     private Long[] generatePizzasId(int number) {
         Long[] pizzasIDs = new Long[number];
-        LongStream.range(0, pizzasIDs.length).forEach(i -> pizzasIDs[(int) i] = PIZZA_ID);
+        LongStream.range(0, pizzasIDs.length).forEach(i -> pizzasIDs[(int) i] = PIZZA_ID1);
         return pizzasIDs;
     }
 
