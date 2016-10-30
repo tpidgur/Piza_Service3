@@ -8,6 +8,7 @@ import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
 
+import ua.rd.pizzaservice.domain.PizzaCard;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
 import ua.rd.pizzaservice.repository.OrderRepository;
 
@@ -42,8 +43,8 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         Order order = createNewOrder();
         order.setCustomer(customer);
         order.setPizzas(convertIdMapInPizzaMap(convertIdListInIdMap(Arrays.asList(pizzasID))));
-        Order newOrder = orderRepository.save(order);
         createNewCardIfNotExist(order);
+        Order newOrder = orderRepository.save(order);
         return newOrder;
     }
 
@@ -99,27 +100,10 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
                 order.getStatus() == Order.Status.IN_PROGRESS) {
             order.setStatus(Order.Status.DONE);
         } else throw new RuntimeException("The status " + newStatus + " isn't allowed");
+        System.out.println("!!!Order"+order);
         orderRepository.save(order);
     }
 
-    public void closeOrder(Long orderId) {
-        Order order = findOrderById(orderId);
-        changeStatus(orderId, Order.Status.DONE);
-        updateCummulativeCardBalance(order);
-    }
-
-
-    private void updateCummulativeCardBalance(Order order) {
-        BigDecimal oldBalance = order.getCustomer().getCard().getBalance();
-        BigDecimal newBalance = calculateTotalPriceWithAllDiscounts(order);
-        order.getCustomer().getCard().setBalance(oldBalance.add(newBalance));
-    }
-
-    private BigDecimal calculateTotalPriceWithAllDiscounts(Order order) {
-        BigDecimal discounts = discountService.calculateTotalDiscount(order);
-        BigDecimal totalPrice = order.calculateTotalPrice();
-        return totalPrice.subtract(discounts);
-    }
 
     public Order findOrderById(Long orderId) {
         return orderRepository.find(orderId);
@@ -139,8 +123,8 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     public void removePizzaFromExistingOrder(Long orderId, Long pizzaId) {
         Order order = findOrderById(orderId);
         checkStatus(order);
-        Pizza pizza=findPizaById(pizzaId);
-        isOrderContainsPizza(order,pizza);
+        Pizza pizza = findPizaById(pizzaId);
+        isOrderContainsPizza(order, pizza);
         order.removePizza(pizza);
         orderRepository.save(order);
     }
@@ -152,12 +136,35 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
 
     @Override
     public void setDoneStatus(Long orderId) {
+        updatePizzaCardBalance(orderId);
         changeStatus(orderId, Order.Status.DONE);
+    }
+
+    private void updatePizzaCardBalance(Long orderId) {
+        Order order=findOrderById(orderId);
+        PizzaCard card = order.getCustomer().getCard();
+        card.setBalance(card.getBalance().add(getTotalWithDiscount(orderId)));
+        orderRepository.save(order);
     }
 
     @Override
     public void setInProgressStatus(Long orderId) {
         changeStatus(orderId, Order.Status.IN_PROGRESS);
+    }
+
+    @Override
+    public BigDecimal getTotalDiscountAmount(Long orderId) {
+        return discountService.calculateTotalDiscount(findOrderById(orderId));
+    }
+
+    @Override
+    public BigDecimal getTotalWithoutDiscount(Long orderId) {
+        return findOrderById(orderId).calculateTotalPrice();
+    }
+
+    @Override
+    public BigDecimal getTotalWithDiscount(Long orderId) {
+        return getTotalWithoutDiscount(orderId).subtract(getTotalDiscountAmount(orderId));
     }
 
 
@@ -168,8 +175,8 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         }
     }
 
-    private void isOrderContainsPizza(Order order,Pizza pizza) {
-        if (!order.getPizzas().containsKey(pizza)||order.getPizzas().get(pizza)==0) {
+    private void isOrderContainsPizza(Order order, Pizza pizza) {
+        if (!order.getPizzas().containsKey(pizza) || order.getPizzas().get(pizza) == 0) {
             throw new RuntimeException("No pizzas have been found in the order!");
         }
     }

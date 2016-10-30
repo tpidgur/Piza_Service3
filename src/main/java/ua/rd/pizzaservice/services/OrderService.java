@@ -3,6 +3,8 @@ package ua.rd.pizzaservice.services;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 
+import java.math.BigDecimal;
+
 
 public interface OrderService {
     Order placeNewOrder(Customer customer, Long... pizzasID);
@@ -18,4 +20,12 @@ public interface OrderService {
     void setDoneStatus(Long orderId);
 
     void setInProgressStatus(Long orderId);
+
+    BigDecimal getTotalDiscountAmount(Long orderId);
+
+    BigDecimal getTotalWithoutDiscount(Long orderId);
+
+    BigDecimal getTotalWithDiscount(Long orderId);
+
+
 }

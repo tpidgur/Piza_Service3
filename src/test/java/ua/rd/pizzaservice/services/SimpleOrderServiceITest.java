@@ -21,6 +21,8 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"/H2WithSpringJPA.xml"})
@@ -200,7 +202,7 @@ public class SimpleOrderServiceITest {
     }
 
     @Test
-    public void setInProgressStatusTest(){
+    public void setInProgressStatusTest() {
         Order order = placeNewSingleOrder();
         simpleOrderService.setInProgressStatus(order.getId());
         Order.Status actual = simpleOrderService.findOrderById(order.getId()).getStatus();
@@ -214,7 +216,14 @@ public class SimpleOrderServiceITest {
         simpleOrderService.setDoneStatus(order.getId());
         Order.Status actual = simpleOrderService.findOrderById(order.getId()).getStatus();
         assertThat(actual, is(DONE));
+        assertThat(getCurrentBalance(order).compareTo(BigDecimal.ZERO), is(1));
     }
+
+    private BigDecimal getCurrentBalance(Order order) {
+        return simpleOrderService.findOrderById(order.getId())
+                .getCustomer().getCard().getBalance();
+    }
+
 
     private Order placeNewSingleOrder() {
         return simpleOrderService.placeNewOrder(customerRepository.find(CUSTOMER_ID),
