@@ -27,6 +27,8 @@ import static org.hamcrest.Matchers.is;
 public class SimpleOrderServiceITest {
 
 
+    public static final Order.Status CANCELLED = Order.Status.CANCELLED;
+    public static final Order.Status DONE = Order.Status.DONE;
     @Autowired
     private SimpleOrderService simpleOrderService;
     @Autowired
@@ -173,6 +175,13 @@ public class SimpleOrderServiceITest {
         assertThat(actual.getPizzas(), is(getMapOfPizzasWithTheirQuantities2()));
     }
 
+    private Map<Pizza, Integer> getMapOfPizzasWithTheirQuantities2() {
+        Map<Pizza, Integer> expected = new HashMap<>();
+        expected.put(pizzaRepository.find(PIZZA_ID1), AMOUNT1);
+        expected.put(pizzaRepository.find(PIZZA_ID2), AMOUNT1);
+        return expected;
+    }
+
     @Test(expected = RuntimeException.class)
     public void removePizzaFromExistingOrderTestFails() {
         Order order = placeNewSingleOrder();
@@ -182,11 +191,29 @@ public class SimpleOrderServiceITest {
 
     }
 
-    private Map<Pizza, Integer> getMapOfPizzasWithTheirQuantities2() {
-        Map<Pizza, Integer> expected = new HashMap<>();
-        expected.put(pizzaRepository.find(PIZZA_ID1), AMOUNT1);
-        expected.put(pizzaRepository.find(PIZZA_ID2), AMOUNT1);
-        return expected;
+    @Test
+    public void setCancelStatusTest() {
+        Order order = placeNewSingleOrder();
+        simpleOrderService.setCancelStatus(order.getId());
+        Order.Status actual = simpleOrderService.findOrderById(order.getId()).getStatus();
+        assertThat(actual, is(CANCELLED));
+    }
+
+    @Test
+    public void setInProgressStatusTest(){
+        Order order = placeNewSingleOrder();
+        simpleOrderService.setInProgressStatus(order.getId());
+        Order.Status actual = simpleOrderService.findOrderById(order.getId()).getStatus();
+        assertThat(actual, is(IN_PROGRESS));
+    }
+
+    @Test
+    public void setDoneStatusTest() {
+        Order order = placeNewSingleOrder();
+        simpleOrderService.setInProgressStatus(order.getId());
+        simpleOrderService.setDoneStatus(order.getId());
+        Order.Status actual = simpleOrderService.findOrderById(order.getId()).getStatus();
+        assertThat(actual, is(DONE));
     }
 
     private Order placeNewSingleOrder() {

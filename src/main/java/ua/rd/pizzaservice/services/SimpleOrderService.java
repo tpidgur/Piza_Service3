@@ -88,7 +88,7 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
     }
 
 
-    public void changeStatus(Long orderId, Order.Status newStatus) {
+    protected void changeStatus(Long orderId, Order.Status newStatus) {
         Order order = findOrderById(orderId);
         if (newStatus == Order.Status.CANCELLED) {
             order.setStatus(Order.Status.CANCELLED);
@@ -143,6 +143,21 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         isOrderContainsPizza(order,pizza);
         order.removePizza(pizza);
         orderRepository.save(order);
+    }
+
+    @Override
+    public void setCancelStatus(Long orderId) {
+        changeStatus(orderId, Order.Status.CANCELLED);
+    }
+
+    @Override
+    public void setDoneStatus(Long orderId) {
+        changeStatus(orderId, Order.Status.DONE);
+    }
+
+    @Override
+    public void setInProgressStatus(Long orderId) {
+        changeStatus(orderId, Order.Status.IN_PROGRESS);
     }
 
 
