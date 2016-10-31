@@ -39,7 +39,7 @@ public class Order implements Serializable {
     @Column(name = "quantity")
     private Map<Pizza, Integer> pizzas = new HashMap<>();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.ALL})
     @JoinColumn(name = "Customer_ID")
     private Customer customer;
 
@@ -47,7 +47,7 @@ public class Order implements Serializable {
     private Status status = Status.NEW;
     @Column(name = "date")
     private LocalDate date = LocalDate.now();
-    @OneToOne
+    @OneToOne (orphanRemoval = true)
     private Address address;
 
     public Order() {

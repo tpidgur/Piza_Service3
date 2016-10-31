@@ -27,12 +27,20 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     @Autowired
     private PizzaRepository pizzaRepository;
 
-//    @After
-//    public void intialTune() {
-//        orderRepository.delete();
-//        customerRepository.delete();
-//
-//    }
+    @After
+    public void intialTune() {
+        jdbcTemplate.update("DELETE  FROM  pizzasamount");
+        jdbcTemplate.update("DELETE  FROM  orders");
+        jdbcTemplate.update("DELETE FROM pizzas");
+        jdbcTemplate.update("DELETE FROM customers");
+        jdbcTemplate.update("DELETE FROM pizzacards");
+        jdbcTemplate.update("DELETE FROM address");
+
+        //  orderRepository.delete();
+//       customerRepository.delete();
+//        pizzaRepository.delete();
+
+    }
 
     @Test
     public void findTest() {
@@ -51,7 +59,7 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
 
     }
 
-    @Test @Ignore
+    @Test
     public void findAllTest() {
         List<Order> actual = initializeTwoOrdersWithSameCustomer();
         System.out.println(actual);
@@ -61,7 +69,7 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
 
     @Test
     public void saveTest() {
-        Order order = orderRepository.save(initializeOneOrder());
+        Order order = initializeOneOrder();
         assertNotNull(order.getId());
     }
 
@@ -71,15 +79,11 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
         Pizza pizza2 = pizzaRepository.save(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
         pizzas.put(pizza1, 1);
         pizzas.put(pizza2, 4);
-        Order order = new Order(pizzas, new Customer("Ivan"));
+        Customer customer = customerRepository.save(new Customer("Ivan"));
+        Order order = new Order(pizzas, customer);
         return orderRepository.save(order);
-//        return orderRepository.save(new Order(new Customer("Ivan"), Arrays.asList
-//                (new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT),
-//                        new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT),
-//                        new Pizza("Greek Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETERIAN),
-//                        new Pizza("Sea Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA),
-//                        new Pizza("Sea Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA))));
     }
+
 
     public List<Order> initializeTwoOrdersWithSameCustomer() {
         Customer customer = customerRepository.save(new Customer("Iren"));
@@ -92,25 +96,8 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
         Pizza pizza2 = pizzaRepository.save(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
         pizzas2.put(pizza2, 1);
         Order order2 = orderRepository.save(new Order(pizzas2, customer));
-//        Order order1 = orderRepository.save(new Order(customer, Arrays.asList
-//                (new Pizza("Bavarian", PIZZA_PRICE1, Pizza.PizzaType.MEAT))));
-//        Order order2 = orderRepository.save(new Order(customer, Arrays.asList
-//                (new Pizza("Bavarian", PIZZA_PRICE1, Pizza.PizzaType.MEAT))));
         return Arrays.asList(order1, order2);
     }
-//    @Test
-//    public void initializeTwoOrdersWithSameCus() {
-////        Customer customer1 = customerRepository.save(new Customer("Kruk Oleg",
-////                new Address("c.Lutsk, Gromova 50, fl.40"), new PizzaCard()));
-//        Customer customer = customerRepository.save(new Customer("Iren"));
-//        Map<Pizza, Integer> pizzas1 = new HashMap<>();
-//        pizzas1.put(new Pizza("Bavarian", PIZZA_PRICE1, Pizza.PizzaType.MEAT), 1);
-//        Order order1 = new Order(pizzas1, new Customer("Ivan"));
-//
-//        Map<Pizza, Integer> pizzas2 = new HashMap<>();
-//        pizzas2.put(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT), 1);
-//        Order order2 = new Order(pizzas2, new Customer("Ivan"));
-//
-//    }
+
 
 }

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.mock;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"/H2WithSpringJPA.xml"})
 public class SimplePizzaServiceITest {
-    public static final BigDecimal PIZZA_PRICE1 =BigDecimal.TEN;
+    public static final BigDecimal PIZZA_PRICE1 = BigDecimal.TEN;
     public static final BigDecimal PIZZA_PRICE2 = BigDecimal.ONE;
     @Autowired
     private PizzaService pizzaService;
@@ -36,8 +36,10 @@ public class SimplePizzaServiceITest {
 
     @Test
     public void findTest() {
-        Pizza pizza=initializeOnePizza();
-        assertThat(pizzaService.find(pizza.getId()).getId(), is(pizza.getId()));
+        Pizza pizza = initializeOnePizza();
+        Pizza actual = pizzaService.find(pizza.getId());
+        actual.setPrice(actual.getPrice().setScale(0, BigDecimal.ROUND_HALF_EVEN));//возвращает из H2  стоимость как 1.00, а не 1
+        assertThat(actual, is(pizza));
     }
 
     private Pizza initializeOnePizza() {
