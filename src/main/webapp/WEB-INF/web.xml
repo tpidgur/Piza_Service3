@@ -14,7 +14,7 @@
         <servlet-class>ua.rd.pizzaservice.web.infrastructure.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
         <init-param>
-            <param-name>contextConfigLocation</param-name>
+            <param-name>servletContextConfigLocation</param-name>
             <param-value>classpath:/webContext.xml</param-value>
         </init-param>
     </servlet>

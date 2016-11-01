@@ -20,6 +20,6 @@
 
     <context:component-scan base-package="ua.rd.pizzaservice.services"/>
     <context:component-scan base-package="ua.rd.pizzaservice.domain"/>
-    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
+
 
 </beans>

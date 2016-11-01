@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class DispatcherServlet extends HttpServlet {
     private ConfigurableApplicationContext webContext;
@@ -18,21 +19,17 @@ public class DispatcherServlet extends HttpServlet {
         String contextLocations = getServletContext().getInitParameter("contextConfigLocation");
         String[] contexts = contextLocations.split(" ");
         applicationContexts = new ConfigurableApplicationContext[contexts.length];
-
-
         for (int i = 0; i < applicationContexts.length; i++) {
-           // ConfigurableApplicationContext context = null;
             if (i == 0) {
                 applicationContexts[i] = new ClassPathXmlApplicationContext(contexts[i]);
             } else {
-                applicationContexts[i] = new ClassPathXmlApplicationContext(new String[]{contexts[i]}, applicationContexts[i - 1]);
+                applicationContexts[i] = new ClassPathXmlApplicationContext(new String[]{contexts[i]},
+                        applicationContexts[i - 1]);
             }
-           // applicationContexts[i] = context;
         }
-        String webContextConfigLocation = getInitParameter("contextConfigLocation");
+        String webContextConfigLocation = getInitParameter("servletContextConfigLocation");
         webContext = new ClassPathXmlApplicationContext(new String[]{webContextConfigLocation},
                 applicationContexts[applicationContexts.length - 1]);
-
     }
 
     @Override
@@ -52,18 +49,10 @@ public class DispatcherServlet extends HttpServlet {
 
         String url = req.getRequestURI();
         String controllerName = getControllerName(url);
-
         MyController controller = (MyController) webContext.getBean(controllerName, MyController.class);
-
-        // MyController controller = getController(controllerName);
         if (controller != null) {
             controller.handleRequest(req, resp);
         }
-
-//        try (PrintWriter out = resp.getWriter()) {
-//            out.println(controllerName);
-//            out.print(url);
-//        }
     }
 
     private String getControllerName(String url) {
@@ -73,6 +62,5 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRequest(req, resp);
-        //super.doPost(req, resp);
     }
 }
