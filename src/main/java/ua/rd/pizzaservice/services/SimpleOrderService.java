@@ -16,12 +16,12 @@ import java.math.BigDecimal;
 import java.util.*;
 
 
-public class SimpleOrderService implements OrderService, ApplicationContextAware {
+public class SimpleOrderService implements OrderService /*, ApplicationContextAware*/ {
     private final int MAX_PIZZAS_AMOUNT = 10;
     private final OrderRepository orderRepository;
     private final PizzaService pizzaService;
     private final DiscountService discountService;
-    private ApplicationContext context;
+   // private ApplicationContext context;
 
 
     @Autowired
@@ -32,10 +32,10 @@ public class SimpleOrderService implements OrderService, ApplicationContextAware
         this.discountService = discountService;
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext context) throws BeansException {
-        this.context = context;
-    }
+//    @Override
+//    public void setApplicationContext(ApplicationContext context) throws BeansException {
+//        this.context = context;
+//    }
 
     @BenchMark
     public Order placeNewOrder(Customer customer, Long... pizzasID) {

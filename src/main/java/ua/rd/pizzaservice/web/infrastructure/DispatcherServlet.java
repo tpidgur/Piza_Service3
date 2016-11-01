@@ -21,7 +21,7 @@ public class DispatcherServlet extends HttpServlet {
 
 
         for (int i = 0; i < applicationContexts.length; i++) {
-            ConfigurableApplicationContext context = null;
+           // ConfigurableApplicationContext context = null;
             if (i == 0) {
                 applicationContexts[i] = new ClassPathXmlApplicationContext(contexts[i]);
             } else {
