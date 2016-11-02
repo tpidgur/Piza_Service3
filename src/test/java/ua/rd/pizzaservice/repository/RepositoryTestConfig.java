@@ -10,6 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath:H2InMemoryRepoContext.xml"})
 @Rollback(false)
 //@ContextConfiguration(locations = {"classpath:/repoContext.xml"})
-public class RepositoryTestConfig extends AbstractTransactionalJUnit4SpringContextTests {
+public abstract class RepositoryTestConfig extends AbstractTransactionalJUnit4SpringContextTests {
 
 }

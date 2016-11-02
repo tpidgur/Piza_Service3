@@ -41,16 +41,20 @@ public class SimpleOrderServiceITest {
     private static PizzaRepository pizzaRepository;
     private static CustomerRepository customerRepository;
 
-    public static final long PIZZA_ID1 = 1L;
-    public static final long PIZZA_ID2 = 2L;
-    public static final long PIZZA_ID3 = 3l;
+    public static long PIZZA_ID1;
+    //= 1L;
+    public static long PIZZA_ID2;
+    //= 2L;
+    public static long PIZZA_ID3;
+    //= 3l;
 
 
     public static final int AMOUNT1 = 1;
     public static final int AMOUNT2 = 2;
     public static final int AMOUNT3 = 3;
 
-    public static final long CUSTOMER_ID = 1L;
+    public static  long CUSTOMER_ID ;
+            //= 1L;
     public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
 
     public static final Order.Status IN_PROGRESS = Order.Status.IN_PROGRESS;
@@ -60,15 +64,19 @@ public class SimpleOrderServiceITest {
     public static void init() {
         ApplicationContext context = new ClassPathXmlApplicationContext("H2WithSpringJPA.xml");
         pizzaRepository = (PizzaRepository) context.getBean("pizzaRepository");
-        pizzaRepository.save(
+        Pizza pizza1 = pizzaRepository.save(
                 new Pizza("Neapolitan Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
-        pizzaRepository.save(
+        Pizza pizza2 = pizzaRepository.save(
                 new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETERIAN));
-        pizzaRepository.save(
+        Pizza pizza3 = pizzaRepository.save(
                 new Pizza("New  Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA));
-
+        PIZZA_ID1 = pizza1.getId();
+        System.out.println(PIZZA_ID1);
+        PIZZA_ID2 = pizza2.getId();
+        PIZZA_ID3 = pizza3.getId();
         customerRepository = (CustomerRepository) context.getBean("customerRepository");
-        customerRepository.save(new Customer("Ivan"));
+        Customer customer = customerRepository.save(new Customer("Ivan"));
+        CUSTOMER_ID=customer.getId();
     }
 
 
@@ -224,6 +232,7 @@ public class SimpleOrderServiceITest {
 
 
     private Order placeNewSingleOrder() {
+        System.out.println(customerRepository.find(CUSTOMER_ID));
         return simpleOrderService.placeNewOrder(customerRepository.find(CUSTOMER_ID),
                 PIZZA_ID1, PIZZA_ID1, PIZZA_ID2);
     }

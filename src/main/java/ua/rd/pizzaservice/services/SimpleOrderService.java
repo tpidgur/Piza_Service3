@@ -142,6 +142,7 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
 
     private void updatePizzaCardBalance(Long orderId) {
         Order order=findOrderById(orderId);
+        System.out.println(order);
         PizzaCard card = order.getCustomer().getCard();
         card.setBalance(card.getBalance().add(getTotalWithDiscount(orderId)));
         orderRepository.save(order);
