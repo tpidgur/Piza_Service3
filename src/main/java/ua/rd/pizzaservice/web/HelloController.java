@@ -30,14 +30,9 @@ public class HelloController implements MyController {
             throws Exception {
         try (PrintWriter out = resp.getWriter()) {
             out.println("Hello from HelloServlet");
-            Method method = (Method) req.getAttribute("methodObject");
-            out.println(method.invoke(this));//винести в окремий метод інтерфейса MyController.зробити вкладений меп та передавати назву класа
-        }
+            }
     }
 
-    @MyRequestMapping("findAll")
-    public List<Pizza> findAll() {
-        return pizzaRepository.findAll();
-    }
+
 
 }

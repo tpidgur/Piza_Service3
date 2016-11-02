@@ -48,7 +48,7 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
         return newOrder;
     }
 
-    @BenchMark
+   // @BenchMark
     private void isPizzasAmountLessThanMaxAllowable(int pizzaNumber) {
         if (pizzaNumber > MAX_PIZZAS_AMOUNT) {
             throw new RuntimeException("The chosen amount of pizzas" +
@@ -81,7 +81,7 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
         return pizzaService.find(id);
     }
 
-    @BenchMark
+   // @BenchMark
     private void createNewCardIfNotExist(Order order) {
         if (order.getCustomer() != null) {
             order.getCustomer().createNewCardIfNotExist();

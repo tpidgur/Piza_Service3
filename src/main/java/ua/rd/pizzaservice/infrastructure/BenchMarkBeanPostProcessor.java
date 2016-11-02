@@ -34,7 +34,7 @@ public class BenchMarkBeanPostProcessor<T> implements BeanPostProcessor {
             Class<?> type = bean.getClass();
             Class<?>[] declaredInterfaces = getDeclaredInterfaces(bean);
             System.out.println("Declared interfaces" + Arrays.toString(declaredInterfaces));
-            bean = (T) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), declaredInterfaces,
+            bean = (T) Proxy.newProxyInstance(type.getClassLoader(), declaredInterfaces,
                     new InvocationHandler() {
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
