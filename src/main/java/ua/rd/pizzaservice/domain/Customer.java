@@ -25,11 +25,11 @@ public class Customer implements Serializable {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.ALL})
+    @ManyToOne(cascade = {/*CascadeType.PERSIST, */ CascadeType.MERGE/*,CascadeType.ALL*/ })
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.ALL},orphanRemoval = true)
+    @OneToOne(cascade = {/*CascadeType.PERSIST,*/ CascadeType.MERGE/*,CascadeType.ALL*/}/*,orphanRemoval = true*/)
     @JoinColumn(name = "card_id")
     private PizzaCard card;
 

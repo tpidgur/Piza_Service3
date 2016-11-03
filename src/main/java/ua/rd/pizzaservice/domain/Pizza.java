@@ -1,6 +1,8 @@
 package ua.rd.pizzaservice.domain;
 
 
+import org.springframework.hateoas.ResourceSupport;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,7 +15,7 @@ import java.math.BigDecimal;
         @NamedQuery(name = "Pizza.findAllByType", query = "SELECT p FROM Pizza p WHERE p.type=:type"),
         @NamedQuery(name = "Pizza.deleteAll", query = "delete  from Pizza p")
 })
-public class Pizza implements Serializable {
+public class Pizza extends ResourceSupport implements Serializable {
     @TableGenerator(name = "Pizza_Gen",
             table = "ID_GEN",
             pkColumnName = "Gen_name",
@@ -22,7 +24,7 @@ public class Pizza implements Serializable {
             allocationSize = 50)
     @Id
     @GeneratedValue(generator = "Pizza_Gen")
-    private Long id;
+    private Long pizzaId;
 
     private String name;
     //@Column(precision=1, scale =0)
@@ -46,12 +48,12 @@ public class Pizza implements Serializable {
     }
 
 
-    public Long getId() {
-        return id;
+    public Long getPizzaId() {
+        return pizzaId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPizzaId(Long id) {
+        this.pizzaId = id;
     }
 
     public String getName() {
@@ -85,7 +87,7 @@ public class Pizza implements Serializable {
 
         Pizza pizza = (Pizza) o;
 
-        if (id != null ? !id.equals(pizza.id) : pizza.id != null) return false;
+        if (pizzaId != null ? !pizzaId.equals(pizza.pizzaId) : pizza.pizzaId != null) return false;
         if (name != null ? !name.equals(pizza.name) : pizza.name != null) return false;
         if (price != null ? !price.equals(pizza.price) : pizza.price != null) return false;
         return type == pizza.type;
@@ -94,7 +96,7 @@ public class Pizza implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = pizzaId != null ? pizzaId.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
@@ -104,7 +106,7 @@ public class Pizza implements Serializable {
     @Override
     public String toString() {
         return "Pizza{" +
-                "id=" + id +
+                "id=" + pizzaId +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", type=" + type +

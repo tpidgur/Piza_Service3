@@ -1,6 +1,5 @@
 package ua.rd.pizzaservice.repository;
 
-import org.springframework.stereotype.Repository;
 import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
 
@@ -30,7 +29,7 @@ public class InMemoryPizzaRepository implements PizzaRepository {
         Iterator<Pizza> iter = pizzas.iterator();
         while (iter.hasNext()) {
             Pizza pizza = iter.next();
-            if (pizza.getId().equals(pizzaId)) {
+            if (pizza.getPizzaId().equals(pizzaId)) {
                 return pizza;
             }
         }

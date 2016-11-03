@@ -21,4 +21,8 @@ public class SimplePizzaService implements PizzaService {
     public Pizza find(Long id) {
         return pizzaRepo.find(id);
     }
+
+    public Pizza save(Pizza pizza) {
+        return pizzaRepo.save(pizza);
+    }
 }

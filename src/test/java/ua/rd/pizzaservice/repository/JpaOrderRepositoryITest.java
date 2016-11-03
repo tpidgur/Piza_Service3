@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.repository;
 
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
         jdbcTemplate.update("DELETE FROM pizzacards");
         jdbcTemplate.update("DELETE FROM address");
 
-        //  orderRepository.delete();
+   //      orderRepository.delete();
 //       customerRepository.delete();
 //        pizzaRepository.delete();
 
@@ -70,16 +71,21 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     @Test
     public void saveTest() {
         Order order = initializeOneOrder();
+        System.out.println(order);
         assertNotNull(order.getId());
     }
 
     public Order initializeOneOrder() {
         Map<Pizza, Integer> pizzas = new HashMap<>();
+//        Pizza pizza1 = new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT);
+//        Pizza pizza2 = new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT);
+
         Pizza pizza1 = pizzaRepository.save(new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT));
         Pizza pizza2 = pizzaRepository.save(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
         pizzas.put(pizza1, 1);
         pizzas.put(pizza2, 4);
-        Customer customer = customerRepository.save(new Customer("Ivan"));
+      //  Customer customer = customerRepository.save(new Customer("Ivan"));
+        Customer customer =(new Customer("Ivan"));
         Order order = new Order(pizzas, customer);
         return orderRepository.save(order);
     }

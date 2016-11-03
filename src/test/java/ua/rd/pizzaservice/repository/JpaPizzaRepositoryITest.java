@@ -27,7 +27,7 @@ public class JpaPizzaRepositoryITest extends RepositoryTestConfig {
     @Test
     public void findTest() {
         Pizza expected = initializeOnePizza();
-        Pizza actual = pizzaRepository.find(expected.getId());
+        Pizza actual = pizzaRepository.find(expected.getPizzaId());
         assertEquals(actual, expected);
     }
 
@@ -51,7 +51,7 @@ public class JpaPizzaRepositoryITest extends RepositoryTestConfig {
     @Test
     public void saveTest() {
         Pizza pizza = initializeOnePizza();
-        assertNotNull(pizza.getId());
+        assertNotNull(pizza.getPizzaId());
     }
 
     private Pizza initializeOnePizza() {

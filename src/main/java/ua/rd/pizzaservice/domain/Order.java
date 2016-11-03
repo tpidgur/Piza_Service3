@@ -35,19 +35,19 @@ public class Order implements Serializable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "pizzasAmount")
-    @MapKeyJoinColumn(name = "pizza_id", referencedColumnName = "id")
+    @MapKeyJoinColumn(name = "pizzaId", referencedColumnName = "pizzaId")
     @Column(name = "quantity")
     private Map<Pizza, Integer> pizzas = new HashMap<>();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.ALL})
-    @JoinColumn(name = "Customer_ID")
+    @ManyToOne(cascade = {/*CascadeType.PERSIST,*/ CascadeType.MERGE /*,CascadeType.ALL*/})
+    @JoinColumn(name = "CustomerID")
     private Customer customer;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.NEW;
     @Column(name = "date")
     private LocalDate date = LocalDate.now();
-    @OneToOne (orphanRemoval = true)
+    @OneToOne //(orphanRemoval = true)
     private Address address;
 
     public Order() {

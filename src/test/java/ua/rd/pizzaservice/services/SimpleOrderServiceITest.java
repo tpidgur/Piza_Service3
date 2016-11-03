@@ -70,10 +70,10 @@ public class SimpleOrderServiceITest {
                 new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETERIAN));
         Pizza pizza3 = pizzaRepository.save(
                 new Pizza("New  Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA));
-        PIZZA_ID1 = pizza1.getId();
+        PIZZA_ID1 = pizza1.getPizzaId();
         System.out.println(PIZZA_ID1);
-        PIZZA_ID2 = pizza2.getId();
-        PIZZA_ID3 = pizza3.getId();
+        PIZZA_ID2 = pizza2.getPizzaId();
+        PIZZA_ID3 = pizza3.getPizzaId();
         customerRepository = (CustomerRepository) context.getBean("customerRepository");
         Customer customer = customerRepository.save(new Customer("Ivan"));
         CUSTOMER_ID=customer.getId();

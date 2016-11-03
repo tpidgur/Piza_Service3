@@ -1,10 +1,8 @@
 package ua.rd.pizzaservice.services;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -37,7 +35,7 @@ public class SimplePizzaServiceITest {
     @Test
     public void findTest() {
         Pizza pizza = initializeOnePizza();
-        Pizza actual = pizzaService.find(pizza.getId());
+        Pizza actual = pizzaService.find(pizza.getPizzaId());
         actual.setPrice(actual.getPrice().setScale(0, BigDecimal.ROUND_HALF_EVEN));//возвращает из H2  стоимость как 1.00, а не 1
         assertThat(actual, is(pizza));
     }

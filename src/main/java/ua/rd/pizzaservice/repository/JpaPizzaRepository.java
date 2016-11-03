@@ -34,7 +34,7 @@ public class JpaPizzaRepository implements PizzaRepository {
     @Transactional
     @Override
     public Pizza save(Pizza pizza) {
-        if (pizza.getId() == null) {
+        if (pizza.getPizzaId() == null) {
             em.persist(pizza);
         } else {
             pizza = em.merge(pizza);
