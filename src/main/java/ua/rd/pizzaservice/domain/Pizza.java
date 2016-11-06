@@ -1,6 +1,10 @@
 package ua.rd.pizzaservice.domain;
 
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
@@ -8,13 +12,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-//@Scope("prototype")
 @Table(name = "pizzas")
 @NamedQueries({
         @NamedQuery(name = "Pizza.findAll", query = "SELECT p FROM Pizza p"),
         @NamedQuery(name = "Pizza.findAllByType", query = "SELECT p FROM Pizza p WHERE p.type=:type"),
         @NamedQuery(name = "Pizza.deleteAll", query = "delete  from Pizza p")
 })
+@Data
 public class Pizza extends ResourceSupport implements Serializable {
     @TableGenerator(name = "Pizza_Gen",
             table = "ID_GEN",
@@ -45,72 +49,6 @@ public class Pizza extends ResourceSupport implements Serializable {
         this.name = name;
         this.price = price;
         this.type = type;
-    }
-
-
-    public Long getPizzaId() {
-        return pizzaId;
-    }
-
-    public void setPizzaId(Long id) {
-        this.pizzaId = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public PizzaType getType() {
-        return type;
-    }
-
-    public void setType(PizzaType type) {
-        this.type = type;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Pizza pizza = (Pizza) o;
-
-        if (pizzaId != null ? !pizzaId.equals(pizza.pizzaId) : pizza.pizzaId != null) return false;
-        if (name != null ? !name.equals(pizza.name) : pizza.name != null) return false;
-        if (price != null ? !price.equals(pizza.price) : pizza.price != null) return false;
-        return type == pizza.type;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = pizzaId != null ? pizzaId.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Pizza{" +
-                "id=" + pizzaId +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", type=" + type +
-                '}';
     }
 
 

@@ -1,5 +1,12 @@
 package ua.rd.pizzaservice.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
@@ -19,9 +26,11 @@ import java.util.stream.Stream;
 @Table(name = "orders")
 @NamedQueries({
         @NamedQuery(name = "Order.findAll", query = "SELECT o from Order o"),
-        @NamedQuery(name = "Order.findAllByCustomer", query = "SELECT o from Order o where o.customer=:customer"),
+        @NamedQuery(name = "Order.findAllByCustomer", query = "SELECT o from Order o  where o.customer=:customer"),
         @NamedQuery(name = "Order.deleteAll", query = "delete  from Order o")
 })
+@Getter
+@Setter
 public class Order implements Serializable {
     @TableGenerator(name = "Order_Gen",
             table = "ID_GEN",
@@ -31,34 +40,35 @@ public class Order implements Serializable {
             allocationSize = 50)
     @Id
     @GeneratedValue(generator = "Order_Gen")
+
     private Long id;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection()
     @CollectionTable(name = "pizzasAmount")
     @MapKeyJoinColumn(name = "pizzaId", referencedColumnName = "pizzaId")
     @Column(name = "quantity")
+    @BatchSize(size = 5)
     private Map<Pizza, Integer> pizzas = new HashMap<>();
 
-    @ManyToOne(cascade = {/*CascadeType.PERSIST,*/ CascadeType.MERGE /*,CascadeType.ALL*/})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "CustomerID")
+
     private Customer customer;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.NEW;
     @Column(name = "date")
     private LocalDate date = LocalDate.now();
-    @OneToOne //(orphanRemoval = true)
+    @OneToOne
     private Address address;
 
     public Order() {
     }
 
-
     public Order(Map<Pizza, Integer> pizzas, Customer customer) {
         this.pizzas = pizzas;
         this.customer = customer;
     }
-
 
     public enum Status {
         NEW, IN_PROGRESS, CANCELLED, DONE
@@ -92,42 +102,6 @@ public class Order implements Serializable {
         return result;
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    public Map<Pizza, Integer> getPizzas() {
-        return pizzas;
-    }
-
-    public void setPizzas(Map<Pizza, Integer> pizzas) {
-        this.pizzas = pizzas;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -136,34 +110,16 @@ public class Order implements Serializable {
         Order order = (Order) o;
 
         if (id != null ? !id.equals(order.id) : order.id != null) return false;
-        if (pizzas != null ? !pizzas.equals(order.pizzas) : order.pizzas != null) return false;
         if (customer != null ? !customer.equals(order.customer) : order.customer != null) return false;
-        if (status != order.status) return false;
-        if (date != null ? !date.equals(order.date) : order.date != null) return false;
-        return address != null ? address.equals(order.address) : order.address == null;
+        return status == order.status;
+
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (pizzas != null ? pizzas.hashCode() : 0);
         result = 31 * result + (customer != null ? customer.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
     }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", pizzas=" + pizzas +
-                ", customer=" + customer +
-                ", status=" + status +
-                ", date=" + date +
-                ", address=" + address +
-                '}';
-    }
-
 }

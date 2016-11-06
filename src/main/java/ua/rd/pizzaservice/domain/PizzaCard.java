@@ -1,20 +1,17 @@
 package ua.rd.pizzaservice.domain;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import ua.rd.pizzaservice.infrastructure.BenchMark;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@Component
-//@Scope("prototype")
-@Table(name ="pizzaCards")
+@Table(name = "pizzaCards")
 @NamedQueries({
         @NamedQuery(name = "PizzaCard.findAll", query = "SELECT pc from PizzaCard pc"),
         @NamedQuery(name = "PizzaCard.deleteAll", query = "delete  from PizzaCard pс")})
+@Data
 public class PizzaCard implements Serializable {
     @TableGenerator(name = "Pizza_Card_Gen",
             table = "ID_GEN",
@@ -30,27 +27,7 @@ public class PizzaCard implements Serializable {
 
 
     public PizzaCard() {
-
     }
 
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public String toString() {
-        return "PizzaCard{" +
-                "id=" + id +
-                ", balance=" + balance +
-                '}';
-    }
 }

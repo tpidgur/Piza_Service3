@@ -1,5 +1,11 @@
 package ua.rd.pizzaservice.domain;
 
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,6 +13,7 @@ import javax.persistence.TableGenerator;
 import java.io.Serializable;
 
 @Entity
+@Data
 public class Address implements Serializable {
     @TableGenerator(name = "Address_Gen",
             table = "ID_GEN",
@@ -16,7 +23,9 @@ public class Address implements Serializable {
             allocationSize = 50)
     @Id
     @GeneratedValue(generator = "Address_Gen")
+
     private Long id;
+
     private String address;
 
     public Address() {
@@ -26,19 +35,5 @@ public class Address implements Serializable {
         this.address = address;
     }
 
-    public String getAddress() {
-        return address;
-    }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    @Override
-    public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", address='" + address + '\'' +
-                '}';
-    }
 }

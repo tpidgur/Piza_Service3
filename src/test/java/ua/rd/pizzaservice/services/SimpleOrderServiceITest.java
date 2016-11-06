@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.services;
 
 
+import org.hibernate.Session;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,11 +10,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ua.rd.pizzaservice.domain.*;
 import ua.rd.pizzaservice.repository.CustomerRepository;
 import ua.rd.pizzaservice.repository.OrderRepository;
 import ua.rd.pizzaservice.repository.PizzaRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,7 +29,8 @@ import static org.hamcrest.Matchers.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"/H2WithSpringJPA.xml"})
 public class SimpleOrderServiceITest {
-
+    @PersistenceContext
+    protected EntityManager em;
 
     public static final Order.Status CANCELLED = Order.Status.CANCELLED;
     public static final Order.Status DONE = Order.Status.DONE;
@@ -33,28 +38,22 @@ public class SimpleOrderServiceITest {
     private SimpleOrderService simpleOrderService;
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
-    private PizzaService pizzaService;
-    @Autowired
-    private DiscountService discountService;
+
 
     private static PizzaRepository pizzaRepository;
     private static CustomerRepository customerRepository;
 
     public static long PIZZA_ID1;
-    //= 1L;
     public static long PIZZA_ID2;
-    //= 2L;
     public static long PIZZA_ID3;
-    //= 3l;
+
 
 
     public static final int AMOUNT1 = 1;
     public static final int AMOUNT2 = 2;
     public static final int AMOUNT3 = 3;
 
-    public static  long CUSTOMER_ID ;
-            //= 1L;
+    public static long CUSTOMER_ID;
     public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
 
     public static final Order.Status IN_PROGRESS = Order.Status.IN_PROGRESS;
@@ -76,7 +75,7 @@ public class SimpleOrderServiceITest {
         PIZZA_ID3 = pizza3.getPizzaId();
         customerRepository = (CustomerRepository) context.getBean("customerRepository");
         Customer customer = customerRepository.save(new Customer("Ivan"));
-        CUSTOMER_ID=customer.getId();
+        CUSTOMER_ID = customer.getId();
     }
 
 
@@ -144,12 +143,18 @@ public class SimpleOrderServiceITest {
         return expected;
     }
 
+    @Transactional
     @Test
     public void addPizzasToExistingOrderTest() {
         Order order = placeNewSingleOrder();
+        getSession().get(Order.class, order.getId()).getPizzas().size();
         simpleOrderService.addPizzasToExistingOrder(order.getId(), PIZZA_ID1, PIZZA_ID2);
         int pizzasAmount = simpleOrderService.findOrderById(order.getId()).getAmountOfPizzas();
         assertThat(pizzasAmount, is(5));
+    }
+
+    private Session getSession() {
+        return em.unwrap(Session.class);
     }
 
     @Test(expected = RuntimeException.class)
@@ -175,9 +180,11 @@ public class SimpleOrderServiceITest {
         assertThat(actual, is(expected));
     }
 
+    @Transactional
     @Test
     public void removePizzaFromExistingOrderTest() {
         Order order = placeNewSingleOrder();
+        getSession().get(Order.class, order.getId()).getPizzas().size();
         simpleOrderService.removePizzaFromExistingOrder(order.getId(), PIZZA_ID1);
         Order actual = simpleOrderService.findOrderById(order.getId());
         assertThat(actual.getPizzas(), is(getMapOfPizzasWithTheirQuantities2()));
@@ -215,9 +222,11 @@ public class SimpleOrderServiceITest {
         assertThat(actual, is(IN_PROGRESS));
     }
 
+    @Transactional
     @Test
     public void setDoneStatusTest() {
         Order order = placeNewSingleOrder();
+        getSession().get(Order.class, order.getId()).getPizzas().size();//eager loading of the pizzas Map
         simpleOrderService.setInProgressStatus(order.getId());
         simpleOrderService.setDoneStatus(order.getId());
         Order.Status actual = simpleOrderService.findOrderById(order.getId()).getStatus();
@@ -232,7 +241,6 @@ public class SimpleOrderServiceITest {
 
 
     private Order placeNewSingleOrder() {
-        System.out.println(customerRepository.find(CUSTOMER_ID));
         return simpleOrderService.placeNewOrder(customerRepository.find(CUSTOMER_ID),
                 PIZZA_ID1, PIZZA_ID1, PIZZA_ID2);
     }

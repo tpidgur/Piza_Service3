@@ -1,5 +1,7 @@
 package ua.rd.pizzaservice.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +13,9 @@ import java.io.Serializable;
         @NamedQuery(name = "Customer.findByName", query = "SELECT c from Customer c WHERE c.name=:name"),
         @NamedQuery(name = "Customer.deleteAll", query = "delete  from Customer с")
 })
+
+@Data
+@EqualsAndHashCode(of = {"id", "name"})
 public class Customer implements Serializable {
     @TableGenerator(name = "Customer_Gen",
             table = "ID_GEN",
@@ -20,17 +25,21 @@ public class Customer implements Serializable {
             allocationSize = 50)
     @Id
     @GeneratedValue(generator = "Customer_Gen")
+
     private Long id;
 
     @Column(nullable = false)
+
     private String name;
 
-    @ManyToOne(cascade = {/*CascadeType.PERSIST, */ CascadeType.MERGE/*,CascadeType.ALL*/ })
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "address_id")
+
     private Address address;
 
-    @OneToOne(cascade = {/*CascadeType.PERSIST,*/ CascadeType.MERGE/*,CascadeType.ALL*/}/*,orphanRemoval = true*/)
+    @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "card_id")
+
     private PizzaCard card;
 
     public Customer() {
@@ -59,69 +68,5 @@ public class Customer implements Serializable {
     private void createNewCard() {
         card = new PizzaCard();
     }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public PizzaCard getCard() {
-        return card;
-    }
-
-    public void setCard(PizzaCard card) {
-        this.card = card;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Customer customer = (Customer) o;
-
-        if (!id.equals(customer.id)) return false;
-        return name.equals(customer.name);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", card=" + card +
-                '}';
-    }
-
 
 }

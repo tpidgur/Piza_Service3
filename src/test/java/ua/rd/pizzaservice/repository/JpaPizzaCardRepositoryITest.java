@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.repository;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.rd.pizzaservice.domain.Pizza;
@@ -15,9 +16,9 @@ public class JpaPizzaCardRepositoryITest extends RepositoryTestConfig {
     @Autowired
     private PizzaCardRepository pizzaCardRepository;
 
-    @After
+    @Before
     public void intialTune() {
-        pizzaCardRepository.delete();
+        jdbcTemplate.update("DELETE FROM pizzacards");
     }
 
     @Test

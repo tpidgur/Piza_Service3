@@ -177,6 +177,7 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
     }
 
     private void isOrderContainsPizza(Order order, Pizza pizza) {
+        order.getPizzas().size();
         if (!order.getPizzas().containsKey(pizza) || order.getPizzas().get(pizza) == 0) {
             throw new RuntimeException("No pizzas have been found in the order!");
         }

@@ -1,9 +1,7 @@
 package ua.rd.pizzaservice.repository;
 
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.rd.pizzaservice.domain.*;
@@ -30,17 +28,13 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
 
     @After
     public void intialTune() {
+
         jdbcTemplate.update("DELETE  FROM  pizzasamount");
         jdbcTemplate.update("DELETE  FROM  orders");
         jdbcTemplate.update("DELETE FROM pizzas");
         jdbcTemplate.update("DELETE FROM customers");
         jdbcTemplate.update("DELETE FROM pizzacards");
         jdbcTemplate.update("DELETE FROM address");
-
-   //      orderRepository.delete();
-//       customerRepository.delete();
-//        pizzaRepository.delete();
-
     }
 
     @Test
@@ -77,14 +71,10 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
 
     public Order initializeOneOrder() {
         Map<Pizza, Integer> pizzas = new HashMap<>();
-//        Pizza pizza1 = new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT);
-//        Pizza pizza2 = new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT);
-
         Pizza pizza1 = pizzaRepository.save(new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT));
         Pizza pizza2 = pizzaRepository.save(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
         pizzas.put(pizza1, 1);
         pizzas.put(pizza2, 4);
-      //  Customer customer = customerRepository.save(new Customer("Ivan"));
         Customer customer =(new Customer("Ivan"));
         Order order = new Order(pizzas, customer);
         return orderRepository.save(order);

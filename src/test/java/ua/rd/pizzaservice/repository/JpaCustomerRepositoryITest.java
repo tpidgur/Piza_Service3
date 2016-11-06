@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.repository;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.rd.pizzaservice.domain.Address;
@@ -14,9 +15,11 @@ public class JpaCustomerRepositoryITest extends RepositoryTestConfig {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @After
+    @Before
     public void intialTune() {
-        customerRepository.delete();
+        jdbcTemplate.update("DELETE FROM customers");
+        jdbcTemplate.update("DELETE FROM pizzacards");
+        jdbcTemplate.update("DELETE FROM address");
     }
 
     @Test
@@ -37,7 +40,9 @@ public class JpaCustomerRepositoryITest extends RepositoryTestConfig {
     @Test
     public void findAllTest() {
         List<Customer> expected = initializeTwoCustomers();
+        System.out.println("Expected<- "+expected);
         List<Customer> actual = customerRepository.findAll();
+        System.out.println("Actual<- "+actual);
         assertEquals(expected, actual);
     }
 
