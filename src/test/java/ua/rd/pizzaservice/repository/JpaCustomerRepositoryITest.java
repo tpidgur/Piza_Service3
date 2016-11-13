@@ -1,6 +1,5 @@
 package ua.rd.pizzaservice.repository;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class JpaCustomerRepositoryITest extends RepositoryTestConfig {
     @Test
     public void findTest() {
         Customer expected = initializeOneCustomer();
-        Customer actual = customerRepository.find(expected.getId());
+        Customer actual = customerRepository.find(expected.getCustomerId());
         assertEquals(expected, actual);
     }
 
@@ -50,7 +49,7 @@ public class JpaCustomerRepositoryITest extends RepositoryTestConfig {
     @Test
     public void saveTest() {
         Customer customer = initializeOneCustomer();
-        assertNotNull(customer.getId());
+        assertNotNull(customer.getCustomerId());
 
     }
 

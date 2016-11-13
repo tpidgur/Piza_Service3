@@ -2,6 +2,7 @@ package ua.rd.pizzaservice.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,8 +16,8 @@ import java.io.Serializable;
 })
 
 @Data
-@EqualsAndHashCode(of = {"id", "name"})
-public class Customer implements Serializable {
+@EqualsAndHashCode(of = {"customerId", "name"})
+public class Customer extends ResourceSupport implements Serializable {
     @TableGenerator(name = "Customer_Gen",
             table = "ID_GEN",
             pkColumnName = "Gen_name",
@@ -26,20 +27,18 @@ public class Customer implements Serializable {
     @Id
     @GeneratedValue(generator = "Customer_Gen")
 
-    private Long id;
+    private Long customerId;
 
     @Column(nullable = false)
 
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = "address_id")
-
     private Address address;
 
-    @OneToOne(cascade = {CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = "card_id")
-
     private PizzaCard card;
 
     public Customer() {

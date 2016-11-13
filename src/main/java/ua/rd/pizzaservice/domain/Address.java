@@ -23,7 +23,6 @@ public class Address implements Serializable {
             allocationSize = 50)
     @Id
     @GeneratedValue(generator = "Address_Gen")
-
     private Long id;
 
     private String address;

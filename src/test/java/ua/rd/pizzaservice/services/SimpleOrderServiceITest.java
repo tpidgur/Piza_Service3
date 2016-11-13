@@ -75,7 +75,7 @@ public class SimpleOrderServiceITest {
         PIZZA_ID3 = pizza3.getPizzaId();
         customerRepository = (CustomerRepository) context.getBean("customerRepository");
         Customer customer = customerRepository.save(new Customer("Ivan"));
-        CUSTOMER_ID = customer.getId();
+        CUSTOMER_ID = customer.getCustomerId();
     }
 
 
