@@ -11,6 +11,7 @@ import java.util.List;
 public class SimpleCustomerService implements CustomerService {
     private CustomerRepository customerRepo;
 
+
     @Autowired
     public SimpleCustomerService(CustomerRepository customerRepo) {
         this.customerRepo = customerRepo;
@@ -18,21 +19,21 @@ public class SimpleCustomerService implements CustomerService {
 
     @Override
     public Customer find(Long id) {
-        return null;
+        return customerRepo.find(id);
     }
 
     @Override
     public List<Customer> findAllByName(String name) {
-        return null;
+        return customerRepo.findAllByName(name);
     }
 
     @Override
     public List<Customer> findAll() {
-        return null;
+        return customerRepo.findAll();
     }
 
     @Override
     public Customer save(Customer customer) {
-        return null;
+        return customerRepo.save(customer);
     }
 }
