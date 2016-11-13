@@ -6,11 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ua.rd.pizzaservice.domain.Address;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.PizzaCard;
+
 import java.util.Arrays;
 import java.util.List;
+
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 public class JpaCustomerRepositoryITest extends RepositoryTestConfig {
+    public static final String NEW_NAME = "Bloh Kristina";
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -39,12 +43,18 @@ public class JpaCustomerRepositoryITest extends RepositoryTestConfig {
     @Test
     public void findAllTest() {
         List<Customer> expected = initializeTwoCustomers();
-        System.out.println("Expected<- "+expected);
         List<Customer> actual = customerRepository.findAll();
-        System.out.println("Actual<- "+actual);
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void updateNameTest() {
+        Customer customer = initializeOneCustomer();
+        System.out.println(customer);
+        customerRepository.updateName(NEW_NAME,customer.getCustomerId());
+        System.out.println(customerRepository.find(customer.getCustomerId()));
+        //assertThat(customerRepository.find(customer.getCustomerId()).getName(),is(NEW_NAME));
+    }
 
     @Test
     public void saveTest() {

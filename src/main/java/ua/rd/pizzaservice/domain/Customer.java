@@ -12,6 +12,8 @@ import java.io.Serializable;
 @NamedQueries({
         @NamedQuery(name = "Customer.findAll", query = "SELECT c from Customer c"),
         @NamedQuery(name = "Customer.findByName", query = "SELECT c from Customer c WHERE c.name=:name"),
+        @NamedQuery(name = "Customer.updateName", query = "UPDATE Customer c SET c.name='Tania'"),
+       // WHERE c.customerId=:id :newName
         @NamedQuery(name = "Customer.deleteAll", query = "delete  from Customer с")
 })
 

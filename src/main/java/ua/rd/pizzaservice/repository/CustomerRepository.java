@@ -11,6 +11,8 @@ public interface CustomerRepository {
 
     List<Customer> findAll();
 
+    void updateName(String newName, Long id);
+
     Customer save(Customer customer);
 
     void delete();
