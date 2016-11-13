@@ -1,15 +1,11 @@
 package ua.rd.pizzaservice.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.context.annotation.Scope;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.stereotype.Component;
-import ua.rd.pizzaservice.infrastructure.BenchMark;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,7 +27,7 @@ import java.util.stream.Stream;
 })
 @Getter
 @Setter
-public class Order implements Serializable {
+public class Order  extends ResourceSupport implements Serializable {
     @TableGenerator(name = "Order_Gen",
             table = "ID_GEN",
             pkColumnName = "Gen_name",
@@ -41,7 +37,7 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(generator = "Order_Gen")
 
-    private Long id;
+    private Long orderId;
 
     @ElementCollection()
     @CollectionTable(name = "pizzasAmount")
@@ -109,7 +105,7 @@ public class Order implements Serializable {
 
         Order order = (Order) o;
 
-        if (id != null ? !id.equals(order.id) : order.id != null) return false;
+        if (orderId != null ? !orderId.equals(order.orderId) : order.orderId != null) return false;
         if (customer != null ? !customer.equals(order.customer) : order.customer != null) return false;
         return status == order.status;
 
@@ -117,7 +113,7 @@ public class Order implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = orderId != null ? orderId.hashCode() : 0;
         result = 31 * result + (customer != null ? customer.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;

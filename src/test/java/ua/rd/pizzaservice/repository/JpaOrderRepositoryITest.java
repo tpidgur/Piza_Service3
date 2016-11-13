@@ -40,7 +40,7 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     @Test
     public void findTest() {
         Order expected = orderRepository.save(initializeOneOrder());
-        Order actual = orderRepository.find(expected.getId());
+        Order actual = orderRepository.find(expected.getOrderId());
         assertEquals(actual, expected);
     }
 
@@ -66,7 +66,7 @@ public class JpaOrderRepositoryITest extends RepositoryTestConfig {
     public void saveTest() {
         Order order = initializeOneOrder();
         System.out.println(order);
-        assertNotNull(order.getId());
+        assertNotNull(order.getOrderId());
     }
 
     public Order initializeOneOrder() {

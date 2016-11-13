@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.services.CustomerService;
 
 import java.util.List;
