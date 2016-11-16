@@ -2,10 +2,7 @@ package ua.rd.pizzaservice.runner;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.Order;
-import ua.rd.pizzaservice.domain.Pizza;
-import ua.rd.pizzaservice.domain.PizzaCard;
+import ua.rd.pizzaservice.domain.*;
 import ua.rd.pizzaservice.repository.PizzaRepository;
 import ua.rd.pizzaservice.services.OrderService;
 import ua.rd.pizzaservice.services.PizzaService;
@@ -24,7 +21,7 @@ public class SpringJPAAppRunner {
 
 //
 //        System.out.println(Arrays.toString(appContext.getBeanDefinitionNames()));
-//        PizzaRepository pizzaRepository=(PizzaRepository) appContext.getBean("pizzaRepository");
+ //     PizzaRepository pizzaRepository=(PizzaRepository) appContext.getBean("pizzaRepository");
 //
 //        Pizza p1 = new Pizza("Sea Pizza", new BigDecimal(1), Pizza.PizzaType.SEA);
 //        Pizza p2 = new Pizza("New York Style Pizza", new BigDecimal(1), Pizza.PizzaType.MEAT);
@@ -51,6 +48,6 @@ public class SpringJPAAppRunner {
     }
 
     private static Customer createCustomer() {
-        return new Customer("Iren");
+      return new  Customer("Iren",new Address("c.Kiev,Lomonosova 23,fl.28"),new PizzaCard());
     }
 }

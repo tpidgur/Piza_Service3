@@ -1,5 +1,6 @@
 package ua.rd.pizzaservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
@@ -14,6 +15,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static javax.persistence.FetchType.EAGER;
 
 
 @Component
@@ -38,8 +41,8 @@ public class Order  extends ResourceSupport implements Serializable {
     @GeneratedValue(generator = "Order_Gen")
 
     private Long orderId;
-
-    @ElementCollection()
+   // @JsonIgnore
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "pizzasAmount")
     @MapKeyJoinColumn(name = "pizzaId", referencedColumnName = "pizzaId")
     @Column(name = "quantity")
