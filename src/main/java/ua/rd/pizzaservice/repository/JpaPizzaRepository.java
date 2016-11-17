@@ -34,6 +34,7 @@ public class JpaPizzaRepository implements PizzaRepository {
     @Transactional
     @Override
     public Pizza save(Pizza pizza) {
+        System.out.println("====pizza======"+pizza);
         if (pizza.getPizzaId() == null) {
             em.persist(pizza);
         } else {
