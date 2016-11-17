@@ -39,6 +39,20 @@
     <servlet-mapping>
         <servlet-name>SpringRESTDispatcherServlet</servlet-name>
         <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>SpringWebDispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/WebContext.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SpringWebDispatcherServlet</servlet-name>
+        <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -4,11 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
+import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.services.OrderService;
 
 import java.math.BigDecimal;
@@ -65,8 +64,9 @@ public class OrderRestController {
     }
 
 //    @RequestMapping(value = "order", method = RequestMethod.POST)
-//    public ResponseEntity<Void> placeNewOrder(@PathVariable("orderID")Long orderId) {
-//        BigDecimal total=  orderService.getTotalWithDiscount(orderId);
+//    public ResponseEntity<Void> placeNewOrder(@RequestBody Customer customer,
+//                                              @RequestBody Long... orderId) {
+//        orderService.placeNewOrder(customer, orderId);
 //
 //    }
 
