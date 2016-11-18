@@ -7,8 +7,8 @@
 </head>
 <body>
 <h1>Edit Pizza</h1>
-<form action="save" method="post">
-    <input id="pizzaId" name="pizzaId" hidden="true" value="${pizza.pizzaId}"/>
+<form action="../save" method="post">
+    <input id="pizzaId" name="pizzaId" type="hidden"  value="${pizza.pizzaId}"/>
     <table>
         <tr>
             <td>Pizza name</td>

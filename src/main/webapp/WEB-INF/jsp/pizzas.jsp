@@ -23,7 +23,7 @@
             <td><c:out value="${pizza.name}"/></td>
             <td><c:out value="${pizza.type}"/></td>
             <td><c:out value="${pizza.price}"/></td>
-            <form action="edit" method="post">
+            <form action="${pizza.pizzaId}/edit" method="post">
                 <input id="id" name="id" hidden="true" value="${pizza.pizzaId}">
                 <td><input type="submit" value="edit"></td>
             </form>

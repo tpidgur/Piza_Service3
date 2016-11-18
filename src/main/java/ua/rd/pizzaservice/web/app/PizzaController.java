@@ -43,9 +43,10 @@ public class PizzaController {
         return "pizza";
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String updatePizza(Model model) {
+    @RequestMapping(value = "/{pizzaId}/edit", method = RequestMethod.POST)
+    public String updatePizza(Model model, @PathVariable("pizzaId") Long pizzaId) {
         System.out.println("===updatePizza====");
+        model.addAttribute("pizza", pizzaService.find(pizzaId));
         model.addAttribute("types", Pizza.PizzaType.values());
         return "pizza";
     }
