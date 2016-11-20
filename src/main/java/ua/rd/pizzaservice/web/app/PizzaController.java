@@ -34,7 +34,7 @@ public class PizzaController {
     }
 
 
-    @RequestMapping(name = "/create", method = RequestMethod.GET)
+    @RequestMapping(name = "pizzas/create", method = RequestMethod.GET)
     public String createPizza(Model model) {
         System.out.println("===createPizza====");
         Pizza pizza = new Pizza();
@@ -43,7 +43,7 @@ public class PizzaController {
         return "pizza";
     }
 
-    @RequestMapping(value = "/{pizzaId}/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "pizzas/{pizzaId}/edit", method = RequestMethod.POST)
     public String updatePizza(Model model, @PathVariable("pizzaId") Long pizzaId) {
         System.out.println("===updatePizza====");
         model.addAttribute("pizza", pizzaService.find(pizzaId));
@@ -51,7 +51,7 @@ public class PizzaController {
         return "pizza";
     }
 
-    @RequestMapping(value = "/save",method = RequestMethod.POST)
+    @RequestMapping(value = "pizzas/save",method = RequestMethod.POST)
     public String save (@ModelAttribute Pizza pizza,Model model){
         System.out.println("===savePizza===="+pizza);
         pizzaService.save(pizza);
