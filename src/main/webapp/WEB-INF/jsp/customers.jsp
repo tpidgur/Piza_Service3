@@ -17,6 +17,7 @@
         <th>Address</th>
         <th>Card id</th>
         <th>Card balance</th>
+        <th>Edit</th>
     </tr>
     <c:forEach items="${customerList}" var="customer">
         <tr>
@@ -26,16 +27,16 @@
             <td><c:out value="${customer.card.id}"/></td>
             <td><c:out value="${customer.card.balance}"/></td>
             <td>
-                <form action="customers/${customer.customerId}/edit" method="post">
+                <form action="./customers/${customer.customerId}/edit" method="post">
                     <input hidden="true" value="${customer.customerId}">
-            <td><input type="submit" value="edit"></td>
+            <input type="submit" value="edit">
             </form>
-            <td>
+            </td>
         </tr>
     </c:forEach>
 </table>
 
-<form action="customers/create" method="get">
+<form action="./customers/0/create" method="get">
     <input type="submit" value="New">
 </form>
 

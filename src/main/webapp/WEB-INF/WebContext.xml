@@ -10,7 +10,16 @@
         http://www.springframework.org/schema/context/spring-context.xsd
          http://www.springframework.org/schema/mvc
          http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-    <mvc:annotation-driven/>
+
+    <mvc:annotation-driven conversion-service="conversionService"/>
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="ua.rd.pizzaservice.web.converter.CardIdToCardConverter"/>
+            </set>
+        </property>
+    </bean>
 
     <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
     <context:component-scan base-package="ua.rd.pizzaservice.web.app"/>
@@ -19,4 +28,5 @@
                  suffix=".jsp"
                  view-class="org.springframework.web.servlet.view.JstlView"/>
     </mvc:view-resolvers>
+
 </beans>
