@@ -168,6 +168,11 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
         return getTotalWithoutDiscount(orderId).subtract(getTotalDiscountAmount(orderId));
     }
 
+    @Override
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+    }
+
 
     private void checkStatus(Order order) {
         Order.Status status = order.getStatus();

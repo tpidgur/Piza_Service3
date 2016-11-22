@@ -19,6 +19,7 @@
         <th>Date</th>
         <th>Delivery address</th>
         <th>List of pizzas</th>
+        <th>Number of pizzas</th>
         <th>Edit</th>
     </tr>
     <c:forEach items="${orderList}" var="order">
@@ -29,13 +30,22 @@
             <td><c:out value="${order.status}"/></td>
             <td><c:out value="${order.date}"/></td>
             <td><c:out value="${order.address}"/></td>
+
             <td>
-                <c:forEach items="${order.pizzas}" var="item">
+                <c:forEach items="${order.pizzas.keySet()}" var="pizza">
                     <ul>
-                        <li><c:out value="${item}"/></li>
+                        <li><c:out value="${pizza}"/></li>
                     </ul>
                 </c:forEach>
             </td>
+                <td>
+                    <c:forEach items="${order.pizzas.values()}" var="amount">
+                        <ul>
+                            <li><c:out value="${amount}"/></li>
+                        </ul>
+                    </c:forEach>
+                </td>
+
             <td>
                 edit
                 <%--<form action="./customers/${customer.customerId}/edit" method="post">--%>

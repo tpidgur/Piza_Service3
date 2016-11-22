@@ -22,8 +22,7 @@ public class OrderController {
     public ModelAndView findAll(ModelAndView modelAndView) {
         System.out.println("===findAllOrders====");
         modelAndView.setViewName("orders");
-        modelAndView.addObject("orderList", Stream.of(
-                orderService.findOrderById(Long.valueOf(1))).collect(Collectors.toList()));
+        modelAndView.addObject("orderList", orderService.findAll());
         return modelAndView;
     }
 }

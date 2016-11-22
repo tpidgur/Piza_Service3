@@ -4,6 +4,7 @@ import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 public interface OrderService {
@@ -26,6 +27,8 @@ public interface OrderService {
     BigDecimal getTotalWithoutDiscount(Long orderId);
 
     BigDecimal getTotalWithDiscount(Long orderId);
+
+    List<Order> findAll();
 
 
 }
