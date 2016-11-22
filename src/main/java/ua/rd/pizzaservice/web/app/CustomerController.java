@@ -1,14 +1,11 @@
 package ua.rd.pizzaservice.web.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.PizzaCard;
 import ua.rd.pizzaservice.services.CustomerService;
 
 import java.math.BigDecimal;
@@ -20,17 +17,6 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-//    @Autowired
-//    public CustomerController(CustomerService customerService) {
-//        this.customerService = customerService;
-//    }
-
-    //    @Autowired
-//    private ConversionService conversionService;
-//    @InitBinder
-//    protected void initBinder(ServletRequestDataBinder binder){
-//        binder.setConversionService(conversionService);
-//    }
     @RequestMapping
     public ModelAndView findAll(ModelAndView modelAndView) {
         System.out.println("===findAll====");
