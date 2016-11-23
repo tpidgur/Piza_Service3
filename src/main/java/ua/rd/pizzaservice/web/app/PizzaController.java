@@ -61,6 +61,7 @@ public class PizzaController {
         model.addAttribute("pizzas", pizzas);
         return "redirect:/app/pizzas";
     }
+
 //    @ModelAttribute
 //    public Pizza getPizzaById(@RequestParam(value = "pizzaId", required = false) Long pizzaId) {
 //        if (pizzaId == null) {
