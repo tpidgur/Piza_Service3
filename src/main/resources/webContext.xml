@@ -15,5 +15,14 @@
 
     <bean name="handlerMappingStrategy"
           class="ua.rd.pizzaservice.web.infrastructure.SimpleURLHandlerMapping"></bean>
-
+    <bean id="simpleMappingExceptionResolver"
+          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <map>
+                <entry key="NumberFormatException" value="error"/>
+            </map>
+        </property>
+        <property name="defaultErrorView" value="error"/>
+        <property name="exceptionAttribute" value="ex"/>
+    </bean>
 </beans>

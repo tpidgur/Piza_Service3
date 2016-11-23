@@ -13,7 +13,7 @@ public class PizzaControllerAdvice {
     private PizzaService pizzaService;
     @ModelAttribute
     public Pizza status(@RequestParam(name = "pizzaId",required = false)Pizza pizza){
-        System.out.println("Advice");
+        System.out.println("Advice"+pizza);
         return pizza;
     }
 }
