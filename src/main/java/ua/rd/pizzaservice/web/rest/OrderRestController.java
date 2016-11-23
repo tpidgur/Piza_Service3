@@ -5,9 +5,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
-import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.services.OrderService;
 
 import java.math.BigDecimal;
@@ -23,7 +21,7 @@ public class OrderRestController {
 
     @RequestMapping(value = "order/{orderID}", method = RequestMethod.GET)
     public ResponseEntity<Order> findOrderById(@PathVariable("orderID") Long orderId) {
-        Order order = orderService.findOrderById(orderId);
+        Order order = orderService.find(orderId);
         if (order == null) {
             return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
         }

@@ -38,27 +38,25 @@
                     </ul>
                 </c:forEach>
             </td>
-                <td>
-                    <c:forEach items="${order.pizzas.values()}" var="amount">
-                        <ul>
-                            <li><c:out value="${amount}"/></li>
-                        </ul>
-                    </c:forEach>
-                </td>
-
             <td>
-                edit
-                <%--<form action="./customers/${customer.customerId}/edit" method="post">--%>
-                    <%--<input hidden="true" value="${customer.customerId}">--%>
-            <%--<input type="submit" value="edit">--%>
-            <%--</form>--%>
+                <c:forEach items="${order.pizzas.values()}" var="amount">
+                    <ul>
+                        <li><c:out value="${amount}"/></li>
+                    </ul>
+                </c:forEach>
+            </td>
+            <td>
+                <form action="./orders/${order.orderId}/edit" method="post">
+                    <input hidden="true" value="${order.orderId}">
+                    <input type="submit" value="edit">
+                </form>
             </td>
         </tr>
     </c:forEach>
 </table>
 
-<%--<form action="./customers/0/create" method="get">--%>
-    <%--<input type="submit" value="New">--%>
+<%--<form action="./orders/order/create" method="get">--%>
+<%--<input type="submit" value="New">--%>
 <%--</form>--%>
 
 </body>

@@ -1,9 +1,6 @@
 package ua.rd.pizzaservice.services;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
@@ -90,7 +87,7 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
 
 
     protected void changeStatus(Long orderId, Order.Status newStatus) {
-        Order order = findOrderById(orderId);
+        Order order = find(orderId);
         if (newStatus == Order.Status.CANCELLED) {
             order.setStatus(Order.Status.CANCELLED);
         } else if (newStatus == Order.Status.IN_PROGRESS &&
@@ -105,13 +102,13 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
     }
 
 
-    public Order findOrderById(Long orderId) {
+    public Order find(Long orderId) {
         return orderRepository.find(orderId);
     }
 
     @Override
     public void addPizzasToExistingOrder(Long orderId, Long... pizzaId) {
-        Order order = findOrderById(orderId);
+        Order order = find(orderId);
         checkStatus(order);
         isPizzasAmountLessThanMaxAllowable(order.getAmountOfPizzas() + pizzaId.length);
         Map<Pizza, Integer> additional = convertIdMapInPizzaMap(convertIdListInIdMap(Arrays.asList(pizzaId)));
@@ -121,7 +118,7 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
 
     @Override
     public void removePizzaFromExistingOrder(Long orderId, Long pizzaId) {
-        Order order = findOrderById(orderId);
+        Order order = find(orderId);
         checkStatus(order);
         Pizza pizza = findPizaById(pizzaId);
         isOrderContainsPizza(order, pizza);
@@ -141,7 +138,7 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
     }
 
     private void updatePizzaCardBalance(Long orderId) {
-        Order order=findOrderById(orderId);
+        Order order= find(orderId);
         System.out.println(order);
         PizzaCard card = order.getCustomer().getCard();
         card.setBalance(card.getBalance().add(getTotalWithDiscount(orderId)));
@@ -155,12 +152,12 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
 
     @Override
     public BigDecimal getTotalDiscountAmount(Long orderId) {
-        return discountService.calculateTotalDiscount(findOrderById(orderId));
+        return discountService.calculateTotalDiscount(find(orderId));
     }
 
     @Override
     public BigDecimal getTotalWithoutDiscount(Long orderId) {
-        return findOrderById(orderId).calculateTotalPrice();
+        return find(orderId).calculateTotalPrice();
     }
 
     @Override
@@ -171,6 +168,12 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    public Order update(Order order) {
+        isPizzasAmountLessThanMaxAllowable(order.getAmountOfPizzas());
+        return orderRepository.save(order);
     }
 
 

@@ -149,7 +149,7 @@ public class SimpleOrderServiceITest {
         Order order = placeNewSingleOrder();
         getSession().get(Order.class, order.getOrderId()).getPizzas().size();
         simpleOrderService.addPizzasToExistingOrder(order.getOrderId(), PIZZA_ID1, PIZZA_ID2);
-        int pizzasAmount = simpleOrderService.findOrderById(order.getOrderId()).getAmountOfPizzas();
+        int pizzasAmount = simpleOrderService.find(order.getOrderId()).getAmountOfPizzas();
         assertThat(pizzasAmount, is(5));
     }
 
@@ -168,14 +168,14 @@ public class SimpleOrderServiceITest {
     public void changeStatusTest() {
         Order order = placeNewSingleOrder();
         simpleOrderService.changeStatus(order.getOrderId(), IN_PROGRESS);
-        Order.Status actual = simpleOrderService.findOrderById(order.getOrderId()).getStatus();
+        Order.Status actual = simpleOrderService.find(order.getOrderId()).getStatus();
         assertThat(actual, is(IN_PROGRESS));
     }
 
     @Test
     public void findOrderByIdTest() {
         Order order = placeNewSingleOrder();
-        Order actual = simpleOrderService.findOrderById(order.getOrderId());
+        Order actual = simpleOrderService.find(order.getOrderId());
         Order expected = orderRepository.find(order.getOrderId());
         assertThat(actual, is(expected));
     }
@@ -186,7 +186,7 @@ public class SimpleOrderServiceITest {
         Order order = placeNewSingleOrder();
         getSession().get(Order.class, order.getOrderId()).getPizzas().size();
         simpleOrderService.removePizzaFromExistingOrder(order.getOrderId(), PIZZA_ID1);
-        Order actual = simpleOrderService.findOrderById(order.getOrderId());
+        Order actual = simpleOrderService.find(order.getOrderId());
         assertThat(actual.getPizzas(), is(getMapOfPizzasWithTheirQuantities2()));
     }
 
@@ -202,7 +202,7 @@ public class SimpleOrderServiceITest {
         Order order = placeNewSingleOrder();
         simpleOrderService.removePizzaFromExistingOrder(order.getOrderId(), PIZZA_ID2);
         simpleOrderService.removePizzaFromExistingOrder(order.getOrderId(), PIZZA_ID2);
-        System.out.println(simpleOrderService.findOrderById(order.getOrderId()));
+        System.out.println(simpleOrderService.find(order.getOrderId()));
 
     }
 
@@ -210,7 +210,7 @@ public class SimpleOrderServiceITest {
     public void setCancelStatusTest() {
         Order order = placeNewSingleOrder();
         simpleOrderService.setCancelStatus(order.getOrderId());
-        Order.Status actual = simpleOrderService.findOrderById(order.getOrderId()).getStatus();
+        Order.Status actual = simpleOrderService.find(order.getOrderId()).getStatus();
         assertThat(actual, is(CANCELLED));
     }
 
@@ -218,7 +218,7 @@ public class SimpleOrderServiceITest {
     public void setInProgressStatusTest() {
         Order order = placeNewSingleOrder();
         simpleOrderService.setInProgressStatus(order.getOrderId());
-        Order.Status actual = simpleOrderService.findOrderById(order.getOrderId()).getStatus();
+        Order.Status actual = simpleOrderService.find(order.getOrderId()).getStatus();
         assertThat(actual, is(IN_PROGRESS));
     }
 
@@ -229,13 +229,13 @@ public class SimpleOrderServiceITest {
         getSession().get(Order.class, order.getOrderId()).getPizzas().size();//eager loading of the pizzas Map
         simpleOrderService.setInProgressStatus(order.getOrderId());
         simpleOrderService.setDoneStatus(order.getOrderId());
-        Order.Status actual = simpleOrderService.findOrderById(order.getOrderId()).getStatus();
+        Order.Status actual = simpleOrderService.find(order.getOrderId()).getStatus();
         assertThat(actual, is(DONE));
         assertThat(getCurrentBalance(order).compareTo(BigDecimal.ZERO), is(1));
     }
 
     private BigDecimal getCurrentBalance(Order order) {
-        return simpleOrderService.findOrderById(order.getOrderId())
+        return simpleOrderService.find(order.getOrderId())
                 .getCustomer().getCard().getBalance();
     }
 

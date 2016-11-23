@@ -10,7 +10,7 @@ import java.util.List;
 public interface OrderService {
     Order placeNewOrder(Customer customer, Long... pizzasID);
 
-    Order findOrderById(Long orderId);
+    Order find(Long orderId);
 
     void addPizzasToExistingOrder(Long orderId, Long... pizzaId);
 
@@ -30,5 +30,6 @@ public interface OrderService {
 
     List<Order> findAll();
 
+    Order update(Order order);
 
 }
