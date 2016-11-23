@@ -36,7 +36,7 @@ public class PizzaController {
     }
 
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/pizza/create", method = RequestMethod.GET)
     public String createPizza(Model model) {
         System.out.println("===createPizza====");
         Pizza pizza = new Pizza();
@@ -59,7 +59,7 @@ public class PizzaController {
         pizzaService.save(pizza);
         List<Pizza> pizzas = pizzaService.findAll();
         model.addAttribute("pizzas", pizzas);
-        return "redirect:pizzas";
+        return "redirect:/app/pizzas";
     }
 //    @ModelAttribute
 //    public Pizza getPizzaById(@RequestParam(value = "pizzaId", required = false) Long pizzaId) {

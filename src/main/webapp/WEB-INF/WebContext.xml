@@ -17,6 +17,7 @@
         <property name="converters">
             <set>
                 <bean class="ua.rd.pizzaservice.web.converter.CardIdToCardConverter"/>
+                <bean class="ua.rd.pizzaservice.web.converter.PizzaConverter"/>
             </set>
         </property>
     </bean>

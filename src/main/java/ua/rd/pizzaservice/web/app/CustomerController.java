@@ -45,7 +45,7 @@ public class CustomerController {
         return "redirect:/app/customers";
     }
 
-    @RequestMapping(value = "/0/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/customer/create", method = RequestMethod.GET)
     public String createCustomer(Model model) {
         System.out.println("===createCustomer====");
         Customer customer = new Customer();

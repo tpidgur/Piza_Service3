@@ -36,7 +36,7 @@
     </c:forEach>
 </table>
 
-<form action="./customers/0/create" method="get">
+<form action="./customers/customer/create" method="get">
     <input type="submit" value="New">
 </form>
 

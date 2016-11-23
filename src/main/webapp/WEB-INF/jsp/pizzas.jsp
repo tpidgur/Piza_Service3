@@ -23,7 +23,7 @@
             <td><c:out value="${pizza.name}"/></td>
             <td><c:out value="${pizza.type}"/></td>
             <td><c:out value="${pizza.price}"/></td>
-            <form action="/${pizza.pizzaId}/edit" method="post">
+            <form action="./pizzas/${pizza.pizzaId}/edit" method="post">
                 <input id="id" name="id" hidden="true" value="${pizza.pizzaId}">
                 <td><input type="submit" value="edit"></td>
             </form>
@@ -31,7 +31,7 @@
     </c:forEach>
 
 </table>
-<form action="/create" method="get">
+<form action="./pizzas/pizza/create" method="get">
     <input type="submit" value="New">
 </form>
 
