@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.web.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,9 @@ public class PizzaController {
         return "hello";
     }
 
+
     @RequestMapping
+    @Secured("IS_AUTHENTICATED_FULLY")
     public ModelAndView findAll(ModelAndView modelAndView) {
         System.out.println("===findAll====");
         modelAndView.setViewName("pizzas");
@@ -37,6 +40,7 @@ public class PizzaController {
 
 
     @RequestMapping(value = "/pizza/create", method = RequestMethod.GET)
+    @Secured("ROLE_ADMIN")
     public String createPizza(Model model) {
         System.out.println("===createPizza====");
         Pizza pizza = new Pizza();
@@ -54,6 +58,7 @@ public class PizzaController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @Secured("ROLE_ADMIN")
     public String save(@ModelAttribute Pizza pizza, Model model) {
         System.out.println("===savePizza====" + pizza);
         pizzaService.save(pizza);
