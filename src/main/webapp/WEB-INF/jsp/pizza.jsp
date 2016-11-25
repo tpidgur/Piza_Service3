@@ -6,10 +6,13 @@
 
 </head>
 <body>
-<h1>Edit Pizza</h1>
+<sec:authorize access="hasRole('ADMIN')">
+    <h1>Edit Pizza</h1>
+</sec:authorize>
+
 
 <form action="../save" method="post">
-    <input id="pizzaId" name="pizzaId" type="hidden"  value="${pizza.pizzaId}"/>
+    <input id="pizzaId" name="pizzaId" type="hidden" value="${pizza.pizzaId}"/>
     <table>
         <tr>
             <td>Pizza name</td>

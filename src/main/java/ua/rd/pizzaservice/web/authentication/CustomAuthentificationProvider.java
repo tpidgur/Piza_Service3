@@ -1,4 +1,4 @@
-package ua.rd.pizzaservice.web.infrastructure;
+package ua.rd.pizzaservice.web.authentication;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +16,9 @@ public class CustomAuthentificationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
+        System.out.println("Before check");
         if ("user".equals(username) && "password".equals(password)) {
+            System.out.println("After check");
         Authentication auth=new UsernamePasswordAuthenticationToken
                 (username,"", Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"),new SimpleGrantedAuthority("ROLE_ADMIN")));
             return auth;

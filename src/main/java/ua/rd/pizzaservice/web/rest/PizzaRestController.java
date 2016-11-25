@@ -6,6 +6,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ua.rd.pizzaservice.domain.Pizza;
@@ -16,46 +17,19 @@ import java.util.List;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-
+@Secured("ROLE_ADMIN")
 @RestController
 public class PizzaRestController {
     @Autowired
     private PizzaService pizzaService;
 
-//    @RequestMapping(value = "pizza/{pizzaID}", method = RequestMethod.GET)
-//    public Pizza pizza(@PathVariable("pizzaID") Long pizzaID) {
-//        return pizzaService.findPizzaById(1L);
-    //new Pizza("New York Style Pizza", BigDecimal.ONE, Pizza.PizzaType.MEAT);
-    // }
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String[] hello() {
+        return new String[]{"Hello from REST Controller!"};
+    }
 
-//    @RequestMapping(value = "pizza", method = RequestMethod.POST)
-//    public void pizza(@RequestBody Pizza pizza) {
-//        System.out.println(pizza);
-//
-//    }
 
-//    @RequestMapping(value = "pizza/{pizzaID}", method = RequestMethod.GET)
-//    public ResponseEntity<Pizza> pizza(@PathVariable("pizzaID") Long pizzaID) {
-//        Pizza pizza = pizzaService.findPizzaById(pizzaID);
-//        if (pizza == null) {
-//            return new ResponseEntity<Pizza>(HttpStatus.NOT_FOUND);
-//
-//        }
-//
-//        return new ResponseEntity<Pizza>(pizza, HttpStatus.FOUND);
-//
-//    }
 
-//    @RequestMapping(value = "/pizza", method = RequestMethod.POST, consumes = "application/json")
-//    public ResponseEntity<Void> create(@RequestBody Pizza pizza, UriComponentsBuilder builder) {
-//        System.out.println(pizza);
-//        Pizza p = pizzaService.save(pizza);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setLocation(
-//                builder.path("/pizza/{pizzaID}")
-//                        .buildAndExpand(p.getPizzaId()).toUri());
-//        return new ResponseEntity<>(headers, HttpStatus.CREATED);
-//    }
 
     @RequestMapping(value = "pizza/{pizzaID}", method = RequestMethod.GET)
     public ResponseEntity<Pizza> findPizzaById(@PathVariable("pizzaID") Long pizzaID) {
