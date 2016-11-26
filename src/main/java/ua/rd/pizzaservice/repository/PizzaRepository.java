@@ -13,5 +13,8 @@ public interface PizzaRepository {
 
     Pizza save(Pizza pizza);
 
-    void delete();
+    void delete(Long id);
+
+    void deleteAll();
+
 }

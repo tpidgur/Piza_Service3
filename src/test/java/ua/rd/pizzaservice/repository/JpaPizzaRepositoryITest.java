@@ -2,6 +2,7 @@ package ua.rd.pizzaservice.repository;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.rd.pizzaservice.domain.Pizza;
@@ -54,6 +55,15 @@ public class JpaPizzaRepositoryITest extends RepositoryTestConfig {
         Pizza pizza = initializeOnePizza();
         assertNotNull(pizza.getPizzaId());
     }
+//    @Test
+//    //@Ignore
+//    public void deleteTest() {
+//        Pizza pizza = initializeOnePizza();
+//        System.out.println(pizza);
+//        pizzaRepository.delete(pizza.getPizzaId());
+//        System.out.println(pizzaRepository.find(pizza.getPizzaId()));
+//        assertNull(pizzaRepository.find(pizza.getPizzaId()));
+//    }
 
     private Pizza initializeOnePizza() {
         Pizza pizza = new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.SEA);

@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.web.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import ua.rd.pizzaservice.services.OrderService;
 
 
 @Controller
+@Secured("IS_AUTHENTICATED_FULLY")
 @RequestMapping("/orders")
 public class OrderController {
     @Autowired

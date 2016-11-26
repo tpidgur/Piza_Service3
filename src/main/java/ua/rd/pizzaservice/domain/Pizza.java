@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 @NamedQueries({
         @NamedQuery(name = "Pizza.findAll", query = "SELECT p FROM Pizza p"),
         @NamedQuery(name = "Pizza.findAllByType", query = "SELECT p FROM Pizza p WHERE p.type=:type"),
+        @NamedQuery(name = "Pizza.delete", query = "delete from Pizza p WHERE p.pizzaId=:pizzaId"),
         @NamedQuery(name = "Pizza.deleteAll", query = "delete  from Pizza p")
 })
 @Data

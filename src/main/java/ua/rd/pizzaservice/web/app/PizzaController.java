@@ -9,25 +9,25 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.services.PizzaService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
+@Secured("IS_AUTHENTICATED_FULLY")
 @RequestMapping("/pizzas")
 public class PizzaController {
     @Autowired
     private PizzaService pizzaService;
 
-//    @Autowired
-//    public PizzaController(PizzaService pizzaService) {
-//        this.pizzaService = pizzaService;
-//    }
-
     @RequestMapping("/hello")
-    // @ResponseBody
     public String hello() {
         return "hello";
     }
 
+    @RequestMapping("/index")
+    public String init() {
+        return "index";
+    }
 
     @RequestMapping
     @Secured("IS_AUTHENTICATED_FULLY")
@@ -67,12 +67,24 @@ public class PizzaController {
         return "redirect:/app/pizzas";
     }
 
-//    @ModelAttribute
-//    public Pizza getPizzaById(@RequestParam(value = "pizzaId", required = false) Long pizzaId) {
-//        if (pizzaId == null) {
-//            System.out.println("====pizzaId======"+pizzaId);
-//            return null;
-//        }
-//        return pizzaService.find(pizzaId);
+
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public String delete(@RequestParam("pizzaId") Long pizzaId, @RequestParam("isDelete") boolean isDelete) {
+        System.out.println(isDelete + "===deletePizza====" + pizzaId);
+        if (isDelete) {
+            pizzaService.delete(pizzaId);
+        }
+        return "redirect:/app/pizzas";
+    }
+
+    //    @RequestMapping(value = "/confirm", method = RequestMethod.GET)
+//    public String confirm(@RequestParam("id") Long pizzaId, Model model) {
+//        model.addAttribute("id", pizzaId);
+//        return "confirmation";
 //    }
+    @RequestMapping(value = "/confirm", method = RequestMethod.GET)
+    public String confirm(@RequestParam("id") Long pizzaId, Model model) {
+        model.addAttribute("id", pizzaId);
+        return "confirmation";
+    }
 }

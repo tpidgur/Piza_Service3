@@ -34,7 +34,6 @@ public class JpaPizzaRepository implements PizzaRepository {
     @Transactional
     @Override
     public Pizza save(Pizza pizza) {
-        System.out.println("====pizza======"+pizza);
         if (pizza.getPizzaId() == null) {
             em.persist(pizza);
         } else {
@@ -42,9 +41,15 @@ public class JpaPizzaRepository implements PizzaRepository {
         }
         return pizza;
     }
-
+    @Transactional
     @Override
-    public void delete() {
+    public void delete(Long pizzaId) {
+    int deletedCount  =  em.createNamedQuery("Pizza.delete").setParameter("pizzaId",pizzaId).executeUpdate();
+        System.out.println("DeletedCount="+deletedCount);
+    }
+    @Transactional
+    @Override
+    public void deleteAll() {
         em.createNamedQuery("Pizza.deleteAll").executeUpdate();
     }
 }

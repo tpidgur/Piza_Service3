@@ -2,12 +2,14 @@
 <b:beans xmlns="http://www.springframework.org/schema/security"
          xmlns:b="http://www.springframework.org/schema/beans"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-      http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/security
+      http://www.springframework.org/schema/security/spring-security.xsd">
 
 
-<b:bean name="customAuthentificationProvider" class="ua.rd.pizzaservice.web.authentication.CustomAuthentificationProvider"/>
-
+    <b:bean name="customAuthentificationProvider"
+            class="ua.rd.pizzaservice.web.authentication.CustomAuthentificationProvider"/>
 
 
     <authentication-manager>
@@ -16,21 +18,20 @@
 
 
     <http pattern="/app/**">
-        <intercept-url pattern="/app/loginp*" access="isAnonymous()" method="GET" />
-        <intercept-url pattern="/**" access="hasAnyRole('USER', 'ADMIN')" />
+        <intercept-url pattern="/app/loginp*" access="isAnonymous()" method="GET"/>
+        <intercept-url pattern="/**" access="hasAnyRole('USER', 'ADMIN')"/>
         <form-login login-page="/app/loginp"
                     always-use-default-target="true"
-                    default-target-url="/app/pizzas"
+                    default-target-url="/app/pizzas/index"
                     login-processing-url="/app/login"/>
         <logout logout-url="/app/logout"/>
     </http>
 
     <http pattern="/rest/**" create-session="stateless">
-        <http-basic />
+        <http-basic/>
         <intercept-url pattern="/**" access="hasRole('USER')"/>
         <csrf disabled="false"/>
     </http>
-
 
 
     <b:bean class="ua.rd.pizzaservice.web.authentication.CustomBasicAuthenticationPoint"/>

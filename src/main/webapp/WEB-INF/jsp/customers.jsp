@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <style>
@@ -27,18 +28,18 @@
             <td><c:out value="${customer.card.id}"/></td>
             <td><c:out value="${customer.card.balance}"/></td>
             <td>
-                <form action="./customers/${customer.customerId}/edit" method="post">
+                <form:form action="./customers/${customer.customerId}/edit" method="post">
                     <input hidden="true" value="${customer.customerId}">
             <input type="submit" value="edit">
-            </form>
+            </form:form>
             </td>
         </tr>
     </c:forEach>
 </table>
 
-<form action="./customers/customer/create" method="get">
+<form:form action="./customers/customer/create" method="get">
     <input type="submit" value="New">
-</form>
+</form:form>
 
 </body>
 </html>

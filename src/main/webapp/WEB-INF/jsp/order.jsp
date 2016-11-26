@@ -6,7 +6,7 @@
     <title>Edit Order <c:out value="${order.orderId}"/></title>
 </head>
 <body>
-<form action="../save" method="post">
+<form:form action="../save" method="post">
     <input name="orderId" type="hidden" value="${order.orderId}"/>
 
     <table>
@@ -39,6 +39,6 @@
 
     </table>
     <input type="submit" value="Save"/>
-</form>
+</form:form>
 </body>
 </html>

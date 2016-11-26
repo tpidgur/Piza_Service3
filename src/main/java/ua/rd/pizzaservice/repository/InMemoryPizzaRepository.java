@@ -4,6 +4,7 @@ import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.NotSupportedException;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -52,7 +53,12 @@ public class InMemoryPizzaRepository implements PizzaRepository {
     }
 
     @Override
-    public void delete() {
+    public void delete(Long id)  {
+        throw new RuntimeException("Not realized");
+    }
+
+    @Override
+    public void deleteAll() {
         throw new IllegalArgumentException("Yet not realized");
     }
 

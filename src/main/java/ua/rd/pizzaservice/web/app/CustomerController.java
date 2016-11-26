@@ -1,11 +1,13 @@
 package ua.rd.pizzaservice.web.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rd.pizzaservice.domain.Customer;
+import ua.rd.pizzaservice.domain.PizzaCard;
 import ua.rd.pizzaservice.services.CustomerService;
 
 import java.math.BigDecimal;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/customers")
+@Secured("IS_AUTHENTICATED_FULLY")
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
@@ -33,11 +36,16 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveCustomer(@RequestParam("address") String address,
-                               @RequestParam("balance") BigDecimal balance,
-                               @ModelAttribute Customer customer, Model model) {
-        customer.getCard().setBalance(balance);
-        customer.getAddress().setAddress(address);
+    public String saveCustomer(
+//            @RequestParam("address") String address,
+//            @RequestParam("balance") BigDecimal balance,
+            @ModelAttribute PizzaCard card,
+            @ModelAttribute Customer customer, Model model) {
+//        customer.getCard().setBalance(balance);
+//        customer.getAddress().setAddress(address);
+        if (card != null) {
+            customer.setCard(card);
+        }
         System.out.println("===saveCustomer====" + customer);
         customerService.save(customer);
         List<Customer> customers = customerService.findAll();

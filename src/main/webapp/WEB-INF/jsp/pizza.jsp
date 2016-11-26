@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
 
@@ -11,7 +12,7 @@
 </sec:authorize>
 
 
-<form action="../save" method="post">
+<form:form action="../save" method="post">
     <input id="pizzaId" name="pizzaId" type="hidden" value="${pizza.pizzaId}"/>
     <table>
         <tr>
@@ -34,7 +35,7 @@
         </tr>
     </table>
     <input type="submit" value="Save"/>
-    <sec:csrfInput/>
-</form>
+    <%--<sec:csrfInput/>--%>
+</form:form>
 </body>
 </html>

@@ -12,7 +12,7 @@
 
 
 
-    <bean class="ua.rd.pizzaservice.infrastructure.BenchMarkBeanPostProcessor"/>
+    <!--<bean class="ua.rd.pizzaservice.infrastructure.BenchMarkBeanPostProcessor"/>-->
 
     <bean name="simpleOrderService" class="ua.rd.pizzaservice.services.SimpleOrderService">
         <lookup-method name="createNewOrder" bean="order"/>

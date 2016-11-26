@@ -32,4 +32,9 @@ public class SimplePizzaService implements PizzaService {
     public List<Pizza> findAll() {
         return pizzaRepo.findAll();
     }
+
+    @Override
+    public void delete(Long id) {
+        pizzaRepo.delete(id);
+    }
 }
