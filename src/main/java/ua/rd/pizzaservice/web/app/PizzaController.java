@@ -77,11 +77,6 @@ public class PizzaController {
         return "redirect:/app/pizzas";
     }
 
-    //    @RequestMapping(value = "/confirm", method = RequestMethod.GET)
-//    public String confirm(@RequestParam("id") Long pizzaId, Model model) {
-//        model.addAttribute("id", pizzaId);
-//        return "confirmation";
-//    }
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
     public String confirm(@RequestParam("id") Long pizzaId, Model model) {
         model.addAttribute("id", pizzaId);

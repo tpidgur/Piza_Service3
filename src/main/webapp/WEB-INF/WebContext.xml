@@ -21,6 +21,8 @@
             <set>
                 <bean class="ua.rd.pizzaservice.web.converter.CardIdToCardConverter"/>
                 <bean class="ua.rd.pizzaservice.web.converter.PizzaConverter"/>
+                <bean class="ua.rd.pizzaservice.web.converter.CustomerConverter"/>
+                <bean class="ua.rd.pizzaservice.web.converter.OrderConverter"/>
             </set>
         </property>
     </bean>

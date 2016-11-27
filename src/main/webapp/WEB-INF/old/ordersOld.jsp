@@ -8,7 +8,6 @@
             border: 1px solid black;
             border-collapse: collapse;
         }
-
         th, td {
             padding: 5px;
             text-align: left;
@@ -20,23 +19,14 @@
 <table style="width:100%">
     <caption><h1>Order list</h1></caption>
     <tr>
-        <th rowspan="2">Id</th>
+        <th>Id</th>
         <th colspan="2">Customer</th>
-        <th rowspan="2">Status</th>
-        <th rowspan="2">Date</th>
-        <th rowspan="2">Delivery address</th>
-
-        <th  rowspan="2">Pizzas</th>
-        <th rowspan="2">Edit</th>
-    </tr>
-    <tr>
-        <th>
-            Id
-        </th>
-        <th>
-            Name
-        </th>
-
+        <th>Order status</th>
+        <th>Date</th>
+        <th>Delivery address</th>
+        <th>List of pizzas</th>
+        <th>Number of pizzas</th>
+        <th>Edit</th>
     </tr>
     <c:forEach items="${orderList}" var="order">
         <tr>
@@ -47,20 +37,19 @@
             <td><c:out value="${order.date}"/></td>
             <td><c:out value="${order.address.address}"/></td>
 
-
             <td>
-                <table style="width:100%">
-                    <tr>
-                        <th>Type</th>
-                        <th>Amount</th>
-                    </tr>
-                    <c:forEach items="${order.pizzas}" var="entry">
-                        <tr>
-                            <td><c:out value="${entry.key}"/></td>
-                            <td><c:out value="${entry.value}"/></td>
-                        </tr>
-                    </c:forEach>
-                </table>
+                <c:forEach items="${order.pizzas.keySet()}" var="pizza">
+                    <ul>
+                        <li><c:out value="${pizza}"/></li>
+                    </ul>
+                </c:forEach>
+            </td>
+            <td>
+                <c:forEach items="${order.pizzas.values()}" var="amount">
+                    <ul>
+                        <li><c:out value="${amount}"/></li>
+                    </ul>
+                </c:forEach>
             </td>
             <td>
                 <form:form action="./orders/${order.orderId}/edit" method="post">
@@ -69,11 +58,9 @@
                 </form:form>
             </td>
         </tr>
-
-
     </c:forEach>
 </table>
-<br/>
+
 <form:form action="./orders/order/create" method="get">
     <input type="submit" value="New">
 </form:form>

@@ -24,6 +24,7 @@ import static javax.persistence.FetchType.EAGER;
 @Entity
 @Table(name = "orders")
 @NamedQueries({
+        @NamedQuery(name = "Order.find", query = "delete from Order o WHERE o.orderId=:orderId"),
         @NamedQuery(name = "Order.findAll", query = "SELECT o from Order o"),
         @NamedQuery(name = "Order.findAllByCustomer", query = "SELECT o from Order o  where o.customer=:customer"),
         @NamedQuery(name = "Order.deleteAll", query = "delete  from Order o")
@@ -39,9 +40,8 @@ public class Order  extends ResourceSupport implements Serializable {
             allocationSize = 50)
     @Id
     @GeneratedValue(generator = "Order_Gen")
-
     private Long orderId;
-   // @JsonIgnore
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "pizzasAmount")
     @MapKeyJoinColumn(name = "pizzaId", referencedColumnName = "pizzaId")
@@ -51,13 +51,14 @@ public class Order  extends ResourceSupport implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "CustomerID")
-
     private Customer customer;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.NEW;
+
     @Column(name = "date")
     private LocalDate date = LocalDate.now();
+
     @OneToOne
     private Address address;
 
@@ -120,5 +121,17 @@ public class Order  extends ResourceSupport implements Serializable {
         result = 31 * result + (customer != null ? customer.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", pizzas=" + pizzas +
+                ", customer=" + customer +
+                ", status=" + status +
+                ", date=" + date +
+                ", address=" + address +
+                '}';
     }
 }

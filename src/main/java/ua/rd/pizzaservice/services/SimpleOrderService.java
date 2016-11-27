@@ -103,6 +103,8 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
 
 
     public Order find(Long orderId) {
+        System.out.println("orderRepository.find(orderId)"+orderRepository.find(orderId));
+
         return orderRepository.find(orderId);
     }
 
