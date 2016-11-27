@@ -3,10 +3,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <title>Edit</title>
+    <title>Edit Order
+        <%--<c:out value="${order.orderId}"/>--%>
+    </title>
 </head>
 <body>
-<h1>Edit Order <c:out value="${order.orderId}"/></h1>
 <form:form action="../save" method="post" modelAttribute="myorder">
     <%--<input name="orderId" type="hidden" value="${order.orderId}"/>--%>
 
