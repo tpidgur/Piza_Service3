@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import ua.rd.pizzaservice.domain.Address;
-import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.Order;
-import ua.rd.pizzaservice.domain.Pizza;
+import ua.rd.pizzaservice.domain.*;
 import ua.rd.pizzaservice.services.OrderService;
+import ua.rd.pizzaservice.services.PizzaService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +23,8 @@ import java.util.Map;
 @RequestMapping("/orders")
 public class OrderController {
 
-
-
+    @Autowired
+    private PizzaService pizzaService;
     @Autowired
     private OrderService orderService;
 
@@ -38,12 +36,12 @@ public class OrderController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/{orderId}/edit", method = RequestMethod.POST)
-    public String update(Model model, @PathVariable("orderId") Long orderId) {
-        System.out.println("===updateOrder====");
-        model.addAttribute("order", orderService.find(orderId));
-        return "order";
-    }
+//    @RequestMapping(value = "/{orderId}/edit", method = RequestMethod.POST)
+//    public String update(Model model, @PathVariable("orderId") Long orderId) {
+//        System.out.println("===updateOrder====");
+//        model.addAttribute("order", orderService.find(orderId));
+//        return "order";
+//    }
 
 
     @RequestMapping(value = "/order/create", method = RequestMethod.GET)
@@ -55,11 +53,11 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(@ModelAttribute("myorder")Order order,
+    public String save(@ModelAttribute("orderHolder") OrderHolder holder,
 //            @ModelAttribute Customer customer,
 //                       @ModelAttribute Address address,
                        Model model) {
-        System.out.println("===saveOrder===="+order);
+        System.out.println("===saveOrder====" + holder);
         //orderService.placeNewOrder(order);
         List<Order> orders = orderService.findAll();
         model.addAttribute("orders", orders);
@@ -72,4 +70,42 @@ public class OrderController {
         System.out.println("PIZZAS==" + order);
         return "redirect:/app/orders";
     }
+
+    @RequestMapping(value = "/{orderId}/edit", method = RequestMethod.POST)
+    public String update(Model model, @PathVariable("orderId") Long orderId) {
+        System.out.println("===updateOrder====");
+        model.addAttribute("order", orderService.find(orderId));
+        return "order";
+    }
+
+//    private OrderHolder convertOrderToOrderHolder(Order order) {
+//        OrderHolder holder = new OrderHolder();
+//        holder.setOrderId(order.getOrderId().toString());
+//        holder.setCustomerId(order.getCustomer().getCustomerId().toString());
+//        holder.setAddressId(order.getAddress().getAddressId().toString());
+//        holder.setDate(order.getDate().toString());
+//        holder.setStatus(order.getStatus().toString());
+//        return holder;
+//    }
+
+
+    protected Map<Pizza, Integer> convertIdMapInPizzaMap(Map<String, String> pizzaIds) {
+        Map<Pizza, Integer> pizzas = new HashMap<>();
+        pizzaIds.forEach((s, amount) -> pizzas.put(pizzaService.find(Long.valueOf(s)),
+                Integer.valueOf(amount)));
+        return pizzas;
+    }
+
+    protected Map<String, String> convertPizzaMapInStringIdMap(Map<Pizza, Integer> pizzaIds) {
+        Map<String, String> pizzas = new HashMap<>();
+        pizzaIds.forEach((pizza, amount) -> pizzas.put(pizza.getPizzaId().toString(),
+                amount.toString()));
+        return pizzas;
+    }
+//    protected Map<Pizza, Integer> convertIdMapInPizzaMap(Map<String, String> pizzaIds) {
+//        Map<Pizza, Integer> pizzas = new HashMap<>();
+//        pizzaIds.forEach((s, amount) -> pizzas.put(pizzaService.find(Long.valueOf(s)),
+//                Integer.valueOf(amount)));
+//        return pizzas;
+//    }
 }

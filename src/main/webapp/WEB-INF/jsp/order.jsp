@@ -6,16 +6,21 @@
     <title>Edit</title>
 </head>
 <body>
-<h1>Edit Order <c:out value="${order.orderId}"/></h1>
-<form:form action="../save" method="post" modelAttribute="myorder">
-    <%--<input name="orderId" type="hidden" value="${order.orderId}"/>--%>
+<h1>Edit Order </h1>
+<form:form action="../save" method="post" modelAttribute="orderHolder">
 
     <table>
-        <c:forEach items="${order.pizzas}" var="entry" varStatus="status">
+        <tr>
+            <td>Status</td>
+            <td><input name="status" type="text" value="${order.status}"/></td>
+
+        </tr>
+        <c:forEach items="${order.pizzas}" var="pizzas" varStatus="status">
             <tr>
-                <td>${entry.key}</td>
-                <td><input name="entry['${entry.key}']" value="${entry.value}"/></td>
+                <td>${pizzas.key}</td>
+                <td><input name="pizzas['${pizzas.key.pizzaId}']" value="${pizzas.value}"/></td>
             </tr>
+
         </c:forEach>
     </table>
     <input type="submit" value="Save"/>
