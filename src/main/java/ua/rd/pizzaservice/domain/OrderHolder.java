@@ -9,19 +9,22 @@ import java.util.Map;
 @Getter
 @Setter
 public class OrderHolder {
-    //    private String orderId;
-//    private String customerId;
-//    private String addressId;
+        private String orderId;
+    private String customerId;
+    private String address;
     private String status;
-    //    private String date;
+        private String date;
     private Map<String, String> pizzas = new HashMap<>();
-
 
     @Override
     public String toString() {
         return "OrderHolder{" +
-                "pizzas=" + pizzas +
+                "orderId='" + orderId + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", address='" + address + '\'' +
                 ", status='" + status + '\'' +
+                ", date='" + date + '\'' +
+                ", pizzas=" + pizzas +
                 '}';
     }
 }

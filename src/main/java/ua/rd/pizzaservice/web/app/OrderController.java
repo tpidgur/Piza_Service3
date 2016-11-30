@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rd.pizzaservice.domain.*;
+import ua.rd.pizzaservice.services.CustomerService;
 import ua.rd.pizzaservice.services.OrderService;
 import ua.rd.pizzaservice.services.PizzaService;
 
@@ -22,7 +23,8 @@ import java.util.Map;
 @Secured("IS_AUTHENTICATED_FULLY")
 @RequestMapping("/orders")
 public class OrderController {
-
+    @Autowired
+    private CustomerService customerService;
     @Autowired
     private PizzaService pizzaService;
     @Autowired
@@ -75,6 +77,7 @@ public class OrderController {
     public String update(Model model, @PathVariable("orderId") Long orderId) {
         System.out.println("===updateOrder====");
         model.addAttribute("order", orderService.find(orderId));
+        model.addAttribute("customers",customerService.findAll());
         return "order";
     }
 
