@@ -60,6 +60,7 @@ public class OrderController {
 //                       @ModelAttribute Address address,
                        Model model) {
         System.out.println("===saveOrder====" + holder);
+        System.out.println("===saveOrder====" + orderService.convertOrderHolderToOrder(holder));
         //orderService.placeNewOrder(order);
         List<Order> orders = orderService.findAll();
         model.addAttribute("orders", orders);
@@ -92,12 +93,7 @@ public class OrderController {
 //    }
 
 
-    protected Map<Pizza, Integer> convertIdMapInPizzaMap(Map<String, String> pizzaIds) {
-        Map<Pizza, Integer> pizzas = new HashMap<>();
-        pizzaIds.forEach((s, amount) -> pizzas.put(pizzaService.find(Long.valueOf(s)),
-                Integer.valueOf(amount)));
-        return pizzas;
-    }
+
 
     protected Map<String, String> convertPizzaMapInStringIdMap(Map<Pizza, Integer> pizzaIds) {
         Map<String, String> pizzas = new HashMap<>();

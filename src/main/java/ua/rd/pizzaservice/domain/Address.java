@@ -6,14 +6,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.TableGenerator;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Data
+@NamedQueries({
+        @NamedQuery(name = "Address.findByAddress", query = "select a from Address a where a.address=:address"),
+        @NamedQuery(name = "Address.delete", query = "delete  from Address a where a.addressId=:id")
+})
 public class Address implements Serializable {
     @TableGenerator(name = "Address_Gen",
             table = "ID_GEN",

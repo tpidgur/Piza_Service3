@@ -2,6 +2,7 @@ package ua.rd.pizzaservice.services;
 
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
+import ua.rd.pizzaservice.domain.OrderHolder;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -32,4 +33,5 @@ public interface OrderService {
 
     Order update(Order order);
 
+    Order convertOrderHolderToOrder(OrderHolder holder);
 }

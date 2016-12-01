@@ -1,15 +1,13 @@
 package ua.rd.pizzaservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ua.rd.pizzaservice.domain.Customer;
-import ua.rd.pizzaservice.domain.Order;
-import ua.rd.pizzaservice.domain.Pizza;
+import ua.rd.pizzaservice.domain.*;
 
-import ua.rd.pizzaservice.domain.PizzaCard;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
 import ua.rd.pizzaservice.repository.OrderRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -18,15 +16,19 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
     private final OrderRepository orderRepository;
     private final PizzaService pizzaService;
     private final DiscountService discountService;
-   // private ApplicationContext context;
+    private final CustomerService customerService;
+    private final AddressService addressService;
+    // private ApplicationContext context;
 
 
     @Autowired
     public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService,
-                              DiscountService discountService) {
+                              DiscountService discountService, CustomerService customerService, AddressService addressService) {
         this.orderRepository = orderRepository;
         this.pizzaService = pizzaService;
         this.discountService = discountService;
+        this.customerService = customerService;
+        this.addressService = addressService;
     }
 
 //    @Override
@@ -45,7 +47,7 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
         return newOrder;
     }
 
-   // @BenchMark
+    // @BenchMark
     private void isPizzasAmountLessThanMaxAllowable(int pizzaNumber) {
         if (pizzaNumber > MAX_PIZZAS_AMOUNT) {
             throw new RuntimeException("The chosen amount of pizzas" +
@@ -78,7 +80,7 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
         return pizzaService.find(id);
     }
 
-   // @BenchMark
+    // @BenchMark
     private void createNewCardIfNotExist(Order order) {
         if (order.getCustomer() != null) {
             order.getCustomer().createNewCardIfNotExist();
@@ -97,13 +99,13 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
                 order.getStatus() == Order.Status.IN_PROGRESS) {
             order.setStatus(Order.Status.DONE);
         } else throw new RuntimeException("The status " + newStatus + " isn't allowed");
-        System.out.println("!!!Order"+order);
+        System.out.println("!!!Order" + order);
         orderRepository.save(order);
     }
 
 
     public Order find(Long orderId) {
-        System.out.println("orderRepository.find(orderId)"+orderRepository.find(orderId));
+        System.out.println("orderRepository.find(orderId)" + orderRepository.find(orderId));
 
         return orderRepository.find(orderId);
     }
@@ -140,7 +142,7 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
     }
 
     private void updatePizzaCardBalance(Long orderId) {
-        Order order= find(orderId);
+        Order order = find(orderId);
         System.out.println(order);
         PizzaCard card = order.getCustomer().getCard();
         card.setBalance(card.getBalance().add(getTotalWithDiscount(orderId)));
@@ -176,6 +178,46 @@ public class SimpleOrderService implements OrderService /*, ApplicationContextAw
     public Order update(Order order) {
         isPizzasAmountLessThanMaxAllowable(order.getAmountOfPizzas());
         return orderRepository.save(order);
+    }
+
+    @Override
+    public Order convertOrderHolderToOrder(OrderHolder holder) {
+        Order order = null;
+        if (holder.getOrderId() != null) {
+            order = find(Long.valueOf(holder.getOrderId()));
+        } else {
+            order = new Order();
+        }
+        return setOrderFields(holder, order);
+    }
+
+    private Order setOrderFields(OrderHolder holder, Order order) {
+        order.setAddress(getAddress(holder));
+        order.setCustomer(customerService.find(Long.valueOf(holder.getCustomerId())));
+        createNewCardIfNotExist(order);
+        order.setDate(LocalDate.parse(holder.getDate()));
+        order.setPizzas(convertToPizzaMap(holder.getPizzas()));
+        return orderRepository.save(order);
+    }
+
+
+    private Address getAddress(OrderHolder holder) {
+        Address address = addressService.findByAddress(holder.getAddress());
+        if (address == null) {
+            address = addressService.save(new Address(holder.getAddress()));
+        }
+        return address;
+    }
+
+    protected Map<Pizza, Integer> convertToPizzaMap(Map<String, String> pizzaIds) {
+        Map<Pizza, Integer> pizzas = new HashMap<>();
+        pizzaIds.forEach((s, amount) -> pizzas.put(pizzaService.find(Long.valueOf(s)),
+                Integer.valueOf(amount)));
+        return pizzas;
+    }
+
+    private Customer findCustomer(Long orderId) {
+        return customerService.find(orderId);
     }
 
 
