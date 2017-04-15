@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+
 @Entity
 @Table(name = "pizzaCards")
 @NamedQueries({
@@ -24,10 +25,6 @@ public class PizzaCard implements Serializable {
     private Long id;
 
     private BigDecimal balance = new BigDecimal(0);
-
-
-    public PizzaCard() {
-    }
 
 
 }

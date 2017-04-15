@@ -4,7 +4,6 @@ import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.infrastructure.BenchMark;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.NotSupportedException;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,7 +19,7 @@ public class InMemoryPizzaRepository implements PizzaRepository {
         pizzas.add(new Pizza("Neapolitan Pizza", new BigDecimal(1), Pizza.PizzaType.MEAT));
         pizzas.add(new Pizza("Chicago Pizza", new BigDecimal(2), Pizza.PizzaType.MEAT));
         pizzas.add(new Pizza("New York Style Pizza", new BigDecimal(3), Pizza.PizzaType.MEAT));
-        pizzas.add(new Pizza("Greek Pizza", new BigDecimal(3), Pizza.PizzaType.VEGETERIAN));
+        pizzas.add(new Pizza("Greek Pizza", new BigDecimal(3), Pizza.PizzaType.VEGETARIAN));
         pizzas.add(new Pizza("Sea Pizza", new BigDecimal(3), Pizza.PizzaType.SEA));
     }
 

@@ -66,7 +66,7 @@ public class SimpleOrderServiceITest {
         Pizza pizza1 = pizzaRepository.save(
                 new Pizza("Neapolitan Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT));
         Pizza pizza2 = pizzaRepository.save(
-                new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETERIAN));
+                new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETARIAN));
         Pizza pizza3 = pizzaRepository.save(
                 new Pizza("New  Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA));
         PIZZA_ID1 = pizza1.getPizzaId();

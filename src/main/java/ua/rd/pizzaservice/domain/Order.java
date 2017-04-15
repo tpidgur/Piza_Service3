@@ -1,6 +1,5 @@
 package ua.rd.pizzaservice.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
@@ -12,11 +11,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static javax.persistence.FetchType.EAGER;
 
 
 @Component
@@ -30,8 +29,8 @@ import static javax.persistence.FetchType.EAGER;
         @NamedQuery(name = "Order.deleteAll", query = "delete  from Order o")
 })
 @Getter
-@Setter
-public class Order  extends ResourceSupport implements Serializable {
+@Setter //TODO do we really need setters here as well as lombok?
+public class Order extends ResourceSupport implements Serializable {
     @TableGenerator(name = "Order_Gen",
             table = "ID_GEN",
             pkColumnName = "Gen_name",
@@ -42,7 +41,7 @@ public class Order  extends ResourceSupport implements Serializable {
     @GeneratedValue(generator = "Order_Gen")
     private Long orderId;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER) //TODO do we really need eager here?
     @CollectionTable(name = "pizzasAmount")
     @MapKeyJoinColumn(name = "pizzaId", referencedColumnName = "pizzaId")
     @Column(name = "quantity")
@@ -62,7 +61,7 @@ public class Order  extends ResourceSupport implements Serializable {
     @OneToOne
     private Address address;
 
-    public Order() {
+    public Order() { //TODO: do we really need two constructors here?
     }
 
     public Order(Map<Pizza, Integer> pizzas, Customer customer) {
@@ -77,11 +76,9 @@ public class Order  extends ResourceSupport implements Serializable {
     public void addPizzas(Map<Pizza, Integer> additionalPizzas) {
         pizzas = Stream.concat(pizzas.entrySet().stream(), additionalPizzas.entrySet().stream())
                 .collect(Collectors.toMap(
-                        entry -> entry.getKey(),//The key
-                        entry -> entry.getValue(),//The value
-                        //  The merger
-                        Integer::sum
-                ));
+                        entry -> entry.getKey(),
+                        entry -> entry.getValue(),
+                        Integer::sum));
     }
 
     public void removePizza(Pizza pizza) {
@@ -93,16 +90,12 @@ public class Order  extends ResourceSupport implements Serializable {
     }
 
     public BigDecimal calculateTotalPrice() {
-        BigDecimal result = BigDecimal.ZERO;
-        Iterator<Map.Entry<Pizza, Integer>> itr = pizzas.entrySet().iterator();
-        while (itr.hasNext()) {
-            Map.Entry<Pizza, Integer> entry = itr.next();
-            result = result.add(entry.getKey().getPrice().multiply(new BigDecimal(entry.getValue())));
-        }
-        return result;
+        return pizzas.keySet().stream()
+                .map(s -> s.getPrice().multiply(new BigDecimal(pizzas.get(s))))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    @Override
+    @Override //TODO: either use Lombok or explicit method declaration
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -123,7 +116,7 @@ public class Order  extends ResourceSupport implements Serializable {
         return result;
     }
 
-    @Override
+    @Override //TODO: do we really need to override toString?
     public String toString() {
         return "Order{" +
                 "orderId=" + orderId +

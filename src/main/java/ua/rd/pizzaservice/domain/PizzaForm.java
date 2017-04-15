@@ -3,8 +3,9 @@ package ua.rd.pizzaservice.domain;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class PizzaForm {
-    private Map<String,String> pizzaMap=new HashMap<String,String>();
+    private Map<String, String> pizzaMap = new HashMap<String, String>();
 
     public Map<String, String> getPizzaMap() {
         return pizzaMap;

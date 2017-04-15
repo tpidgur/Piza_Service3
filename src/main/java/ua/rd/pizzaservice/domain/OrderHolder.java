@@ -6,16 +6,17 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Getter
 @Setter
 public class OrderHolder {
+
     private String orderId;
     private String customerId;
     private String address;
     private String status;
     private String date;
     private Map<String, String> pizzas = new HashMap<>();
-
 
 
     @Override

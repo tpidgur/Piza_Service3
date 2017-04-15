@@ -6,6 +6,8 @@ import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Optional;
+
 
 @Entity
 @Table(name = "customers")
@@ -13,7 +15,7 @@ import java.io.Serializable;
         @NamedQuery(name = "Customer.findAll", query = "SELECT c from Customer c"),
         @NamedQuery(name = "Customer.findByName", query = "SELECT c from Customer c WHERE c.name=:name"),
         @NamedQuery(name = "Customer.updateName", query = "UPDATE Customer c SET c.name='Tania'"),
-       // WHERE c.customerId=:id :newName
+        // WHERE c.customerId=:id :newName
         @NamedQuery(name = "Customer.deleteAll", query = "delete  from Customer с")
 })
 
@@ -28,22 +30,20 @@ public class Customer extends ResourceSupport implements Serializable {
             allocationSize = 50)
     @Id
     @GeneratedValue(generator = "Customer_Gen")
-
     private Long customerId;
 
     @Column(nullable = false)
-
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "card_id")
     private PizzaCard card;
 
-    public Customer() {
+    public Customer() { //TODO do we really need so many constructors?
     }
 
     public Customer(String name) {
@@ -57,17 +57,7 @@ public class Customer extends ResourceSupport implements Serializable {
     }
 
     public void createNewCardIfNotExist() {
-        if (!hasCard()) {
-            createNewCard();
-        }
-    }
-
-    private boolean hasCard() {
-        return card != null;
-    }
-
-    private void createNewCard() {
-        card = new PizzaCard();
+        Optional.ofNullable(card).orElse(card = new PizzaCard());
     }
 
 }

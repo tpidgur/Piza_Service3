@@ -1,16 +1,14 @@
 package ua.rd.pizzaservice.domain;
 
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+
+//TODO: pizza scope should be singleton or prototype?
 @Entity
 @Table(name = "pizzas")
 @NamedQueries({
@@ -40,10 +38,10 @@ public class Pizza extends ResourceSupport implements Serializable {
 
 
     public enum PizzaType {
-        VEGETERIAN, SEA, MEAT
+        VEGETARIAN, SEA, MEAT
     }
 
-    public Pizza() {
+    public Pizza() { //TODO: do we need so many constructors?
     }
 
     public Pizza(String name, BigDecimal price, PizzaType type) {
@@ -51,6 +49,5 @@ public class Pizza extends ResourceSupport implements Serializable {
         this.price = price;
         this.type = type;
     }
-
 
 }
