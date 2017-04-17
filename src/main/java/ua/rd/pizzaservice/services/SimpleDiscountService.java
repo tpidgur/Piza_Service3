@@ -33,7 +33,7 @@ public class SimpleDiscountService implements DiscountService {
     @BenchMark
     @Override
     public BigDecimal calculateTotalDiscount(Order order) {
-        return discounts.stream().filter(e -> e.isLiableToDiscount(order)).map(e -> e.calculateDiscount(order))
+        return discounts.stream().filter(e -> e.isApplicableTo(order)).map(e -> e.calculateDiscount(order))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 

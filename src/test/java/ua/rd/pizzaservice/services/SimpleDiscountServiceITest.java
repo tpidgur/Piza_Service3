@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ua.rd.pizzaservice.domain.*;
 import ua.rd.pizzaservice.domain.discounts.Discount;
 import ua.rd.pizzaservice.domain.discounts.FourPizzaDiscount;
-import ua.rd.pizzaservice.domain.discounts.PizzaCardDiscount;
+import ua.rd.pizzaservice.domain.discounts.CardDiscount;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -40,7 +40,7 @@ public class SimpleDiscountServiceITest {
     @Test
     public void calculateTotalDiscount() {
         assertThat(discountService.calculateTotalDiscount(order),
-                is(calculateSumOfDiscounts(new FourPizzaDiscount(), new PizzaCardDiscount())));
+                is(calculateSumOfDiscounts(new FourPizzaDiscount(), new CardDiscount())));
     }
 
     private BigDecimal calculateSumOfDiscounts(Discount... discount) {
@@ -48,7 +48,7 @@ public class SimpleDiscountServiceITest {
     }
 
     private BigDecimal getTotalDiscount(Discount discount) {
-        return (discount.isLiableToDiscount(order)) ? discount.calculateDiscount(order) : new BigDecimal(0);
+        return (discount.isApplicableTo(order)) ? discount.calculateDiscount(order) : new BigDecimal(0);
     }
 
 

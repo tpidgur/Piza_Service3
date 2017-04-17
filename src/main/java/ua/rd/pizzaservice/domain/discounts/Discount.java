@@ -4,11 +4,10 @@ import ua.rd.pizzaservice.domain.Order;
 
 import java.math.BigDecimal;
 
-public abstract class Discount {
 
-    public static final BigDecimal ONE_HUNDRED_PERCENTS = new BigDecimal(100);
+public interface Discount {
 
-    public abstract boolean isLiableToDiscount(Order order);
+    boolean isApplicableTo(Order order);
 
-    public abstract BigDecimal calculateDiscount(Order order);
+    BigDecimal calculateDiscount(Order order);
 }

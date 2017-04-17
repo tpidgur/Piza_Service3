@@ -6,12 +6,12 @@ import ua.rd.pizzaservice.domain.Order;
 import java.math.BigDecimal;
 @Component
 @org.springframework.core.annotation.Order(value=1)
-public class PizzaCardDiscount extends Discount {
+public class PizzaCardDiscount implements Discount {
     public static final BigDecimal CARD_DISCOUNT = new BigDecimal(10).divide(new BigDecimal(100));
     public static final BigDecimal ORDER_DISCOUNT = new BigDecimal(30).divide(new BigDecimal(100));
 
     @Override
-    public boolean isLiableToDiscount(Order order) {
+    public boolean isApplicableTo(Order order) {
         return order.getCustomer().getCard() != null;
     }
 

@@ -5,48 +5,53 @@ import org.junit.Test;
 import ua.rd.pizzaservice.domain.discounts.FourPizzaDiscount;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 
 public class FourPizzaDiscountTest {
+
+    private static final BigDecimal PRICE1 = new BigDecimal(3);
+    private static final BigDecimal PRICE2 = new BigDecimal(1);
+    private static final Pizza NEW_YORK = new Pizza("New York Style Pizza", PRICE1, Pizza.PizzaType.MEAT);
+    private static final Pizza NEAPOLITAN = new Pizza("Neapolitan Pizza", PRICE2, Pizza.PizzaType.MEAT);
+
+    private static final Map<Pizza, Integer> ENOUGH_PIZZAS_FOR_DISCOUNT = convertToMap(Stream.of(NEAPOLITAN, NEW_YORK, NEW_YORK, NEW_YORK, NEW_YORK));
+    private static final Map<Pizza, Integer> NOT_ENOUGH_PIZZAS_FOR_DISCOUNT = convertToMap(Stream.of(NEAPOLITAN, NEW_YORK, NEW_YORK, NEW_YORK));
+
+    private static final Customer CUSTOMER = new Customer("Ivan");
+    private static final Order ORDER_LIABLE_TO_DISCOUNT = new Order(ENOUGH_PIZZAS_FOR_DISCOUNT, CUSTOMER);
+    private static final Order ORDER_NOT_LIABLE_TO_DISCOUNT = new Order(NOT_ENOUGH_PIZZAS_FOR_DISCOUNT, CUSTOMER);
+    private static final BigDecimal DISCOUNT_VALUE = new BigDecimal(30).divide(new BigDecimal(100));
+
     private FourPizzaDiscount discount;
-    private Order order;
-    public static final BigDecimal PIZZA_PRICE1 = new BigDecimal(3);
-    public static final BigDecimal PIZZA_PRICE2 = new BigDecimal(1);
-    public static final BigDecimal DISCOUNT = new BigDecimal(30).divide(new BigDecimal(100));
+
 
     @Before
-    public void initializeFourPizzaDiscountInstance() {
+    public void setup() {
         discount = new FourPizzaDiscount();
     }
 
-    @Before
-    public void initializeOrderInstance() {
-        Map<Pizza, Integer> pizzas = new HashMap<>();
-        pizzas.put(new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT), 1);
-        pizzas.put(new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT), 4);
-        order = new Order(pizzas,new Customer("Ivan"));
-//                order = new Order(new Customer("Ivan"), Arrays.asList
-//                        (new Pizza("Neapolitan Pizza", PIZZA_PRICE2, Pizza.PizzaType.MEAT),
-//                                new Pizza("New York Style Pizza", PIZZA_PRICE1, Pizza.PizzaType.MEAT),
-//                                new Pizza("Greek Pizza", PIZZA_PRICE1, Pizza.PizzaType.VEGETERIAN),
-//                                new Pizza("Sea Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA),
-//                                new Pizza("Sea Pizza", PIZZA_PRICE1, Pizza.PizzaType.SEA)));
+    private static Map<Pizza, Integer> convertToMap(Stream<Pizza> pizzaStream) {
+        return pizzaStream.collect(Collectors.groupingBy(pizza -> pizza, Collectors.reducing(0, pizzaQuantity -> 1, Integer::sum)));
     }
 
     @Test
-    public void isLiableToDiscountTest() {
-        boolean hasDiscount = discount.isLiableToDiscount(order);
-        assertThat(hasDiscount, is(true));
+    public void shouldHaveDiscount() {
+        assertThat(discount.isApplicableTo(ORDER_LIABLE_TO_DISCOUNT), is(true));
     }
 
     @Test
-    public void makeDiscountTest() {
-        BigDecimal discount = this.discount.calculateDiscount(order);
-        assertThat(discount, is(PIZZA_PRICE1.multiply(DISCOUNT)));
+    public void shouldNotHaveDiscountForLackOfPizzas() {
+        assertThat(discount.isApplicableTo(ORDER_NOT_LIABLE_TO_DISCOUNT), is(false));
+    }
+
+    @Test
+    public void shouldCalculateDiscount() {
+        assertThat(discount.calculateDiscount(ORDER_LIABLE_TO_DISCOUNT), is(PRICE1.multiply(DISCOUNT_VALUE)));
     }
 }

@@ -5,32 +5,26 @@ import ua.rd.pizzaservice.domain.Order;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
-import java.util.Optional;
+
 
 @Component
-@org.springframework.core.annotation.Order(value=1)
-public class FourPizzaDiscount extends Discount {
-    public static final BigDecimal DISCOUNT_MULTIPLICAND = new BigDecimal(30);
-    public static final int MIN_PIZZAS_NUMBER = 4;
+@org.springframework.core.annotation.Order(value = 1)
+public class FourPizzaDiscount implements Discount {
+
+    private static final int PIZZAS_NUMBER_THRESHOLD = 4;
+    private static final BigDecimal DISCOUNT_VALUE = new BigDecimal(30).divide(new BigDecimal(100));;
 
 
     @Override
-    public boolean isLiableToDiscount(Order order) {
-        return order.getPizzas().values().stream().mapToInt(i->i).sum() > MIN_PIZZAS_NUMBER;
+    public boolean isApplicableTo(Order order) {
+        return order.getPizzas().values().stream().mapToInt(i -> i).sum() > PIZZAS_NUMBER_THRESHOLD;
     }
 
     @Override
     public BigDecimal calculateDiscount(Order order) {
-        Optional<BigDecimal> maxPriceOpt = order.getPizzas().keySet().stream()
-                .map(i -> i.getPrice()).max(Comparator.naturalOrder());
-        if (maxPriceOpt.isPresent()) {
-            BigDecimal discountAmount = maxPriceOpt.get().multiply(calculatePercentageRatio());
-            return discountAmount;
-        }
-        return null;
+        return order.getPizzas().keySet().stream()
+                .map(i -> i.getPrice().multiply(DISCOUNT_VALUE))
+                .max(Comparator.naturalOrder()).orElse(null);
     }
 
-    private BigDecimal calculatePercentageRatio() {
-        return DISCOUNT_MULTIPLICAND.divide(ONE_HUNDRED_PERCENTS);
-    }
 }
