@@ -10,15 +10,20 @@ import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.PizzaCard;
 import ua.rd.pizzaservice.services.CustomerService;
 
-import java.math.BigDecimal;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/customers")
 @Secured("IS_AUTHENTICATED_FULLY")
 public class CustomerController {
+
+    private final CustomerService customerService;
+
     @Autowired
-    private CustomerService customerService;
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @RequestMapping
     public ModelAndView findAll(ModelAndView modelAndView) {
