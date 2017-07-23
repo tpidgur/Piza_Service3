@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -34,22 +35,38 @@ public class CustomerControllerTest {
     private static final String HOME_CUSTOMER_CONTROLLER_URL = "/customers";
     private static final String CUSTOMERS_LIST_ATTRIBUTE = "customerList";
 
+    private static final long CUSTOMER_ID = 15l;
+    private static final Customer CUSTOMER_VALUE = new Customer();
+    private static final String EDIT_CUSTOMER_ON_ID_URL = HOME_CUSTOMER_CONTROLLER_URL + "/" + CUSTOMER_ID + "/edit";
+    private static final String CUSTOMER_VIEW_NAME = "customer";
+    private static final String CUSTOMER_ATTRIBUTE = "customer";
 
     @Before
     public void setup() {
         controller = new CustomerController(customerService);
         mockMvc = standaloneSetup(controller)
-                .setSingleView(
-                        new InternalResourceView(PREFIX + CUSTOMERS_VIEW_NAME))
                 .build();
         when(customerService.findAll()).thenReturn(CUSTOMERS_LIST_VALUE);
+        when(customerService.find(CUSTOMER_ID)).thenReturn(CUSTOMER_VALUE);
     }
 
     @Test
     public void shouldFindAllCustomers() throws Exception {
+        mockMvc = standaloneSetup(controller)
+                .setSingleView(
+                        new InternalResourceView(PREFIX + CUSTOMERS_VIEW_NAME))
+                .build();
         mockMvc.perform(get(HOME_CUSTOMER_CONTROLLER_URL))
                 .andExpect(view().name(CUSTOMERS_VIEW_NAME))
                 .andExpect(model().attributeExists(CUSTOMERS_LIST_ATTRIBUTE))
                 .andExpect(model().attribute(CUSTOMERS_LIST_ATTRIBUTE, CUSTOMERS_LIST_VALUE));
+    }
+
+    @Test
+    public void shouldUpdateCustomer() throws Exception {
+        mockMvc.perform(post(EDIT_CUSTOMER_ON_ID_URL))
+                .andExpect(view().name(CUSTOMER_VIEW_NAME))
+                .andExpect(model().attributeExists(CUSTOMER_ATTRIBUTE))
+                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, CUSTOMER_VALUE));
     }
 }
