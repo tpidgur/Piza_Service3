@@ -27,7 +27,12 @@ public class CustomerControllerTest {
     @Mock
     private CustomerService customerService;
     private MockMvc mockMvc;
-    private List<Customer> customers = new LinkedList<>();
+
+    private static final List<Customer> CUSTOMERS_LIST_VALUE = new LinkedList<>();
+    private static final String PREFIX = "WEB-INF/jsp/";
+    private static final String CUSTOMERS_VIEW_NAME = "customers";
+    private static final String HOME_CUSTOMER_CONTROLLER_URL = "/customers";
+    private static final String CUSTOMERS_LIST_ATTRIBUTE = "customerList";
 
 
     @Before
@@ -35,16 +40,16 @@ public class CustomerControllerTest {
         controller = new CustomerController(customerService);
         mockMvc = standaloneSetup(controller)
                 .setSingleView(
-                        new InternalResourceView("WEB-INF/jsp/customers.jsp"))
+                        new InternalResourceView(PREFIX + CUSTOMERS_VIEW_NAME))
                 .build();
-        when(customerService.findAll()).thenReturn(customers);
+        when(customerService.findAll()).thenReturn(CUSTOMERS_LIST_VALUE);
     }
 
     @Test
-    public void testFindAll() throws Exception {
-        mockMvc.perform(get("/customers"))
-                .andExpect(view().name("customers"))
-                .andExpect(model().attributeExists("customerList"))
-                .andExpect(model().attribute("customerList", customers));
+    public void shouldFindAllCustomers() throws Exception {
+        mockMvc.perform(get(HOME_CUSTOMER_CONTROLLER_URL))
+                .andExpect(view().name(CUSTOMERS_VIEW_NAME))
+                .andExpect(model().attributeExists(CUSTOMERS_LIST_ATTRIBUTE))
+                .andExpect(model().attribute(CUSTOMERS_LIST_ATTRIBUTE, CUSTOMERS_LIST_VALUE));
     }
 }
