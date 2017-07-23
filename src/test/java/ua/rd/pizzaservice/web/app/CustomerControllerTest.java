@@ -36,10 +36,12 @@ public class CustomerControllerTest {
     private static final String CUSTOMERS_LIST_ATTRIBUTE = "customerList";
 
     private static final long CUSTOMER_ID = 15l;
-    private static final Customer CUSTOMER_VALUE = new Customer();
+    private Customer customer = new Customer();
     private static final String EDIT_CUSTOMER_ON_ID_URL = HOME_CUSTOMER_CONTROLLER_URL + "/" + CUSTOMER_ID + "/edit";
     private static final String CUSTOMER_VIEW_NAME = "customer";
     private static final String CUSTOMER_ATTRIBUTE = "customer";
+    private static final String CREATE_CUSTOMER_URL = HOME_CUSTOMER_CONTROLLER_URL +  "/customer/create";
+
 
     @Before
     public void setup() {
@@ -47,7 +49,7 @@ public class CustomerControllerTest {
         mockMvc = standaloneSetup(controller)
                 .build();
         when(customerService.findAll()).thenReturn(CUSTOMERS_LIST_VALUE);
-        when(customerService.find(CUSTOMER_ID)).thenReturn(CUSTOMER_VALUE);
+        when(customerService.find(CUSTOMER_ID)).thenReturn(customer);
     }
 
     @Test
@@ -67,6 +69,14 @@ public class CustomerControllerTest {
         mockMvc.perform(post(EDIT_CUSTOMER_ON_ID_URL))
                 .andExpect(view().name(CUSTOMER_VIEW_NAME))
                 .andExpect(model().attributeExists(CUSTOMER_ATTRIBUTE))
-                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, CUSTOMER_VALUE));
+                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, customer));
+    }
+
+    @Test
+    public void shouldCreateCustomer() throws Exception {
+        mockMvc.perform(get(CREATE_CUSTOMER_URL))
+                .andExpect(view().name(CUSTOMER_VIEW_NAME))
+                .andExpect(model().attributeExists(CUSTOMER_ATTRIBUTE))
+                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, customer));
     }
 }
