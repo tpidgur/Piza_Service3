@@ -26,5 +26,10 @@ public class PizzaCard implements Serializable {
 
     private BigDecimal balance = new BigDecimal(0);
 
+    public PizzaCard() {
+    }
 
+    public PizzaCard(BigDecimal balance) {
+        this.balance = balance;
+    }
 }

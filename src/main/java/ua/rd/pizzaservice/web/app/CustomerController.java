@@ -41,13 +41,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveCustomer(
-//            @RequestParam("address") String address,
-//            @RequestParam("balance") BigDecimal balance,
-            @ModelAttribute PizzaCard card,
-            @ModelAttribute Customer customer, Model model) {
-//        customer.getCard().setBalance(balance);
-//        customer.getAddress().setAddress(address);
+    public String saveCustomer(@ModelAttribute PizzaCard card,@ModelAttribute Customer customer, Model model) {
         if (card != null) {
             customer.setCard(card);
         }
