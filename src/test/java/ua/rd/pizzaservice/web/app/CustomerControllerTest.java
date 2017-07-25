@@ -38,7 +38,6 @@ public class CustomerControllerTest {
     private static final String CUSTOMERS_LIST_ATTRIBUTE = "customerList";
 
     private static final long CUSTOMER_ID = 15l;
-    private Customer customer = new Customer();
     private static final String EDIT_CUSTOMER_ON_ID_URL = HOME_CUSTOMER_CONTROLLER_URL + "/" + CUSTOMER_ID + "/edit";
     private static final String CUSTOMER_VIEW_NAME = "customer";
     private static final String CUSTOMER_ATTRIBUTE = "customer";
@@ -53,6 +52,9 @@ public class CustomerControllerTest {
     private static final String ADDRESS_PARAMETER = "address";
     private static final String PIZZACARD_BALANCE_PARAMETER = "balance";
     private static final String SAVE_CUSTOMER_REDIRECT_URL = "/app" + HOME_CUSTOMER_CONTROLLER_URL;
+    private static final String PROFILE_CUSTOMER_URL = "/customers/" + CUSTOMER_ID;
+    private static final String PROFILE_VIEW_NAME = "profile";
+
 
     @Before
     public void setup() {
@@ -60,7 +62,7 @@ public class CustomerControllerTest {
         mockMvc = standaloneSetup(controller)
                 .build();
         when(customerService.findAll()).thenReturn(CUSTOMERS_LIST_VALUE);
-        when(customerService.find(CUSTOMER_ID)).thenReturn(customer);
+        when(customerService.find(CUSTOMER_ID)).thenReturn(EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM);
     }
 
     @Test
@@ -80,7 +82,7 @@ public class CustomerControllerTest {
         mockMvc.perform(post(EDIT_CUSTOMER_ON_ID_URL))
                 .andExpect(view().name(CUSTOMER_VIEW_NAME))
                 .andExpect(model().attributeExists(CUSTOMER_ATTRIBUTE))
-                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, customer));
+                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM));
     }
 
     @Test
@@ -88,7 +90,7 @@ public class CustomerControllerTest {
         mockMvc.perform(get(CREATE_CUSTOMER_URL))
                 .andExpect(view().name(CUSTOMER_VIEW_NAME))
                 .andExpect(model().attributeExists(CUSTOMER_ATTRIBUTE))
-                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, customer));
+                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, new Customer()));
     }
 
     @Test
@@ -100,5 +102,13 @@ public class CustomerControllerTest {
                 .param(PIZZACARD_BALANCE_PARAMETER, CUSTOMER_BALANCE))
                 .andExpect(redirectedUrl(SAVE_CUSTOMER_REDIRECT_URL));
         verify(customerService, atLeastOnce()).save(EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM);
+    }
+
+    @Test
+    public void shouldShowCustomerProfile() throws Exception {
+        mockMvc.perform(get(PROFILE_CUSTOMER_URL))
+                .andExpect(view().name(PROFILE_VIEW_NAME))
+                .andExpect(model().attributeExists(CUSTOMER_ATTRIBUTE))
+                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM));
     }
 }

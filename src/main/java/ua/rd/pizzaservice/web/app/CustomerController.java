@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.PizzaCard;
@@ -41,7 +44,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveCustomer(@ModelAttribute PizzaCard card,@ModelAttribute Customer customer, Model model) {
+    public String saveCustomer(@ModelAttribute PizzaCard card, @ModelAttribute Customer customer, Model model) {
         if (card != null) {
             customer.setCard(card);
         }
@@ -59,4 +62,11 @@ public class CustomerController {
         model.addAttribute("customer", customer);
         return "customer";
     }
+
+    @RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
+    public String showCustomerProfile(@PathVariable("customerId") Long customerId, Model model) {
+        model.addAttribute("customer", customerService.find(customerId));
+        return "profile";
+    }
+
 }
