@@ -36,7 +36,7 @@ public class CustomerController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/{customerId}/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit/{customerId}", method = RequestMethod.POST)
     public String updateCustomer(Model model, @PathVariable("customerId") Long customerId) {
         System.out.println("===updateCustomer====");
         model.addAttribute("customer", customerService.find(customerId));
@@ -55,7 +55,7 @@ public class CustomerController {
         return "redirect:/app/customers";
     }
 
-    @RequestMapping(value = "/customer/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createCustomer(Model model) {
         System.out.println("===createCustomer====");
         Customer customer = new Customer();

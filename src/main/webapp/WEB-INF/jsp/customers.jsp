@@ -28,7 +28,7 @@
             <td><c:out value="${customer.card.id}"/></td>
             <td><c:out value="${customer.card.balance}"/></td>
             <td>
-                <form:form action="./customers/${customer.customerId}/edit" method="post">
+                <form:form action="./customers/edit/${customer.customerId}" method="post">
                     <input hidden="true" value="${customer.customerId}">
             <input type="submit" value="edit">
             </form:form>
@@ -37,7 +37,7 @@
     </c:forEach>
 </table>
 
-<form:form action="./customers/customer/create" method="get">
+<form:form action="./customers/create" method="get">
     <input type="submit" value="New">
 </form:form>
 

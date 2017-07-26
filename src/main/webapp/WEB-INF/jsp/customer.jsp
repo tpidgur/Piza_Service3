@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Edit Customer</h1>
-<form:form action="../save" method="post">
+<form:form action="./../save" method="post">
     <input name="customerId" type="hidden" value="${customer.customerId}"/>
 
     <table>

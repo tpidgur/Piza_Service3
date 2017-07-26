@@ -38,10 +38,10 @@ public class CustomerControllerTest {
     private static final String CUSTOMERS_LIST_ATTRIBUTE = "customerList";
 
     private static final long CUSTOMER_ID = 15l;
-    private static final String EDIT_CUSTOMER_ON_ID_URL = HOME_CUSTOMER_CONTROLLER_URL + "/" + CUSTOMER_ID + "/edit";
+    private static final String EDIT_CUSTOMER_ON_ID_URL = HOME_CUSTOMER_CONTROLLER_URL + "/edit"+ "/" + CUSTOMER_ID ;
     private static final String CUSTOMER_VIEW_NAME = "customer";
     private static final String CUSTOMER_ATTRIBUTE = "customer";
-    private static final String CREATE_CUSTOMER_URL = HOME_CUSTOMER_CONTROLLER_URL + "/customer/create";
+    private static final String CREATE_CUSTOMER_URL = HOME_CUSTOMER_CONTROLLER_URL + "/create";
     private static final Customer EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM
             = new Customer("Jack", new Address("c.Kiev"), new PizzaCard(new BigDecimal(100)));
     private static final String SAVE_CUSTOMER_URL = "/customers/save";
