@@ -19,7 +19,7 @@
             <td align="center"><p><a href="../pizzas">Pizzas form</a></p></td>
         </tr>
         <tr>
-            <td align="center"><p><a href="../customers">Customers form</a></p></td>
+            <td align="center"><p><a href="../customers/">Customers form</a></p></td>
         </tr>
         <tr>
             <td align="center"><p><a href="../orders">Orders form</a></p></td>

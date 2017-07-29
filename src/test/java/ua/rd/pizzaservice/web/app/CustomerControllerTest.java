@@ -34,26 +34,26 @@ public class CustomerControllerTest {
     private static final List<Customer> CUSTOMERS_LIST_VALUE = new LinkedList<>();
     private static final String PREFIX = "WEB-INF/jsp/";
     private static final String CUSTOMERS_VIEW_NAME = "customers";
-    private static final String HOME_CUSTOMER_CONTROLLER_URL = "/customers";
+    private static final String HOME_CUSTOMER_CONTROLLER_URL = "/customers/";
     private static final String CUSTOMERS_LIST_ATTRIBUTE = "customerList";
 
     private static final long CUSTOMER_ID = 15l;
-    private static final String EDIT_CUSTOMER_ON_ID_URL = HOME_CUSTOMER_CONTROLLER_URL + "/edit"+ "/" + CUSTOMER_ID ;
+    private static final String EDIT_CUSTOMER_ON_ID_URL = HOME_CUSTOMER_CONTROLLER_URL + CUSTOMER_ID ;
     private static final String CUSTOMER_VIEW_NAME = "customer";
     private static final String CUSTOMER_ATTRIBUTE = "customer";
     private static final String CREATE_CUSTOMER_URL = HOME_CUSTOMER_CONTROLLER_URL + "/create";
-    private static final Customer EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM
+    private Customer expectedCustomerFromRegistrationForm
+            = new Customer("Jack", new Address("c.Kiev"), new PizzaCard(new BigDecimal(100)));
+    private Customer customerNotPersisted
             = new Customer("Jack", new Address("c.Kiev"), new PizzaCard(new BigDecimal(100)));
     private static final String SAVE_CUSTOMER_URL = "/customers/save";
     private static final String CUSTOMER_NAME = "Jack";
-    private static final String CUSTOMER_ADRESS = "c.Kiev";
+    private static final String CUSTOMER_ADDRESS = "c.Kiev";
     private static final String CUSTOMER_BALANCE = "100";
     private static final String NAME_PARAMETER = "name";
     private static final String ADDRESS_PARAMETER = "address";
     private static final String PIZZACARD_BALANCE_PARAMETER = "balance";
-    private static final String SAVE_CUSTOMER_REDIRECT_URL = "/app" + HOME_CUSTOMER_CONTROLLER_URL;
-    private static final String PROFILE_CUSTOMER_URL = "/customers/" + CUSTOMER_ID;
-    private static final String PROFILE_VIEW_NAME = "profile";
+    private static final String REDIRECT_PROFILE_CUSTOMER_URL = "/app/customers/";
 
 
     @Before
@@ -62,7 +62,8 @@ public class CustomerControllerTest {
         mockMvc = standaloneSetup(controller)
                 .build();
         when(customerService.findAll()).thenReturn(CUSTOMERS_LIST_VALUE);
-        when(customerService.find(CUSTOMER_ID)).thenReturn(EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM);
+        expectedCustomerFromRegistrationForm.setCustomerId(CUSTOMER_ID);
+        when(customerService.find(CUSTOMER_ID)).thenReturn(expectedCustomerFromRegistrationForm);
     }
 
     @Test
@@ -79,10 +80,10 @@ public class CustomerControllerTest {
 
     @Test
     public void shouldUpdateCustomer() throws Exception {
-        mockMvc.perform(post(EDIT_CUSTOMER_ON_ID_URL))
+        mockMvc.perform(get(EDIT_CUSTOMER_ON_ID_URL))
                 .andExpect(view().name(CUSTOMER_VIEW_NAME))
                 .andExpect(model().attributeExists(CUSTOMER_ATTRIBUTE))
-                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM));
+                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, expectedCustomerFromRegistrationForm));
     }
 
     @Test
@@ -95,20 +96,12 @@ public class CustomerControllerTest {
 
     @Test
     public void shouldSaveCustomer() throws Exception {
-        when(customerService.save(EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM)).thenReturn(EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM);
+        when(customerService.save(any(Customer.class))).thenReturn(expectedCustomerFromRegistrationForm);
         mockMvc.perform(post(SAVE_CUSTOMER_URL)
                 .param(NAME_PARAMETER, CUSTOMER_NAME)
-                .param(ADDRESS_PARAMETER, CUSTOMER_ADRESS)
+                .param(ADDRESS_PARAMETER, CUSTOMER_ADDRESS)
                 .param(PIZZACARD_BALANCE_PARAMETER, CUSTOMER_BALANCE))
-                .andExpect(redirectedUrl(SAVE_CUSTOMER_REDIRECT_URL));
-        verify(customerService, atLeastOnce()).save(EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM);
-    }
-
-    @Test
-    public void shouldShowCustomerProfile() throws Exception {
-        mockMvc.perform(get(PROFILE_CUSTOMER_URL))
-                .andExpect(view().name(PROFILE_VIEW_NAME))
-                .andExpect(model().attributeExists(CUSTOMER_ATTRIBUTE))
-                .andExpect(model().attribute(CUSTOMER_ATTRIBUTE, EXPECTED_CUSTOMER_FROM_REGISTRATION_FORM));
+                .andExpect(redirectedUrl(REDIRECT_PROFILE_CUSTOMER_URL));
+        verify(customerService, atLeastOnce()).save(customerNotPersisted);
     }
 }

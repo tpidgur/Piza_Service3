@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Edit Customer</h1>
-<form:form action="./../save" method="post">
+<form:form action="./save" method="post">
     <input name="customerId" type="hidden" value="${customer.customerId}"/>
 
     <table>
@@ -20,7 +20,6 @@
             <td>Address</td>
             <td>
                 <input name="addressId" type="hidden" value="${customer.address.addressId}"/>
-                <%--<form:hidden path="customer.address.id"/>--%>
                 <input name="address" type="text" value="${customer.address.address}"/>
             </td>
         </tr>
@@ -28,7 +27,6 @@
             <td>Card balance</td>
             <td>
                 <input name="id" type="hidden" value="${customer.card.id}"/>
-                <%--<form:hidden path="customer.card.id"/>--%>
                 <input name="balance" type="text" value="${customer.card.balance}"/><br/>
             </td>
 

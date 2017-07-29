@@ -13,11 +13,9 @@ import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.PizzaCard;
 import ua.rd.pizzaservice.services.CustomerService;
 
-import java.util.List;
-
 
 @Controller
-@RequestMapping("/customers")
+@RequestMapping("/customers/")
 @Secured("IS_AUTHENTICATED_FULLY")
 public class CustomerController {
 
@@ -36,7 +34,7 @@ public class CustomerController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/edit/{customerId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
     public String updateCustomer(Model model, @PathVariable("customerId") Long customerId) {
         System.out.println("===updateCustomer====");
         model.addAttribute("customer", customerService.find(customerId));
@@ -44,15 +42,13 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveCustomer(@ModelAttribute PizzaCard card, @ModelAttribute Customer customer, Model model) {
+    public String saveCustomer(@ModelAttribute PizzaCard card, @ModelAttribute Customer customer) throws InterruptedException {
         if (card != null) {
             customer.setCard(card);
         }
         System.out.println("===saveCustomer====" + customer);
-        customerService.save(customer);
-        List<Customer> customers = customerService.findAll();
-        model.addAttribute("customers", customers);
-        return "redirect:/app/customers";
+        customer = customerService.save(customer);
+        return "redirect:/app/customers/";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -61,12 +57,6 @@ public class CustomerController {
         Customer customer = new Customer();
         model.addAttribute("customer", customer);
         return "customer";
-    }
-
-    @RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
-    public String showCustomerProfile(@PathVariable("customerId") Long customerId, Model model) {
-        model.addAttribute("customer", customerService.find(customerId));
-        return "profile";
     }
 
 }
